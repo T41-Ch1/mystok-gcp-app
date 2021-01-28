@@ -1,0 +1,35 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI/CD with Maven
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+   
+  build-war-file-and-docker-image:
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with: 
+          format: YYYYMMDD-HHmm
+          utcOffset: "+09:00"
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Container image with current time
+        run: docker build -t ${{ secrets.DOCKER_REPO_DEV }}:${{ steps.current-time.outputs.formattedTime }} . --no-cache
+
+      - name: Publish Docker image
+        run: docker push ${{ secrets.DOCKER_REPO_DEV }}:${{ steps.current-time.outputs.formattedTime }}
