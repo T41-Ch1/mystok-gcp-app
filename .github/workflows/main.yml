@@ -25,20 +25,11 @@ jobs:
           format: YYYYMMDD-HHmm
           utcOffset: "+09:00"
 
-      #- name: Modify db_url and package_name
-      # run: ./.github/scripts/db_url-package-modify.sh
-
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Container image with current time
-        run: docker build -t ${{ secrets.DOCKER_REPO }}:${{ steps.current-time.outputs.formattedTime }} . --no-cache
+        run: docker build -t ${{ secrets.DOCKER_REPO_PROD }}:${{ steps.current-time.outputs.formattedTime }} . --no-cache
 
       - name: Publish Docker image
-        run: docker push ${{ secrets.DOCKER_REPO }}:${{ steps.current-time.outputs.formattedTime }}
-
-      #- name: re-tag Docker image
-      #  run: docker tag ${{ secrets.DOCKER_REPO_PROD }}:${{ steps.current-time.outputs.formattedTime }} ${{ secrets.DOCKER_REPO }}:latest
-
-      #- name: Push Docker image
-      #  run: docker push ${{ secrets.DOCKER_REPO_PROD }}:latest
+        run: docker push ${{ secrets.DOCKER_REPO_PROD }}:${{ steps.current-time.outputs.formattedTime }}
