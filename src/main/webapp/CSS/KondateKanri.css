@@ -1,0 +1,108 @@
+@charset "utf-8";
+/*レシピコンシェルのレシピページCSS*/
+
+
+/*--------------------------------------------------------------------------*/
+/*共通CSS*/
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 15px;
+  /*line-height: 2;*/
+}
+
+p,h1,h2,h3,h4,h5,h6 {/*複数のセレクタに同じスタイルを宣言もできる*/
+  margin-top: 0;/*h要素とp要素の間にはデフォで上部にマージンが設定されているので０で解除*/
+}
+
+img {
+  vertical-align:bottom;/*webブラウザによってはimg要素の下に余白ができる事があるのでbottomで調整
+                        vertical-align=テキストや画像の垂直方向の位置揃えを指定*/
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+/*
+a {
+  *//*color: #3583aa;*//*通常のリンクの文字色を青に*/
+  /*text-decoration: none;*//*下線なくす*/
+
+/*
+a:visited {*/
+  /*color: #788d98;*//*訪問後のリンクの文字色をグレーに*/
+
+/*--------------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------------------*/
+
+a:hover {
+  text-decoration: underline;/*マウスを置いたら下線が表示される*/
+}
+
+
+
+/*--------------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------------------*/
+
+
+
+h2 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 24px;
+}
+
+
+/*--------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------*/
+
+
+
+
+
+#child1 {
+  background-color: ;/* 上の部分のいろをかえるやつ */
+}
+#child2 {
+  background-color: ;
+}
+
+@media (min-width: 600px) {
+ #parent {
+   display: flex;
+ }
+ #child1 {
+   flex-grow: 1;
+ }
+ #child2 {
+   flex-grow: 1;
+ }
+}
+
+#recipeRegisterForm {
+	text-align: center;
+	font-family: 'Roboto Slab', serif;
+	display: block;
+	font-size: 24px;
+    font-weight: bold;
+}
+
+
+textarea {
+  resize: auto;
+  max-width: 700px;
+  max-height: 200px;
+}
+
+span {
+	display: inline-block;
+	text-align: left;
+	width: 100px;
+}
+

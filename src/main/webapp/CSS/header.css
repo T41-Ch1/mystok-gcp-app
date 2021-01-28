@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+header {
+  color: #333333;
+  padding: 35px 0;
+  background-color: #ffae8a;
+  margin: 0 auto;
+  border-bottom: 5px solid #ccb4a3;
+}
+
+.logo {
+  float: left;
+  margin-top: -28px;
+  margin-left: 100px;
+}
+
+.global-nav {
+  float: right;
+  margin-top: -10px;
+  margin-right: 100px
+}
+
+.global-nav li {
+  float: left;
+  margin: 0 20px;
+  font-size: 20px;
+  list-style: none;
+  font-family: serif;
+}
+
+.global-nav li a {
+  color: #333333;
+}
+
+.global-nav li a:hover {
+  border-bottom: 2px solid #ffffff;
+  padding-bottom: 3px;
+  text-decoration: none;
+}

@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+footer {
+  margin: 0px;
+  padding: 20px 0;
+  color: #333333;
+  width: 100%;
+  background-color: #ffe0cc;
+  font-family: serif;
+  position:absolute;
+  bottom:0;
+  text-align: center;
+}
+
+h4 {
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  font-size: 20px;
+  font-family: serif;
+}
+
+a {
+  color: #333333;
+  font-family: serif;
+}
+
+a:link {
+  text-decoration: none;
+}
+.danger {
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+}

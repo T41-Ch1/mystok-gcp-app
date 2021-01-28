@@ -1,0 +1,264 @@
+@charset "utf-8";
+/*マイページのCSS*/
+/*--------------------------------------------------------------------------*/
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: serif;
+  color: #333333;
+}
+
+p,h2,h3,h4,h5,h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+span {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: #333333;
+  text-decoration: none;
+}
+
+img {
+  vertical-align:bottom;
+}
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 40px;
+  background-color: #fff9f5;
+}
+
+.content {
+  padding-top: 50px;
+  padding-bottom: 100px;
+}
+
+.main {
+  top: 100px;
+  margin: 0 auto;
+  width: 1300px;
+  background-color: white;
+  box-shadow: 0 0 8px #d4d9dc;
+}
+
+.title {
+  padding-top: 10px;
+  margin: auto;
+  height: 60px;
+  width: 710px;
+}
+
+.title h1 {
+  height: 50px;
+  text-align: center;
+}
+
+/*--------------------------------------------------------------------------*/
+/*aboxの中身*/
+.abox {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+.touroku{
+  text-align: center;
+  background-color: #fbfaf5;
+  color: #fff;
+  line-height: 50px;
+}
+
+.touroku:hover {
+  background-color: rgba(252, 200, 0, 0.8);
+}
+
+.teiann {
+  text-align: center;
+  background-color: #fbfaf5;
+  color: #fff;
+  line-height: 50px;
+  margin-left: 100px;
+}
+
+.teiann:hover{
+  background-color: rgba(252, 200, 0, 0.8);
+}
+
+/*--------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------*/
+/*bboxの中身*/
+
+.bbox{
+  text-align: left;
+}
+
+section {
+  margin-bottom: 35px;
+}
+
+#okiniiri {
+  padding-top: 60px;
+}
+
+.icon {
+  width: 1200px;
+  margin: auto;
+  text-align: left;
+}
+
+.icon:before {
+  content: "";
+  padding-right: 10px;
+  border-left: 7px solid #e29676;
+}
+
+.border{
+  margin: auto;
+  width: 1200px;
+  border-top: 3px solid #cccccc;
+  padding-bottom: 30px;
+}
+
+.titletitle{
+  font-size: 18px;
+  font-weight: bold;
+}
+.a:hover span {
+  text-decoration:underline;
+}
+
+.titletitle:hover{
+  border-bottom: 2px solid #cccccc; /*下線とその色を指定*/
+  padding-bottom: 1px; /*下線の表示位置*/
+}
+
+.okiniirilist{
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0 20px 15px 0;
+}
+
+.okiniirilist li {
+  word-break: break-all;
+  width: 200px;
+  height: 300px;
+  display: inline-block;
+  margin: 0 20px 15px 0;
+}
+
+#rireki {
+  padding-top: 80px;
+}
+
+.rirekilist{
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0 20px 15px 0;
+}
+
+.rirekilist li {
+  word-break: break-all;
+  width: 200px;
+  height: 320px;
+  display: inline-block;
+  margin: 0 20px 15px 0;
+}
+
+.photograph-list li:nth-child(5n) {
+  margin-right: 0;
+}
+
+.more {
+  margin-top: 60px;
+  font-size: 18px;
+}
+
+.more:hover {
+  border-bottom: 2px solid #cccccc; /*下線とその色を指定*/
+  padding-bottom: 1px;
+}
+
+/*--------------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------------------*/
+/*会員情報変更の歯車のCSS*/
+.gia {
+  position: relative;
+  width: 500px;
+  margin-top: -58px;
+  margin-left: 726px;
+}
+
+.gia a{
+  display: block;
+  text-align: right;
+  width: 3px;
+  height: 10px;
+  padding: 5px;
+  border-radius: 100%;
+  background: white;
+  transition: .3s;
+}
+
+.gia a:hover{
+  background: white;
+}
+
+.gia a span{
+  position: absolute;
+  opacity: 0;
+  top: -50px;
+  left: 40px;
+  width: 180px;
+  padding: 10px;
+  border-radius: 30px;
+  border-color: black;
+  background: #fcc800;
+  font-size: 20px;
+  line-height: 1;
+  transition: .3s;
+  text-align: center;
+}
+
+.gia a:hover span{
+  opacity: 1;
+  top: -18px;/*吹き出し位置*/
+}
+
+.kaiinngia {
+  padding-left: 20px;
+  margin-left: -40px;
+  margin-top: -50px;
+}
+
+.hukidashi {
+  top:-100px;
+}
+
+/*--------------------------------------------------------------------------*/

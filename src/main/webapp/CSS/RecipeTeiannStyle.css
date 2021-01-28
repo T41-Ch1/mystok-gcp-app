@@ -1,0 +1,185 @@
+@charset "utf-8";
+/*レシピ提案ページのCSS*/
+/*--------------------------------------------------------------------------*/
+html {
+  height: 100%;
+}
+
+body {
+  text-align: center;
+  font-family: serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #333333;
+}
+
+p,h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 40px;
+  background-color: #fff9f5;
+}
+
+#wrap {
+  margin-top: 40px;
+  margin-bottom: 100px;
+}
+.content {
+  padding-top: 30px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  width: 1200px;
+  background-color: white;
+  box-shadow: 0 0 8px #d4d9dc;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: #333333;
+  text-decoration: none;
+}
+
+img {
+  vertical-align:bottom;
+}
+/*--------------------------------------------------------------------------*/
+/*タイトル部分　レシピ４件の表示*/
+.title {
+  margin: auto;
+  height: 60px;
+  width: 1000px;
+}
+
+.title h1 {
+  height: 50px;
+  text-align: center;
+}
+
+.abox {
+  width: 1350px;
+  margin: 0 auto;
+  display: flex;
+}
+.bbox{
+  padding-left: 150px;
+  margin: 0 auto;
+  width: 700px;
+}
+
+#okiniiri {
+  padding-top: 60px;
+  margin-bottom: 35px;
+
+}
+
+.okiniirilist{
+  font-size: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0 20px 15px 0;
+}
+
+.okiniirilist li {
+  float: left;
+  list-style: none;
+  width: 300px;
+  height: 300px;
+  margin: 0 20px 15px 0;
+}
+
+li:nth-child(2n) {
+  margin-right: 0;
+}
+
+.titletitle{
+  color: #333333;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.titletitle:hover{
+  border-bottom: 2px solid #cccccc; /*下線とその色を指定*/
+  padding-bottom: 1px; /*下線の表示位置*/
+}
+
+/*--------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+/*コンシェルジュからの提案部分*/
+.cbox {
+  padding-top: 120px;
+  width: 600px;
+  text-align: left;
+}
+
+.cbox img {
+  padding-top: 30px;
+}
+
+.h1bold {
+  font-size: 18px;
+}
+
+.huki {
+  position: relative;
+  text-align: center;
+  width: 300px;
+  background: #fde8d0;
+  border: solid 1px #fde8d0;
+  border-radius: 30px;
+}
+
+.btnn {
+  width: 260px;
+  height: 32px;
+  margin-top: 5px;
+  width: 180px;
+  height: 32px;
+  font-size: 18px;
+  text-align: center;
+  background: #ffedab;
+  color: #333;
+  cursor: pointer;
+  font-family: serif;
+  font-weight: bold;;
+  position: relative;
+  border-radius: 27px;
+  box-shadow: 0 2px 6px rgba(51,48,0,0.2);
+}
+
+.btnn:hover {
+  color: #333;
+  background-color: #fcc800;
+  box-shadow: 0 2px 6px rgba(55,55,55,0.3);
+  transition: 0.4s;
+}
+
+.huki:after {
+  content: "";
+  position: absolute;
+  right: 48px;
+  bottom: -20px;
+  left: 0;
+  width: 0px;
+  height: 0px;
+  margin: auto;
+  border-style: solid;
+  border-color: #fde7d1 transparent transparent transparent;
+  border-width: 20px 20px 0 20px;
+}
+/*--------------------------------------------------------------------------*/

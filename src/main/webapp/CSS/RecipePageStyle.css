@@ -1,0 +1,241 @@
+@charset "utf-8";
+/*レシピページCSS*/
+/*--------------------------------------------------------------------------*/
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 15px;
+  color: #333333;
+}
+
+
+h1 {
+  font-family: serif;
+  font-size: 45px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-family: serif;
+  font-size: 24px;
+}
+
+
+p,h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+img {
+  vertical-align:bottom;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+/*--------------------------------------------------------------------------*/
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 40px;
+  background-color: #fff9f5;
+}
+
+#wrap {
+  clear: both;
+  margin-top: 40px;
+}
+
+.content {
+  padding-bottom: 100px;
+  margin: 0 auto;
+}
+
+.main {
+  top: 100px;
+  margin: 0 auto;
+  padding: 50px;
+  width: 1100px;
+  background-color: white;
+  box-shadow: 0 0 8px #d4d9dc;
+}
+
+.titlebox {
+  display: flex;
+}
+
+.title {
+  font-family: serif;
+  font-weight: bold;
+  font-size: 45px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.iconbutton {
+  margin-top: 35px;
+  margin-left: 15px;
+}
+
+.recipetori {
+  object-fit: cover;
+}
+
+
+section {
+  margin-top: 70px;
+  padding: 10px 30px 10px 30px;
+  width: 1020px;
+  text-align: justify;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+}
+
+/*--------------------------------------------------------------------------*/
+
+/*ラジオボタンのCSS*/
+.radio-font {
+  white-space: nowrap;
+  font-family: serif;
+  color: gray;
+  position: relative;
+  margin: 0px;
+  height: auto;/*auto*/
+  padding: 5px;
+}
+
+.radio-font ul {
+  display: flex;
+}
+
+.radio-font li{
+  list-style: none;
+  position: relative;
+}
+
+ul .radiolist {
+  text-align: center;
+  color: gray;
+  font-family: serif;
+  display: block;
+  position: relative;
+  float: left;
+}
+
+ul li input[type=radio]{
+  position: absolute;
+  visibility: hidden;
+}
+
+label{
+  text-align: center;
+  position: relative;
+  font-weight: bold;
+  font-size: 26px;
+  padding: 10px 10px 10px 60px;
+  height: 30px;
+  z-index: 20;
+  cursor: pointer;
+}
+
+ul li:hover label{
+  color: #f3a68c;
+}
+
+ul li .check{
+  position: absolute;
+  border: 5px solid gray;
+  border-radius: 100%;
+  height: 18px;
+  width: 18px;
+  top: 6px;
+  left: 20px;
+  z-index: 5;
+}
+
+ul li .check::before {
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 10px;
+  width: 10px;
+  top: 4px;
+  left: 4px;
+  margin: auto;
+}
+
+/*マウスオン後の挙動*/
+input[type=radio]:checked ~ .check {
+  border: 5px solid #f3a68c;/*丸の色*/
+}
+
+input[type=radio]:checked ~ .check::before{
+  background: #f3a68c;/*マウスオンしたボタンの中の色*/
+}
+
+input[type=radio]:checked ~ label{
+  color: #f3a68c;/*ラベルの色*/
+}
+
+/*ラジオボタンのCSS終了*/
+/*--------------------------------------------------------------------------*/
+/*検索窓開始*/
+
+form {
+  margin: 0px;
+
+}
+
+#mkensaku {
+  padding: 10px;
+}
+
+#mado {
+  outline:0;
+  height:50px;
+  padding:0 10px; /*検索窓の入力開始地点*/
+  left:0;
+  top:0;
+  font-size: 18px;
+  max-width:500px;
+  border-radius:4%;
+  background:#eee;
+  box-shadow: 0 0 3px 0 gray;/*box-shadow:横方向のずれ 横方向のずれ ぼかしの大きさ 影の広がり 影の色;*/
+}
+
+#mbutton {
+  position: relative;
+  width:auto;
+  height:50px;
+  left:0px;
+  top:2px;
+  border-radius:2%;
+  background:#7fbfff;
+  color:#fff;
+  font-family: serif;
+  font-weight:bold;
+  font-size:25px;
+  border:none;
+  cursor: pointer;
+}
+
+#mbutton:hover{
+  background:#eee;
+  color:#7fbfff;
+}
+/*--------------------------------------------------------------------------*/
+/*検索窓終了*/

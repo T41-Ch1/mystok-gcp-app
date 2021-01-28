@@ -1,0 +1,65 @@
+ul {
+display: flex;
+justify-content: flex-start;
+flex-wrap: wrap;
+padding: 0;
+list-style-type: none;
+}
+
+p {
+ margin:0px auto;
+font-family: serif;
+}
+
+.glovalNavi{
+ position: absolute;
+ z-index: 1;
+ display: none;
+}
+
+h1 {
+font-family: serif;
+}
+
+h2 {
+font-family: serif;
+}
+
+
+#wrap li {
+margin:0px 33px;
+padding: 0;
+}
+
+
+
+#wrap li img {
+ margin-top:20px;
+ width:150px;
+ height:150px;
+}
+
+.page-number{
+  margin: 0 auto;
+}
+.page-list {
+  justify-content: center;
+  list-style: none;
+  display: flex;
+}
+
+.page-list li{
+  padding:5px;
+}
+
+#wrap {
+ margin:0 auto;
+ width: 1080px;
+}
+
+.pic_frame {
+ word-break:break-all;/*単語の途中で改行させるコード*/
+ width: 216px;
+ display: inline-block;
+ text-align: center;
+}
