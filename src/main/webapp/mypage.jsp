@@ -70,71 +70,92 @@ ArrayList<Boolean> favoListTabeta = (ArrayList)(request.getAttribute("favoListTa
 
   <div class="bbox">
   <section id="okiniiri">
-   <h2 class="icon"><a href="FavoPageServlet">お気に入り >></a></h2>
+   <h2 class="icon"><a href="FavoPageServlet">お気に入り >></a>&emsp;<img src="images/pink_heart.png" alt="お気に入りボタン" width="35" height="35">でお気に入りレシピ登録できます</h2>
    <div class="border"></div>
+
+<%
+if (recipeIDFavo.size() > 0) {
+%>
    <ul class="okiniirilist">
-    <%
-    for (int i = 0; i < recipeIDFavo.size(); i++) {
-    %>
+<%
+	for (int i = 0; i < recipeIDFavo.size(); i++) {
+%>
     <li><a class="recipetitlelink" href="RecipeServlet?recipeID=<%= recipeIDFavo.get(i) %>">
       <img src="images/RyouriPIC/<%= imageNameFavo.get(i) %>" alt="<%= ryourimeiFavo.get(i) %>" width="200" height="200"><br>
       <span class="titletitle"><%= ryourimeiFavo.get(i) %></span></a><br>
-      <%
-      String face = "";
-      if (tabetaListFavo.get(i)) face = "aceat.png";
-      else face = "bceat.png";
-      %>
+<%
+		String face = "";
+		if (tabetaListFavo.get(i)) face = "aceat.png";
+		else face = "bceat.png";
+%>
       <a href="javascript:tabetabutton(<%= i %>, <%= recipeIDFavo.get(i) %>)" class="face<%= recipeIDFavo.get(i) %>"><img src="images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
-      <%
-      String heart = "";
-      if (favoListFavo.get(i)) heart = "pink_heart.png";
-      else heart = "clear_heart.png";
-      %>
+<%
+		String heart = "";
+		if (favoListFavo.get(i)) heart = "pink_heart.png";
+		else heart = "clear_heart.png";
+%>
       <a href="javascript:favobutton(<%= i %>, <%= recipeIDFavo.get(i) %>)" class="heart<%= recipeIDFavo.get(i) %>"><img src="images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a>
     </li>
-    <%
-    }
-    %>
+<%
+	}
+%>
     <span class="more">
     <a href="FavoPageServlet">>>MORE</a>
     </span>
 
    </ul>
+<%
+} else {
+%>
+   <h2 class="okiniirinashi" style="text-align: center; height: 200px;">お気に入りがまだ追加されていません。</h2>
+<%
+}
+%>
   </section>
 
 
   <section id="rireki">
-   <h2 class="icon"><a href="TabetaPageServlet">食べた履歴 >></a></h2>
+   <h2 class="icon"><a href="TabetaPageServlet">食べた履歴 >></a>&emsp;<img src="images/aceat.png" alt="お気に入りボタン" width="35" height="35">は"今日"食べたレシピです</h2>
    <div class="border"></div>
+<%
+if (recipeIDFavo.size() > 0) {
+%>
    <ul class="rirekilist">
-     <%
-     for (int i = 0; i < recipeIDTabeta.size(); i++) {
-     	tabetaTimeList.set(i, tabetaTimeList.get(i).substring(0, 10)); //"2021/01/20"の部分を切り出す
-     %>
+<%
+	for (int i = 0; i < recipeIDTabeta.size(); i++) {
+		tabetaTimeList.set(i, tabetaTimeList.get(i).substring(0, 10)); //"2021/01/20"の部分を切り出す
+%>
      <li><a class="recipetitlelink" href="RecipeServlet?recipeID=<%= recipeIDTabeta.get(i) %>">
        <img src= "images/RyouriPIC/<%= imageNameTabeta.get(i) %>" alt="<%= ryourimeiTabeta.get(i) %>" width="200" height="200"><br>
        <span class="titletitle"><%= ryourimeiTabeta.get(i) %></span></a><br>
-       <%
-       String face = "";
-       if (tabetaListTabeta.get(i)) face = "aceat.png";
-       else face = "bceat.png";
-       %>
+<%
+		String face = "";
+		if (tabetaListTabeta.get(i)) face = "aceat.png";
+		else face = "bceat.png";
+%>
        <a href="javascript:tabetabutton(<%= recipeIDFavo.size() + i %>, <%= recipeIDTabeta.get(i) %>)" class="face<%= recipeIDTabeta.get(i) %>"><img src="images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
-       <%
-       String heart = "";
-       if (favoListTabeta.get(i)) heart = "pink_heart.png";
-       else heart = "clear_heart.png";
-       %>
+<%
+		String heart = "";
+		if (favoListTabeta.get(i)) heart = "pink_heart.png";
+		else heart = "clear_heart.png";
+%>
        <a href="javascript:favobutton(<%= recipeIDFavo.size() + i %>, <%= recipeIDTabeta.get(i) %>)" class="heart<%= recipeIDTabeta.get(i) %>"><img src="images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a><br>
-       <%= tabetaTimeList.get(i) %>
+       <a href="TabetaPageServlet?year=<%= tabetaTimeList.get(i).substring(0, 4) %>&month=<%= tabetaTimeList.get(i).substring(5, 7) %>"><%= tabetaTimeList.get(i) %></a>
      </li>
-     <%
-     }
-     %>
+<%
+	}
+%>
      <span class="more">
       <a href="TabetaPageServlet">>>MORE</a>
      </span>
    </ul>
+<%
+} else {
+%>
+   <h2 class="tabetanashi" style="text-align: center; height: 200px;">食べた履歴がまだ追加されていません。</h2>
+<%
+}
+%>
   </section>
 </div><!--bbox fin-->
   </main>

@@ -26,30 +26,11 @@ ArrayList<String[]> bunryouList = new ArrayList<>(); //表示するレシピの�
 bunryouList = (ArrayList<String[]>)request.getAttribute("recipe_bunryou");
 int recipeID = (int)(request.getAttribute("recipeID")); //表示するレシピのID
 String imageName = (String)request.getAttribute("imageName"); //表示する画像名
-boolean tabeta; //食べた登録されているかどうか
-if (Objects.equals(request.getAttribute("tabeta"), null)) {
-	tabeta = false;
-} else {
-	tabeta = (boolean)request.getAttribute("tabeta");
-}
-boolean favo; //お気に入り登録されているかどうか
-if (Objects.equals(request.getAttribute("favo"), null)) {
-	favo = false;
-} else {
-	favo = (boolean)request.getAttribute("favo");
-}
-String searchMode; //検索窓のラジオボタンに最初からチェックを入れる方
-if (Objects.equals(request.getAttribute("searchMode"), null)) {
-	searchMode = "syokuzai";
-} else {
-	searchMode = (String)request.getAttribute("searchMode");
-}
-String input; //検索窓に表示する文字列
-if (Objects.equals(request.getAttribute("input"), null)) {
-	input = "";
-} else {
-	input = (String)request.getAttribute("input");
-}
+boolean isMyRecipe = (boolean)request.getAttribute("isMyRecipe");; //マイレシピかどうか
+boolean tabeta= (boolean)request.getAttribute("tabeta"); //食べた登録されているかどうか
+boolean favo = (boolean)request.getAttribute("favo"); //お気に入り登録されているかどうか
+String searchMode = (String)request.getAttribute("searchMode"); //検索窓のラジオボタンに最初からチェックを入れる方
+String input = (String)request.getAttribute("input"); //検索窓に表示する文字列
 %>
 
 <div id="wrap" class="clearfix">
@@ -103,6 +84,18 @@ else heart = "clear_heart.png";
 %>
   <a href="javascript:favobutton()" class="heart<%= recipeID %>"><img src="images/<%= heart %>"
    alt="お気に入りボタン" width="35" height="35" style="padding-left: 8px;"></a>
+<%
+if (isMyRecipe) {
+%>
+   <a href="javascript:updateForm.submit();"><img src="images/pen.png"
+    alt="レシピ編集ボタン" width="35" height="35" style="padding-left: 8px;"></a>
+<form method="post" name="updateForm" action="RecipeRegisterPageServlet">
+<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="recipeID" value="<%= recipeID %>">
+</form>
+<%
+}
+%>
 </div>
 </div>
 

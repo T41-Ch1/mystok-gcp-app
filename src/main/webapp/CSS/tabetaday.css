@@ -1,0 +1,201 @@
+@charset "utf-8";
+/*--------------------------------------------------------------------------*/
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #333333;
+}
+iframe {
+  /*    border: none;*/
+  width: 100%;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 40px;
+  background-color: #fff9f5;
+}
+
+p,h1,h2,h3,h4,h5,h6 {/*複数のセレクタに同じスタイルを宣言もできる*/
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #cccccc;
+  font-family: serif;
+  color: #333333;
+}
+
+h2 {
+  font-family: serif;
+  font-size: 24px;
+}
+
+h3{
+  margin-bottom: 10px;
+  font-size: 20px;
+  border-bottom: 1px solid #cccccc;
+  font-family: serif;
+}
+
+span {
+  font-size: 30px;
+}
+
+img {
+  vertical-align:bottom;
+}
+
+div {
+  display: block;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+/*--------------------------------------------------------------------------*/
+#wrap {
+  clear: both;/*回り込みの解除*/
+  background-color: #fff9f5;
+  padding: 0;
+  margin-top: 40px;/*へっだとの隙間あいてます*/
+}
+
+.content {
+  margin: 0 auto;
+  width: 980px;
+  display: flex;
+  box-sizing: border-box;
+  padding-bottom: 100px;
+}
+
+.main {
+  width: 920px;
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 0 8px #d4d9dc;
+}
+
+.rtitle1 {
+  padding-left: 20px;
+  font-size: 24px;
+  font-family: serif;
+  font-weight: bold;
+}
+.rtitle {
+  padding-top: 30px;
+  font-size: 32px;
+  border-bottom: 1px solid #cccccc;
+}
+
+.dbox {
+  margin-top: 10px;
+  cursor: pointer;
+}
+/*--------------------------------------------------------------------------*/
+
+.recipebox{
+  padding-right: 10px;
+  position: relative;
+  margin-bottom: 15px;
+  height: 220px;
+}
+
+.recipetori {
+  float: left;
+  object-fit: cover;
+}
+
+.recipeimage{
+  position: relative;
+  padding: 10px;
+  float: left;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.recipetitle {
+  padding-top: 10px;
+}
+.recipetitlelink {
+  color: #333333;
+}
+
+.recipetitlelink:hover {
+  text-decoration: underline;
+}
+
+.material {
+  color: #696969;
+}
+.toplink {
+  margin-top: 50px;
+}
+
+.hennsaku a {
+  font-weight: bold;
+  font-size: 16px;
+  color: #696969;
+}
+
+#iconnotes img {
+	vertical-align: text-top;
+}
+
+#previewRecipeID {
+  font-size: 24px;
+  outline:0;
+  height:30px;
+  padding:0 10px; /*検索窓の入力開始地点*/
+  max-width:110px;
+  border-radius:2%;
+  background:#eee;
+  box-shadow: 0 0 3px 0 gray;/*box-shadow:横方向のずれ 横方向のずれ ぼかしの大きさ 影の広がり 影の色;*/
+}
+
+#previewRecipe {
+  position: relative;
+  width:auto;
+  height:35px;
+  left: -2px;
+  top:-3px;
+  border-radius:2%;
+  background:#7fbfff;
+  color:#fff;
+  font-family: serif;
+  font-weight:bold;
+  font-size:16px;
+  border:none;
+  cursor: pointer;
+}
+
+#previewRecipe:hover {
+  background:#eee;
+  color:#7fbfff;
+}
+
+.pagemove {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pagemove input[type="button"] {
+  font-size: 18px;
+}

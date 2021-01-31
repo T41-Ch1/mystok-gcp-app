@@ -44,8 +44,9 @@ public class SearchResultServlet extends HttpServlet {
 		ArrayList<String> recipeIntro = new ArrayList<String>(); //検索結果に対応するレシピの紹介文を格納するリスト
 		ArrayList<String> imageName = new ArrayList<String>(); //検索結果に対応するレシピの画像名を格納するリスト
 		ArrayList<ArrayList<String[]>> recipeBunryouList = new ArrayList<>(); //検索結果に対応するレシピの食材名、分量、単位を格納するリスト
-		ArrayList<Boolean> tabetaList = new ArrayList<Boolean>();
-		ArrayList<Boolean> favoList = new ArrayList<Boolean>();
+		ArrayList<Boolean> isMyRecipe = new ArrayList<>(); //検索結果に対応するレシピのマイレシピかどうかを格納するリスト
+		ArrayList<Boolean> tabetaList = new ArrayList<Boolean>(); //検索結果に対応するレシピの今日食べたかどうかを格納するリスト
+		ArrayList<Boolean> favoList = new ArrayList<Boolean>(); //検索結果に対応するレシピのお気に入りかどうかを格納するリスト
 
 		int pageNum; //検索結果ページのページ番号
 		if (Objects.equals(request.getParameter("pageNum"), null)) {
@@ -248,7 +249,7 @@ public class SearchResultServlet extends HttpServlet {
 		System.out.println("レシピID:" + Arrays.toString(recipeID.toArray()));
 
 		//レシピ概要検索SQL(料理名、紹介文、画像名)の組み立て
-		sql = "select Ryourimei, Syoukai, ImageName from RyouriTB where RyouriID in ('" + recipeID.get(0);
+		sql = "select Ryourimei, Syoukai, ImageName, UserID from RyouriTB where RyouriID in ('" + recipeID.get(0);
 		for (int i = 1; i < recipeID.size(); i++) {
 			sql += "', '" + recipeID.get(i);
 		}
@@ -269,6 +270,7 @@ public class SearchResultServlet extends HttpServlet {
 				recipeIntro.add(rs.getString("Syoukai")); //条件を満たすレシピ紹介文を格納
 				if (rs.getString("ImageName") == null) imageName.add("noimage.jpg"); //条件を満たす画像名を格納
 				else imageName.add(rs.getString("ImageName")); //条件を満たす画像名を格納
+				isMyRecipe.add(rs.getInt("UserID") == userID); //条件を満たすレシピがマイレシピかどうかを格納
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -346,6 +348,7 @@ public class SearchResultServlet extends HttpServlet {
 		request.setAttribute("recipeTitle", recipeTitle);
 		request.setAttribute("recipeIntro", recipeIntro);
 		request.setAttribute("imageName", imageName);
+		request.setAttribute("isMyRecipe", isMyRecipe);
 		request.setAttribute("recipeBunryouList",recipeBunryouList);
 		RequestDispatcher rd_result = request.getRequestDispatcher(JSP_PATH1);
 		rd_result.forward(request, response);

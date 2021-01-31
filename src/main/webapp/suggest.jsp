@@ -33,28 +33,28 @@ ArrayList<Boolean> favoList = (ArrayList)(request.getAttribute("favoList"));
 <input type="hidden" name="recipeID" id="recipeIDform1">
 <input type="hidden" name="buttonType" value="tabeta">
 <input type="hidden" name="buttonState" value="on">
-<input type="hidden" name="buttonSize" value=20>
+<input type="hidden" name="buttonSize" value=35>
 </form>
 <form name="tabetaInsertForm" action="TabetaInsertServlet" method="post" target="vessel">
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
 <input type="hidden" name="recipeID" id="recipeIDform2">
 <input type="hidden" name="buttonType" value="tabeta">
 <input type="hidden" name="buttonState" value="off">
-<input type="hidden" name="buttonSize" value=20>
+<input type="hidden" name="buttonSize" value=35>
 </form>
 <form name="favoDeleteForm" action="FavoDeleteServlet" method="post" target="vessel">
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
 <input type="hidden" name="recipeID" id="recipeIDform3">
 <input type="hidden" name="buttonType" value="favo">
 <input type="hidden" name="buttonState" value="on">
-<input type="hidden" name="buttonSize" value=20>
+<input type="hidden" name="buttonSize" value=350>
 </form>
 <form name="favoInsertForm" action="FavoInsertServlet" method="post" target="vessel">
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
 <input type="hidden" name="recipeID" id="recipeIDform4">
 <input type="hidden" name="buttonType" value="favo">
 <input type="hidden" name="buttonState" value="off">
-<input type="hidden" name="buttonSize" value=20>
+<input type="hidden" name="buttonSize" value=35>
 </form>
 <script>
 //Favoや食べたの初期状態

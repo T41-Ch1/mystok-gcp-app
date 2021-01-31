@@ -90,7 +90,7 @@ public class TabetaInsertServlet extends HttpServlet {
 					tabetaTodayList.add(rs.getInt("RyouriID"));
 					if (tabetaTodayList.size() >= TABETA_MAX_PER_DAY) {
 						System.out.println("今日のTabeta数の上限です");
-						request.setAttribute("logMessage", "今日のTabeta数の上限です");
+						request.setAttribute("logMessage", "今日の食べた押下数の上限です");
 						RequestDispatcher rd = request.getRequestDispatcher(JSP_PATH);
 						rd.forward(request, response);
 						return;

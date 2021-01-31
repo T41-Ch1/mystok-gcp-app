@@ -27,7 +27,7 @@ if (!Util.checkAuth(request, response)) return;
   <main class="main">
 
    <div class="new">
-    <button onclick="location.href='RecipeRegisterPageServlet'" class="btnn">MYレシピ新規登録 ≫</button>
+    <button onclick="location.href='RecipeRegisterPageServlet';" class="btnn">MYレシピ新規登録 ≫</button>
    </div>
 
   <h1>MYレシピ一覧</h1>
@@ -95,9 +95,9 @@ if (ryouriID.size() > 0) {
   </div>
   <div class ="hennsaku">
    <a href="javascript:editbutton(<%= ryouriID.get(i) %>)">レシピ編集<img src="images/pen.png"
-       alt="レシピ編集ボタン" width="30" height="30" class="heart"></a>
+       alt="レシピ編集ボタン" width="30" height="30"></a>
    <a href="javascript:deletebutton(<%= ryouriID.get(i) %>)">レシピ削除<img src="images/dustbox.png"
-       alt="レシピ削除ボタン" width="30" height="30" class="heart"></a>
+       alt="レシピ削除ボタン" width="30" height="30"></a>
   </div>
 
 <div class ="clear"></div>
@@ -179,6 +179,106 @@ if (recipeNum > DATA_PER_PAGE) {
      Myrecipeform.submit();
    }
   </script>
+  <iframe id="cFrame" width=0 height=0 name="vessel" style="width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
+<form name="tabetaDeleteForm" action="TabetaDeleteServlet" method="post" target="vessel">
+<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="recipeID" id="recipeIDform1">
+<input type="hidden" name="buttonType" value="tabeta">
+<input type="hidden" name="buttonState" value="on">
+<input type="hidden" name="buttonSize" value=35>
+</form>
+<form name="tabetaInsertForm" action="TabetaInsertServlet" method="post" target="vessel">
+<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="recipeID" id="recipeIDform2">
+<input type="hidden" name="buttonType" value="tabeta">
+<input type="hidden" name="buttonState" value="off">
+<input type="hidden" name="buttonSize" value=35>
+</form>
+<form name="favoDeleteForm" action="FavoDeleteServlet" method="post" target="vessel">
+<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="recipeID" id="recipeIDform3">
+<input type="hidden" name="buttonType" value="favo">
+<input type="hidden" name="buttonState" value="on">
+<input type="hidden" name="buttonSize" value=35>
+</form>
+<form name="favoInsertForm" action="FavoInsertServlet" method="post" target="vessel">
+<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="recipeID" id="recipeIDform4">
+<input type="hidden" name="buttonType" value="favo">
+<input type="hidden" name="buttonState" value="off">
+<input type="hidden" name="buttonSize" value=35>
+</form>
+<script>
+//Favoや食べたの初期状態
+var tabeta = [];
+var favo = [];
+//Favoや食べたの押した回数
+var tabetaCount = [];
+var favoCount = [];
+<%
+for (int i = 0; i < ryouriID.size(); i++) {
+%>
+	tabeta.push(<%= tabetaList.get(i) %>);
+	favo.push(<%= favoList.get(i) %>);
+	tabetaCount.push(0);
+	favoCount.push(0);
+<%
+}
+%>
+//ボタンを押した時刻の初期状態
+var pushTime = new Date();
+var now;
+//食べたボタンを押したとき
+function tabetabutton(i, j) {
+	if (now != null) {
+		now = new Date();
+		if (now.getTime() - pushTime.getTime() < 2000) return; //2回目以降は2秒間隔をあけないと押せない
+	} else {
+		now = new Date(); //初回は必ず押せる
+	}
+	if (tabetaCount[i] >= 10) {
+		alert('ボタン押下回数の上限に達しました');
+		return; //同一ページで11回以上押されたら反応しない
+	}
+	else {
+		if (tabeta[i]) {
+			document.getElementById('recipeIDform1').value = j;
+			tabetaDeleteForm.submit(); //Favoに登録されていたら削除
+		} else {
+			document.getElementById('recipeIDform2').value = j;
+			tabetaInsertForm.submit(); //Favoに登録されていなかったら登録
+		}
+		tabeta[i] = !tabeta[i];
+		pushTime = new Date();
+		tabetaCount[i]++;
+	}
+}
+//Favoボタンを押したとき
+function favobutton(i, j) {
+	if (now != null) {
+		now = new Date();
+		if (now.getTime() - pushTime.getTime() < 2000) return; //2回目以降は2秒間隔をあけないと押せない
+	} else {
+		now = new Date(); //初回は必ず押せる
+	}
+	if (favoCount[i] >= 10) {
+		alert('ボタン押下回数の上限に達しました');
+		return; //同一ページで11回以上押されたら反応しない
+	}
+	else {
+		if (favo[i]) {
+			document.getElementById('recipeIDform3').value = j;
+			favoDeleteForm.submit(); //Favoに登録されていたら削除
+		} else {
+			document.getElementById('recipeIDform4').value = j;
+			favoInsertForm.submit(); //Favoに登録されていなかったら登録
+		}
+		favo[i] = !favo[i];
+		pushTime = new Date();
+		favoCount[i]++;
+	}
+}
+</script>
 <%
 }
 %>

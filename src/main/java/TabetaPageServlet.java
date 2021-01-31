@@ -30,21 +30,14 @@ public class TabetaPageServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		final int DATA_PER_PAGE = 25;
 		final String JSP_PATH = "tabeta.jsp";
-		int pageNum; //検索結果ページのページ番号
-		if (Objects.equals(request.getParameter("pageNum"), null)) {
-			pageNum = 1; //pageNumのパラメータがnullなら1ページ目を表示
-		} else {
-			pageNum = Integer.parseInt(request.getParameter("pageNum")); //そうでないなら送信されたパラメータpageNumを格納
-		}
 		Date now = new Date(); //現在時刻
 		String year; //表示するデータの年
 		String month; //表示するデータの月
 		SimpleDateFormat fYear = new SimpleDateFormat("yyyy");
 		SimpleDateFormat fMonth = new SimpleDateFormat("MM");
-		if (Objects.equals(request.getParameter("year"), null)) {
-			//yearのパラメータがnullなら現在の月を表示
+		if (Objects.equals(request.getParameter("year"), null) || Objects.equals(request.getParameter("month"), null)) {
+			//yearかmonthのパラメータがnullなら現在の月を表示
 			year = fYear.format(now);
 			month = fMonth.format(now);
 		} else {
@@ -64,6 +57,19 @@ public class TabetaPageServlet extends HttpServlet {
 		ArrayList<String> tabetaMonthList = new ArrayList<>();
 		ArrayList<Integer> tabetaCountList = new ArrayList<>();
 
+		try {
+			if (Integer.parseInt(year) < 2000 || Integer.parseInt(year) > 2100 || year.length() != 4 || Integer.parseInt(month) < 1 || Integer.parseInt(month) > 12 || month.length() != 2	) {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			System.out.println("不正な年/月が入力されました");
+			request.setAttribute("errorMessage", "不正なパラメータが入力されました。");
+			RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+			rd.forward(request, response);
+			return;
+		}
+
 		String userName = request.getRemoteUser();
 		int userID; //ユーザID ログイン中でなければ0が格納される
 		if (userName == null) userID = 0;
@@ -72,7 +78,7 @@ public class TabetaPageServlet extends HttpServlet {
 		String sql1 = "select date_format(TabetaTime, '%Y%m') as Time, count(*) as cnt from TabetaTB where UserID = ? group by Time order by Time desc";
 		String sql2 = "select RyouriTB.Ryourimei, TabetaTB.RyouriID, date_format(TabetaTB.TabetaTime, '%d') as TabetaDay from TabetaTB inner join RyouriTB on RyouriTB.RyouriID = TabetaTB.RyouriID "
 				+ "where TabetaTB.UserID = ? and date_format(TabetaTB.TabetaTime, '%Y%m') = '" + year + month + "' "
-				+ "order by TabetaTB.TabetaTime desc limit " + DATA_PER_PAGE + " offset " + DATA_PER_PAGE * (pageNum - 1);
+				+ "order by TabetaTB.TabetaTime";
 
 		//認証チェック
 		if (!Util.checkAuth(request, response)) return;
@@ -126,7 +132,6 @@ public class TabetaPageServlet extends HttpServlet {
 		//Favo確認SQLを食べたレシピに対して実行
 		favoList = Util.favoInfo(ryouriID, userID);
 
-		request.setAttribute("pageNum", pageNum);
 		request.setAttribute("year", year);
 		request.setAttribute("month", month);
 		request.setAttribute("youbi", youbi);

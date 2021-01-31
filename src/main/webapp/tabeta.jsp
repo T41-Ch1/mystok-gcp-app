@@ -4,10 +4,8 @@
 <%@ page import="pac1.func.Util" %>
 <%@ page import="java.util.Calendar" %>
 <%
-final int DATA_PER_PAGE = 25; //1ページごとに表示する最大件数
 String NFOUND_ERRORMSG = "この月は食べたボタンを押していません。"; //表示する月に食べたボタンを押されてない場合表示するエラーメッセージ
 String NTABETA_ERRORMSG = "食べたボタンをまだ押していません。"; //食べたボタンが押されたことがない場合表示するエラーメッセージ
-int pageNum = (int)(request.getAttribute("pageNum")); //10件ごとに表示した場合何ページ目か 1からスタートする
 String year = (String)request.getAttribute("year"); //表示する年と月
 String month = (String)request.getAttribute("month");
 int youbi = (int)request.getAttribute("youbi");
@@ -16,8 +14,6 @@ ArrayList<Integer> tabetaCountList = (ArrayList)(request.getAttribute("tabetaCou
 ArrayList<String> ryourimei = (ArrayList)(request.getAttribute("ryourimei")); //表示する料理名(最大25件)
 ArrayList<Integer> recipeID = (ArrayList)(request.getAttribute("ryouriID")); //表示するレシピのID(最大25件)
 ArrayList<Integer> tabetaDayList = (ArrayList)(request.getAttribute("tabetaDayList")); //表示するレシピの食べた日(最大25件)
-ArrayList<Boolean> favoList = (ArrayList)(request.getAttribute("favoList")); //表示するレシピのお気に入り情報(最大25件)
-ArrayList<Boolean> tabetaList = (ArrayList)(request.getAttribute("tabetaList")); //表示するレシピの食べた情報(最大25件)
 int recipeNum = 0; //表示する年と月に食べた件数
 if (tabetaMonthList.indexOf(year + month) >= 0) recipeNum = tabetaCountList.get(tabetaMonthList.indexOf(year + month));
 %>
@@ -92,19 +88,19 @@ if (tabetaMonthList.size() > 0) {
 
 <!--mainコンテンツ開始-->
 <main>
-<h1><%= year %>年<%= month %>月の食べた履歴</h1>
+<h1><%= year %>年<%= month %>月の食べた履歴(日付クリックで編集可能)</h1>
  <hr color="#696969" width="100%" size="2">
 <%
-if (recipeID.size() > 0) {
-	Calendar c = Calendar.getInstance();
-	c.clear();
-	c.set(Integer.parseInt(year), Integer.parseInt(month) - 1, 1);
-	int dayMax = c.getActualMaximum(Calendar.DATE); //月末が何日か(30日まであれば30が格納される)
+Calendar c = Calendar.getInstance();
+c.clear();
+c.set(Integer.parseInt(year), Integer.parseInt(month) - 1, 1);
+int dayMax = c.getActualMaximum(Calendar.DATE); //月末が何日か(30日まであれば30が格納される)
 %>
 <div class="cal">
       <ul id="tabetalist">
 <%
-	for (int i = 1; i < youbi; i++) {
+for (int i = 1; i < youbi; i++) {
+	if (youbi != 7) {
 %>
         <div class="pic_frame">
           <li>
@@ -112,42 +108,48 @@ if (recipeID.size() > 0) {
         </div>
 <%
 	}
-	for (int i = 0; i < dayMax; i++) {
-		int index = 0;
+}
+int index = 0;
+for (int i = 0; i < dayMax; i++) {
 %>
         <div class="pic_frame">
           <li>
-            <p class="datetitle"><%= i + 1 %>日</p>
+            <p class="datetitle"><a href="TabetaDayPageServlet?year=<%= year %>&month=<%= month %>&day=<%= String.format("%02d", i + 1) %>"><%= i + 1 %>日</a></p>
 <%
-		if (tabetaDayList.get(index) == i + 1) {
-			for (; index < tabetaDayList.size() && tabetaDayList.get(index) == i + 1; index++) {
-				if (ryourimei.get(i).length() > 5) ryourimei.set(i, ryourimei.get(i).substring(0, 5) + "…");
+	if (index < tabetaDayList.size() && tabetaDayList.get(index) == i + 1) {
+		for (; tabetaDayList.get(index) == i + 1; index++) {
+			String shortTitle = ryourimei.get(index);
+			if (ryourimei.get(index).length() > 5) shortTitle = ryourimei.get(index).substring(0, 5) + "…";
 %>
-            <a href="RecipeServlet?recipeID=<%= recipeID.get(index) %>">
-            <p class="title"><%= ryourimei.get(i) %></p></a>
+            <p class="title"><a href="RecipeServlet?recipeID=<%= recipeID.get(index) %>" title="<%= ryourimei.get(index) %>"><%= shortTitle %></a></p>
 <%
+			if (index == tabetaDayList.size() - 1) {
+				break;
 			}
-		} else {
+		}
+	} else {
 %>
 			<p class="title">&emsp;</p>
 <%
-		}
+	}
 %>
           </li>
         </div>
 <%
+}
+for (int i = 0; i < 7 - (dayMax + youbi - 1) % 7 ; i++) {
+	if ((dayMax + youbi - 1) % 7 != 0) {
+%>
+        <div class="pic_frame">
+          <li>
+          </li>
+        </div>
+<%
 	}
-%>
-
-        </ul>
-</div>
-<%
-} else {
-%>
-<h2><%= NFOUND_ERRORMSG %></h2>
-<%
 }
 %>
+        </ul>
+</div>
 
 <div class="pageokuri">
 <%
@@ -157,12 +159,9 @@ if (month.equals("01")) {
 } else if (month.equals("12")) {
 	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=11\" id=\"pageokurimae\"><<前月</a>");
 	out.print("<a href=\"TabetaPageServlet?year=" + (Integer.parseInt(year) + 1) + "&month=01\" id=\"pageokuritugi\">次月>></a>");
-} else if (month.equals("10")) { //Integer.parseInt(month) - 1 が9になるのを防ぐ
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=09\" id=\"pageokurimae\"><<前月</a>");
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=11\" id=\"pageokuritugi\">次月>></a>");
-} else {
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=" + (Integer.parseInt(month) - 1) + "\" id=\"pageokurimae\"><<前月</a>");
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=" + (Integer.parseInt(month) + 1) + "\" id=\"pageokuritugi\">次月>></a>");
+} else { //月は08月のようにあらわすためゼロパディングする
+	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=" + String.format("%02d", (Integer.parseInt(month) - 1)) + "\" id=\"pageokurimae\"><<前月</a>");
+	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=" + String.format("%02d", (Integer.parseInt(month) + 1)) + "\" id=\"pageokuritugi\">次月>></a>");
 }
 %>
 </div>
@@ -172,5 +171,6 @@ if (month.equals("01")) {
 </div>
 
 <jsp:include page="footer.jsp" /><!-- フッター部分 -->
+</div>
 </body>
 </html>

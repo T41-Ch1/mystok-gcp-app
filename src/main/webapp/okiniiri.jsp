@@ -4,20 +4,18 @@
 <%@ page import="pac1.func.Util" %>
 <!DOCTYPE html>
 <html>
-
 <!--head開始-->
   <head>
     <meta charset="utf-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=11">
-    <title>レシピ検索サイト　レシピコンシェル|お気に入り</title>
-
+    <title>レシピコンシェル | お気に入り</title>
     <link rel="stylesheet" href="CSS/okiniiri.css" type="text/css">
     <link rel="icon" href="images/fav32.ico">
   </head>
 <!--head終了-->
-
 <!--body開始-->
 <body>
+<div id="wrapper">
 
 <jsp:include page="header.jsp" /><!-- ヘッダー部分 -->
 
@@ -37,36 +35,37 @@ int pageNum = (int)(request.getAttribute("pageNum")); //25件ごとに表示し�
 final int DATA_PER_PAGE = 25; //1ページごとに表示する最大件数
 final String NFOUND_ERRORMSG = "まだお気に入り登録されたレシピがありません。";
 %>
+
 <div id="wrap">
-<h1 style=text-align:left >お気に入り</h1>
-<hr color="#000000" width="100%" size="7">
+<h1 style="text-align: left;">お気に入り</h1>
+<div class="border"></div>
 <%
 if (recipeID.size() > 0) {
 %>
 <iframe id="cFrame" width=0 height=0 name="vessel" style="width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
 <form name="tabetaDeleteForm" action="TabetaDeleteServlet" method="post" target="vessel">
-<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="userName" value="aaa">
 <input type="hidden" name="recipeID" id="recipeIDform1">
 <input type="hidden" name="buttonType" value="tabeta">
 <input type="hidden" name="buttonState" value="on">
 <input type="hidden" name="buttonSize" value=20>
 </form>
 <form name="tabetaInsertForm" action="TabetaInsertServlet" method="post" target="vessel">
-<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="userName" value="aaa">
 <input type="hidden" name="recipeID" id="recipeIDform2">
 <input type="hidden" name="buttonType" value="tabeta">
 <input type="hidden" name="buttonState" value="off">
 <input type="hidden" name="buttonSize" value=20>
 </form>
 <form name="favoDeleteForm" action="FavoDeleteServlet" method="post" target="vessel">
-<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="userName" value="aaa">
 <input type="hidden" name="recipeID" id="recipeIDform3">
 <input type="hidden" name="buttonType" value="favo">
 <input type="hidden" name="buttonState" value="on">
 <input type="hidden" name="buttonSize" value=20>
 </form>
 <form name="favoInsertForm" action="FavoInsertServlet" method="post" target="vessel">
-<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="userName" value="aaa">
 <input type="hidden" name="recipeID" id="recipeIDform4">
 <input type="hidden" name="buttonType" value="favo">
 <input type="hidden" name="buttonState" value="off">
@@ -143,22 +142,18 @@ function favobutton(i, j) {
 	}
 }
 </script>
-<ul>
+<ul id="recipebox">
 <%
 for (int i = 0; i < recipeID.size(); i++) {
+	String face = "";
+	if (tabetaList.get(i)) face = "aceat.png";
+	else face = "bceat.png";
+	String heart = "";
+	if (favoList.get(i)) heart = "pink_heart.png";
+	else heart = "clear_heart.png";
 %>
 <div class="pic_frame"><li><a href="RecipeServlet?recipeID=<%= recipeID.get(i) %>"><img src="images/RyouriPIC/<%= imageName.get(i) %>" alt="レシピページ遷移"><p><%= ryourimei.get(i) %></p></a></li>
-<%
-String face = "";
-if (tabetaList.get(i)) face = "aceat.png";
-else face = "bceat.png";
-%>
 <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="images/<%= face %>" alt="今日食べたボタン" width="20" height="20"></a>
-<%
-String heart = "";
-if (favoList.get(i)) heart = "pink_heart.png";
-else heart = "clear_heart.png";
-%>
 <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="images/<%= heart %>" alt="お気に入りボタン" width="20" height="20"></a>
 </div>
 <%
@@ -172,7 +167,6 @@ else heart = "clear_heart.png";
 <%
 }
 %>
-</div>
 <script>
 //ページ送りしたとき
 function favopage(i) {
@@ -223,10 +217,11 @@ if (recipeNum > DATA_PER_PAGE) {
 <%
 }
 %>
+</div>
 
 <jsp:include page="footer.jsp" /><!-- フッター部分 -->
 
+</div>
   </body>
 <!--head終了-->
 </html>
-

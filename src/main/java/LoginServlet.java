@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +44,8 @@ public class LoginServlet extends HttpServlet {
 	    	/* セッションが開始されずにここへ来た場合は無条件でエラー表示 */
 	    	System.out.println("LoginServletへの不正アクセス");
 	    	request.setAttribute("errorMessage", "不正なアクセスです、トップページからやり直してください。");
-	    	response.sendRedirect(JSP_PATH);
+	    	RequestDispatcher rd = request.getRequestDispatcher(JSP_PATH);
+			rd.forward(request, response);
 			return;
 	    }
 
@@ -82,7 +84,8 @@ public class LoginServlet extends HttpServlet {
 		if (salt.equals("")) {
 			System.out.println("結果:ログイン失敗");
 			request.setAttribute("errorMessage", "ユーザ名またはパスワードに誤りがあります。");
-	    	response.sendRedirect(JSP_PATH);
+			RequestDispatcher rd = request.getRequestDispatcher(JSP_PATH);
+			rd.forward(request, response);
 			return;
 		}
 
@@ -133,7 +136,8 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			System.out.println("結果:ログイン失敗");
 			request.setAttribute("errorMessage", "ユーザ名またはパスワードに誤りがあります。");
-	    	response.sendRedirect(JSP_PATH);
+			RequestDispatcher rd = request.getRequestDispatcher(JSP_PATH);
+			rd.forward(request, response);
 		}
 	}
 
@@ -145,7 +149,8 @@ public class LoginServlet extends HttpServlet {
 		/* 飛び込みの場合は無条件でエラー表示 */
 		System.out.println("LoginServletへの不正アクセス");
 		request.setAttribute("errorMessage", "不正なアクセスです、トップページからやり直してください");
-    	response.sendRedirect(JSP_PATH);
+		RequestDispatcher rd = request.getRequestDispatcher(JSP_PATH);
+		rd.forward(request, response);
 		return;
 	}
 

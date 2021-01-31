@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,22 +39,36 @@ public class RecipeServlet extends HttpServlet {
 		ArrayList<String[]> recipe_bunryou = new ArrayList<>(); //strの情報を順に格納する
 
 		//recipeID, searchMode, inputの準備
+		if (Objects.equals(request.getParameter("recipeID"), null)) {
+			RequestDispatcher rd_result = request.getRequestDispatcher("JSP_PATH0");
+			rd_result.forward(request, response);
+			return;
+		}
 		recipeID = Integer.parseInt(request.getParameter("recipeID"));//検索結果画面からパラメータrecipeIDをgetして変数recipeIDに代入する
 		System.out.println("レシピID:" + request.getParameter("recipeID"));
+		if (Objects.equals(request.getParameter("searchMode"), null)) {
+			searchMode = "syokuzai";
+		} else {
+			searchMode = request.getParameter("searchMode"); //検索窓のラジオボタンに最初からチェックを入れる方を取得する
+		}
+		if (Objects.equals(request.getParameter("input"), null)) {
+			input = "";
+		} else {
+			input = request.getParameter("input"); //検索窓に最初から表示させる文字列を取得する
+		}
 
 		HttpSession session = request.getSession();
 		String userName = request.getRemoteUser(); //ユーザ名 ログイン中でなければnullが格納される
 		int userID; //ユーザID ログイン中でなければ0が格納される
 		if (userName == null) userID = 0;
 		else userID = (int)session.getAttribute("auth.userid");
+		boolean isMyRecipe = false; //ログイン中のユーザのマイレシピかどうか
 		boolean tabeta = false; //ログイン中のユーザが今日食べた登録しているかどうか
 		boolean favo = false; //ログイン中のユーザがお気に入り登録しているかどうか
-		searchMode = request.getParameter("searchMode");//検索窓のラジオボタンに最初からチェックを入れる方を取得する
-		input = request.getParameter("input"); //検索窓に最初から表示させる文字列を取得する
 
 		//DBに接続し、recipeIDに該当するレシピ名、作り方、食材を検索する
 		//SQLの組み立て
-		String sql1 = "select Ryourimei, Tukurikata, ImageName from RyouriTB where RyouriID = ? and userID in(?, 1)";
+		String sql1 = "select Ryourimei, Tukurikata, ImageName, UserID from RyouriTB where RyouriID = ? and userID in(?, 1)";
 		String sql2 = "select SyokuzaiTB.Syokuzaimei, BunryouTB.Bunryou, SyokuzaiTB.Tanni from BunryouTB inner join SyokuzaiTB on BunryouTB.SyokuzaiID = SyokuzaiTB.SyokuzaiID where BunryouTB.RyouriID = ?";
 
 		try {
@@ -71,11 +86,12 @@ public class RecipeServlet extends HttpServlet {
 			prestmt.setInt(2, userID);
 			System.out.println("レシピ詳細検索SQL(レシピ名、作り方、画像名): " + prestmt.toString());
 			try (ResultSet rs = prestmt.executeQuery()) {
-				while (rs.next()) {
+				if (rs.next()) {
 					recipe_name = rs.getString("Ryourimei");
 					tukurikata = rs.getString("Tukurikata");
 					if (rs.getString("ImageName") == null) imageName = "noimage.jpg";
 					else imageName = rs.getString("ImageName");
+					isMyRecipe = rs.getInt("UserID") == userID;
 				}
 			}
 		} catch (Exception e) {
@@ -128,6 +144,7 @@ public class RecipeServlet extends HttpServlet {
 		request.setAttribute("tukurikata", tukurikata);
 		request.setAttribute("imageName", imageName);
 		request.setAttribute("recipeID", recipeID);
+		request.setAttribute("isMyRecipe", isMyRecipe);
 		request.setAttribute("tabeta", tabeta);
 		request.setAttribute("favo", favo);
 		request.setAttribute("recipe_bunryou", recipe_bunryou);

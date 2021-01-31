@@ -123,11 +123,11 @@ public class MypageServlet extends HttpServlet {
 		System.out.println("料理ID: " + Arrays.toString(ryouriIDTabeta.toArray()) + " TabetaTime: " + Arrays.toString(tabetaTimeList.toArray()));
 
 		if (ryouriIDTabeta.size() > 0) {
-			String sql4 = "select Ryourimei, ImageName, TabetaID from RyouriTB inner join TabetaTB on RyouriTB.RyouriID = TabetaTB.RyouriID where TabetaTime in (?";
+			String sql4 = "select Ryourimei, ImageName from RyouriTB inner join TabetaTB on RyouriTB.RyouriID = TabetaTB.RyouriID where TabetaTime in (?";
 			for (int i = 1; i < tabetaTimeList.size(); i++) sql4 += ", ?";
 			sql4 += ") order by field(TabetaTime, ?";
 			for (int i = 1; i < tabetaTimeList.size(); i++) sql4 += ", ?";
-			sql4 += ")";
+			sql4 += "), TabetaID desc";
 
 			try (
 					Connection conn = DriverManager.getConnection(

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -101,6 +102,17 @@ public class CreateDataServlet extends HttpServlet {
 			out.println("insert into TabetaTB (UserID, RyouriID, TabetaTime) values (2," + (i + 5) + ",'20" + String.format("%02d", i) + "-10-04 15:29:07');");
 			if (i % 2 == 0) {
 				out.println("insert into TabetaTB (UserID, RyouriID, TabetaTime) values (2," + (25 + i / 2) + ",'20" + String.format("%02d", i) + "-11-04 15:30:07');");
+			}
+		}
+		for (int i = 1; i <= 31; i++) {
+			int dataNum = (int)(Math.random() * 6);
+			ArrayList<Integer> ryouriID = new ArrayList<>();
+			while (ryouriID.size() < dataNum) {
+				int id = (int)(Math.random() * 50) + 1;
+				if (ryouriID.indexOf(id) == -1) {
+					ryouriID.add(id);
+					out.println("insert into TabetaTB (UserID, RyouriID, TabetaTime) values (2," + id + ",'2021-01-" + String.format("%02d", i) + " 01:23:" + String.format("%02d", i) + "');");
+				}
 			}
 		}
 

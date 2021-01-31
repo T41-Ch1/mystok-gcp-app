@@ -1,108 +1,287 @@
 @charset "utf-8";
-/*レシピコンシェルのレシピページCSS*/
-
 
 /*--------------------------------------------------------------------------*/
-/*共通CSS*/
+
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-size: 15px;
-  /*line-height: 2;*/
+  color: #333333;
 }
 
-p,h1,h2,h3,h4,h5,h6 {/*複数のセレクタに同じスタイルを宣言もできる*/
-  margin-top: 0;/*h要素とp要素の間にはデフォで上部にマージンが設定されているので０で解除*/
+p,h1,h2,h3,h4,h5,h6 {
+  margin-top: 0;
+}
+
+h1 {
+  font-family: serif;
+  font-size: 45px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-family: serif;
+  font-size: 24px;
+}
+
+p,h4 {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 img {
-  vertical-align:bottom;/*webブラウザによってはimg要素の下に余白ができる事があるのでbottomで調整
-                        vertical-align=テキストや画像の垂直方向の位置揃えを指定*/
+  vertical-align:bottom;
 }
 
 ul {
   margin: 0px;
   padding: 0px;
 }
-/*
-a {
-  *//*color: #3583aa;*//*通常のリンクの文字色を青に*/
-  /*text-decoration: none;*//*下線なくす*/
-
-/*
-a:visited {*/
-  /*color: #788d98;*//*訪問後のリンクの文字色をグレーに*/
-
-/*--------------------------------------------------------------------------*/
-
-
-/*--------------------------------------------------------------------------*/
-
-a:hover {
-  text-decoration: underline;/*マウスを置いたら下線が表示される*/
-}
-
-
-
-/*--------------------------------------------------------------------------*/
-
-
-/*--------------------------------------------------------------------------*/
-
-
-
-h2 {
-  font-family: 'Roboto Slab', serif;
-  font-size: 24px;
-}
-
-
-/*--------------------------------------------------------------------------*/
-
-/*--------------------------------------------------------------------------*/
-
-
-
-
-
-#child1 {
-  background-color: ;/* 上の部分のいろをかえるやつ */
-}
-#child2 {
-  background-color: ;
-}
-
-@media (min-width: 600px) {
- #parent {
-   display: flex;
- }
- #child1 {
-   flex-grow: 1;
- }
- #child2 {
-   flex-grow: 1;
- }
-}
-
-#recipeRegisterForm {
-	text-align: center;
-	font-family: 'Roboto Slab', serif;
-	display: block;
-	font-size: 24px;
-    font-weight: bold;
-}
-
-
-textarea {
-  resize: auto;
-  max-width: 700px;
-  max-height: 200px;
-}
 
 span {
-	display: inline-block;
-	text-align: left;
-	width: 100px;
+  display: inline-block;
+  text-align: left;
 }
 
+/*--------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 40px;
+  background-color: #fff9f5;
+}
+
+#wrap {
+  clear: both;
+  margin-top: 40px;
+  padding-bottom: 100px;
+}
+
+.content {
+  margin: 0 auto;
+  height: 100%;
+  width: 980px;
+  display: flex;
+  background-color: white;
+  box-sizing: border-box;
+  box-shadow: 0 0 8px #d4d9dc;
+  margin: 0 auto;
+}
+
+.main {
+  padding: 10px;
+  width: 960px;
+  padding-bottom: 40px;
+}
+
+.edgebox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edgebox input[type="button"] {
+  margin-top: 35px;
+  margin-right: 35px;
+  margin-bottom: 35px;
+}
+
+.dbox {
+  height: 36px;
+  margin-top: 70px;
+  margin-right: 35px;
+}
+
+.tbtnn {
+  text-align: center;
+  font-family: 'Roboto Slab', serif;
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.border {
+  border-bottom: 3px solid #a9a9a9;
+}
+
+.rtitle {
+  padding-top: 70px;
+  line-height: 5px;
+}
+
+.rtitle2 {
+  padding-top: 18px;
+  line-height: 14px;
+}
+
+.rtitle3 {
+  padding-top: 60px;
+}
+
+.titlebox {
+  display: flex;
+}
+
+.titlebox2 {
+  padding-bottom: 30px
+}
+
+.iconbutton {
+  margin-top: 35px;
+  margin-left: 15px;
+}
+
+.heart {
+  padding-left: 8px;
+}
+
+.gsetumei {
+  width: 350px;
+  height: 600px;
+}
+
+.recipetori {
+  object-fit: cover;
+  margin-top: 20px;
+}
+
+.aaa {
+  display:flex;
+}
+
+section {
+  margin-top: 20px;
+  padding: 10px 10px 10px 10px;
+  width: 940px;
+  text-align: justify;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+}
+
+/*入力フォームのCSS*/
+/*--------------------------------------------------------------------------*/
+#ryourimei {
+  outline:0;
+  height:50px;
+  padding:0 10px; /*検索窓の入力開始地点*/
+  left:0;
+  top:0;
+  font-size: 18px;
+  max-width:600px;
+  border-radius:2%;
+  background:#f5f5f5;
+  box-shadow: 0 0 3px 0 #a9a9a9;
+}
+
+#ryourikana {
+  outline:0;
+  height:50px;
+  padding:0 10px; /*検索窓の入力開始地点*/
+  left:0;
+  top:0;
+  font-size: 18px;
+  max-width:900px;
+  border-radius:2%;
+  background:#f5f5f5;
+  box-shadow: 0 0 3px 0 #a9a9a9;
+}
+
+#syokuzaiborder {
+  padding: 10px;
+  border-radius: 10px;
+  border: 3px dotted #ffb6c1;
+  width: 560px;
+  margin-left: auto;
+}
+
+textarea {
+  font-family: sans-serif;
+  font-size: 32px;
+}
+#syoukai {
+  outline:0;
+  height:120px;
+  padding:0 10px; /*検索窓の入力開始地点*/
+  left:0;
+  top:0;
+  font-size: 24px;
+  max-width:900px;
+  border-radius:1%;
+  background:#f5f5f5;
+  box-shadow: 0 0 3px 0 #a9a9a9;
+}
+
+.tuku {
+  margin-bottom: 10px;
+  outline:0;
+  height:30px;
+  padding:0 10px; /*検索窓の入力開始地点*/
+  left:0;
+  top:0;
+  font-size: 14px;
+  max-width:920px;
+  border-radius:2%;
+  background:#f5f5f5;
+  box-shadow: 0 0 3px 0 #a9a9a9;
+}
+
+#tukurikatacontainer h2 {
+  margin-block-end: 0px;
+}
+
+/*--------------------------------------------------------------------------*/
+
+/*黄色いボタン*/
+/*-------------------------------------------------------------------------*/
+.btnn {
+  margin-top: 5px;
+  width: 180px;
+  height: 32px;
+  font-size: 18px;
+  text-align: center;
+  background: #ffedab;
+  color: #333;
+  cursor: pointer;
+  font-family: serif;
+  font-weight: bold;;
+  position: relative;
+  border-radius: 27px;
+  box-shadow: 0 2px 6px rgba(51,48,0,0.2);
+}
+
+.btnn:hover {
+  color: #333;
+  background-color: #fcc800;
+  box-shadow: 0 2px 6px rgba(55,55,55,0.3);
+  transition: 0.4s;
+}
+
+.tbtnn {
+  width: 320px;
+  height: 60px;
+  margin-top: 30px;
+  font-size: 32px;
+  text-align: center;
+  background: #ffedab;
+  color: #333;
+  cursor: pointer;
+  font-family: serif;
+  font-weight: bold;;
+  position: relative;
+  border-radius: 27px;
+  box-shadow: 0 2px 6px rgba(51,48,0,0.2);
+}
+
+.tbtnn:hover {
+  color: #333;
+  background-color: #fcc800;
+  box-shadow: 0 2px 6px rgba(55,55,55,0.3);
+  transition: 0.4s;
+}

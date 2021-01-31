@@ -302,11 +302,11 @@ input[type=radio]:checked ~ label{
   display: flex;
 }
 
-.page-list li{
-  padding:5px;
+.page-list li {
+  padding: 5px;
 }
 
-.page-list .page-link{
+.page-list .page-link {
   text-decoration: underline;
   cursor: pointer;
 }

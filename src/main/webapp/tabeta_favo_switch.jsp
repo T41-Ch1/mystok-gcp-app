@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" import="java.io.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,18 +20,18 @@ if ('<%= logMessage %>' == '' ) {
 	if ('<%= buttonType %>' == 'tabeta') {
 		var recipeClass = window.parent.document.getElementsByClassName('face<%= recipeID %>');
 		if ('<%= buttonState %>' == 'on') {
-			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/bceat.png" alt="今日食べたボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
+			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/eatanime2.png" alt="今日食べたボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
 		}
 		else {
-			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/aceat.png" alt="今日食べたボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
+			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/eatanime1.png" alt="今日食べたボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
 		}
 	} else {
 		var recipeClass = window.parent.document.getElementsByClassName('heart<%= recipeID %>');
 		if ('<%= buttonState %>' == 'on') {
-			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/clear_heart.png" alt="お気に入りボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
+			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/heartanime2.png" alt="お気に入りボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
 		}
 		else {
-			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/pink_heart.png" alt="お気に入りボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
+			for (var i = 0; i < recipeClass.length; i++) recipeClass[i].innerHTML = '<img src="images/heartanime1.png" alt="お気に入りボタン" width=<%= buttonSize %> height=<%= buttonSize %>>';
 		}
 	}
 } else {
