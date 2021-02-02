@@ -203,6 +203,18 @@ section {
   padding-bottom: 1px;
 }
 
+.edgebox {
+  margin-left: 50px;
+  margin-right: 50px;
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap; /*改行を強制的に禁止する*/
+}
+
+.edgebox img {
+  padding-bottom: 3px;
+}
+
 /*--------------------------------------------------------------------------*/
 
 

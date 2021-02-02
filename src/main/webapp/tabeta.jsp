@@ -65,7 +65,7 @@ if (tabetaMonthList.size() > 0) {
 <%
 		}
 %>
-		<li><a href="TabetaPageServlet?year=<%= tabetaYear %>&month=<%= tabetaMonthList.get(i).substring(4) %>"><%= tabetaMonthList.get(i).substring(4) %>月(<%= tabetaCountList.get(i) %>)</a></li>
+		<li><a href="javascript:send('TabetaPageServlet?year=<%= tabetaYear %>&month=<%= tabetaMonthList.get(i).substring(4) %>')"><%= tabetaMonthList.get(i).substring(4) %>月(<%= tabetaCountList.get(i) %>)</a></li>
 <%
 	}
 %>
@@ -77,7 +77,7 @@ if (tabetaMonthList.size() > 0) {
             <details open>
               <summary><%= year %>年</summary>
               <ul class="tabetaYear">
-                <li><a href="TabetaPageServlet?year=<%= year %>&month=<%= month %>"><%= month %>月(0)</a></li>
+                <li><a href="javascript:send('TabetaPageServlet?year=<%= year %>&month=<%= month %>')"><%= month %>月(0)</a></li>
               </ul>
             </details>
 <%
@@ -114,14 +114,14 @@ for (int i = 0; i < dayMax; i++) {
 %>
         <div class="pic_frame">
           <li>
-            <p class="datetitle"><a href="TabetaDayPageServlet?year=<%= year %>&month=<%= month %>&day=<%= String.format("%02d", i + 1) %>"><%= i + 1 %>日</a></p>
+            <p class="datetitle"><a href="javascript:send('TabetaDayPageServlet?year=<%= year %>&month=<%= month %>&day=<%= String.format("%02d", i + 1) %>')"><%= i + 1 %>日</a></p>
 <%
 	if (index < tabetaDayList.size() && tabetaDayList.get(index) == i + 1) {
 		for (; tabetaDayList.get(index) == i + 1; index++) {
 			String shortTitle = ryourimei.get(index);
 			if (ryourimei.get(index).length() > 5) shortTitle = ryourimei.get(index).substring(0, 5) + "…";
 %>
-            <p class="title"><a href="RecipeServlet?recipeID=<%= recipeID.get(index) %>" title="<%= ryourimei.get(index) %>"><%= shortTitle %></a></p>
+            <p class="title"><a href="javascript:send('RecipeServlet?recipeID=<%= recipeID.get(index) %>')" title="<%= ryourimei.get(index) %>"><%= shortTitle %></a></p>
 <%
 			if (index == tabetaDayList.size() - 1) {
 				break;
@@ -154,14 +154,14 @@ for (int i = 0; i < 7 - (dayMax + youbi - 1) % 7 ; i++) {
 <div class="pageokuri">
 <%
 if (month.equals("01")) {
-	out.print("<a href=\"TabetaPageServlet?year=" + (Integer.parseInt(year) - 1) + "&month=12\" id=\"pageokurimae\"><<前月</a>");
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=02\" id=\"pageokuritugi\">次月>></a>");
+	out.print("<a href=\"javascript:send('TabetaPageServlet?year=" + (Integer.parseInt(year) - 1) + "&month=12')\" id=\"pageokurimae\"><<前月</a>");
+	out.print("<a href=\"javascript:send('TabetaPageServlet?year=" + year + "&month=02')\" id=\"pageokuritugi\">次月>></a>");
 } else if (month.equals("12")) {
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=11\" id=\"pageokurimae\"><<前月</a>");
-	out.print("<a href=\"TabetaPageServlet?year=" + (Integer.parseInt(year) + 1) + "&month=01\" id=\"pageokuritugi\">次月>></a>");
+	out.print("<a href=\"javascript:send('TabetaPageServlet?year=" + year + "&month=11')\" id=\"pageokurimae\"><<前月</a>");
+	out.print("<a href=\"javascript:send('TabetaPageServlet?year=" + (Integer.parseInt(year) + 1) + "&month=01')\" id=\"pageokuritugi')\">次月>></a>");
 } else { //月は08月のようにあらわすためゼロパディングする
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=" + String.format("%02d", (Integer.parseInt(month) - 1)) + "\" id=\"pageokurimae\"><<前月</a>");
-	out.print("<a href=\"TabetaPageServlet?year=" + year + "&month=" + String.format("%02d", (Integer.parseInt(month) + 1)) + "\" id=\"pageokuritugi\">次月>></a>");
+	out.print("<a href=\"javascript:send('TabetaPageServlet?year=" + year + "&month=" + String.format("%02d", (Integer.parseInt(month) - 1)) + "')\" id=\"pageokurimae\"><<前月</a>");
+	out.print("<a href=\"javascript:send('TabetaPageServlet?year=" + year + "&month=" + String.format("%02d", (Integer.parseInt(month) + 1)) + "')\" id=\"pageokuritugi\">次月>></a>");
 }
 %>
 </div>
@@ -170,7 +170,19 @@ if (month.equals("01")) {
 </div>
 </div>
 
+<script>
+//二度押し防止機能
+var sendflag = false;
+function send(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
+</script>
+
 <jsp:include page="footer.jsp" /><!-- フッター部分 -->
+
 </div>
 </body>
 </html>

@@ -29,7 +29,7 @@
     <h2>特に消費したい食材からレシピを検索できます。<br>
       入力した食材の消費が多い順にレシピを表示します！</h2>
     <!--ラジオボタン開始-->
-    <form id="mkensaku" action="SearchResultServlet" method="get">
+    <form name="mkensaku" action="SearchResultServlet" method="get" onSubmit="return func1();">
       <div class="radio-font"><!--ラジオボタンのdiv４-->
         <ul class="radiolist"><!--ラジオボタンリストのul-->
           <li>
@@ -51,16 +51,24 @@
 
   <!--検索窓開始-->
             <!-- \u3041-\u3096は平仮名、\u3000は全角スペース、\u30fcは長音 これらの文字の組み合わせのみ許可する 正規表現で書いたのがpatternの所 -->
-            <input id="mado" type="text" name="input" size=50 pattern="[\u3041-\u3096|\u3000|\u30fc]*" maxlength=50
+            <input id="mado" type="text" name="input" size=50
              placeholder=" 例）じゃがいも　かれー等　【ひらがな入力のみ】" title="ひらがなで入力して下さい" required>
-            <input id="mbutton" type="submit" value="レシピ検索" onclick="func1()">
-            <script>
-             //二度押し防止機能
-             function func1() {
-              document.mkensaku.submit();
-              document.getElementById('mbutton').disabled = true;
-             }
-            </script>
+            <input id="mbutton" type="submit" value="レシピ検索">
+                <script>
+                 //二度押し防止機能
+                 function func1() {
+                     if (!sendflag) {
+	                     var patternKana = /^[ぁ-んー　]*$/;
+	                     if (!patternKana.test(document.getElementById('mado').value)) {
+		                     alert('ひらがなと全角スペースのみで入力してください');
+		                     return false;
+	                     }
+	                     document.getElementById('mbutton').disabled = true;
+	                     sendflag = true;
+	                     document.searchform.submit();
+	                 }
+                 }
+                </script>
           </form>
   <!--検索窓終了-->
 

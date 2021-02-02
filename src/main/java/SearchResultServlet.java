@@ -35,6 +35,9 @@ public class SearchResultServlet extends HttpServlet {
 		else userID = (int)session.getAttribute("auth.userid");
 		String[] inputData; //検索窓に入力された文字列を全角スペースで分割して順に格納する配列
 		String searchMode; //検索モード 料理名検索ならryouri 食材名検索ならsyokuzaiが格納される
+		boolean onlyFavo; //検索モード お気に入りのみを表示するが格納される
+		String favoTerm; //お気に入りのみを表示するSQLの文字列
+		boolean onlyMy; //検索モード マイレシピのみを表示するが格納される
 		final String JSP_PATH0 = "top.jsp"; //メインページのJSP
 		final String JSP_PATH1 = "searchResult.jsp"; //検索結果ページのJSP
 		String sql = ""; //DBに送信するためのSQL文を格納する
@@ -57,26 +60,42 @@ public class SearchResultServlet extends HttpServlet {
 		final int DATA_PER_PAGE = 10; //1ページごとに表示する最大件数
 		int recipeNum = 0; //表示するデータの件数
 
-		//inputDataとsearchModeの準備
-		String input; //入力されたデータを格納
-		if (Objects.equals(request.getParameter("input"), null)) {
-			input = ""; //pageNumのパラメータがnullなら1ページ目を表示
-		} else {
-			input = Util.sanitizing(request.getParameter("input")); //そうでないなら送信されたパラメータpageNumをサニタイジングしてから格納
-		}
-		while (input.contains("　　")) input = input.replace("　　", "　"); //スペースが連続していたら1つに圧縮
-		if (input.length() > 0){
-			if (input.charAt(0) == '　') input = input.substring(1); //スペースから始まっていたら削る
-			inputData = input.split("　"); //inputが1文字以上なら半角スペースで分割
-		} else {
-			inputData = new String[0]; //inputが0文字ならinputDataは要素数0 splitで生成すると要素数が1になる
-		}
+		//inputDataとsearchModeとfavoTermとonlyFavoとonlyMyの準備
 		if (Objects.equals(request.getParameter("searchMode"), null)) {
 			 //searchModeのパラメータがnullなら食材名検索
 			 //検索結果ページの一番消費したい食材を選びなおす機能から実行されたときはここ
 			searchMode = "syokuzai";
 		} else {
 			searchMode = request.getParameter("searchMode"); //そうでないなら送信されたパラメータsearchModeを格納
+		}
+		String input; //入力されたデータを格納
+		if (Objects.equals(request.getParameter("input"), null)) {
+			input = ""; //inputのパラメータがnullなら空白
+		} else {
+			input = Util.sanitizing(request.getParameter("input")); //そうでないなら送信されたパラメータpageNumをサニタイジングしてから格納
+		}
+		while (input.contains("　　")) input = input.replace("　　", "　"); //スペースが連続していたら1つに圧縮
+		if (input.length() > 0){
+			if (input.charAt(0) == '　') input = input.substring(1); //スペースから始まっていたら削る
+			if (searchMode.equals("syokuzai")) inputData = input.split("　"); //inputが1文字以上で、食材名検索なら半角スペースで分割
+			else {
+				inputData = new String[1];
+				inputData[0] = input.replaceAll("　", "|"); //inputが1文字以上で、料理名検索なら空白を|に置換
+			}
+		} else {
+			inputData = new String[0]; //inputが0文字ならinputDataは要素数0 splitで生成すると要素数が1になる
+		}
+		if (!Objects.equals(request.getParameter("onlyfavo"), null) && request.getParameter("onlyfavo").equals("1") && userID > 1) {
+			favoTerm = " and RyouriID in (select RyouriID from FavoTB where UserID = " + userID + ") "; //ログイン中のユーザがお気に入り登録したレシピのみ表示
+			onlyFavo = true; //onlyfavoが"1"だったときのみtrue
+		} else {
+			favoTerm = "";
+			onlyFavo = false; //そうでないならfalse
+		}
+		if (!Objects.equals(request.getParameter("onlymy"), null) && request.getParameter("onlymy").equals("1") && userID > 1) {
+			onlyMy = true; //onlymyが"1"だったときのみtrue
+		} else {
+			onlyMy = false; //そうでないならfalse
 		}
 
 		//入力文字列がない場合の処理
@@ -91,20 +110,23 @@ public class SearchResultServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//レシピ件数検索SQL
 		if (searchMode.equals("ryouri")) {
 			//レシピ件数検索SQL(料理名検索)の組み立て
-			sql = "select count(RyouriID) from RyouriTB where RyouriKana in (?";
-			for (int i = 1; i < inputData.length; i++) {
-				sql += ", ?";
-			}
-			sql += ") and UserID in (" + userID + ", 1);";
+			sql = "select count(RyouriID) from RyouriTB where RyouriKana regexp ?";
+			if (onlyMy) sql += " and UserID = " + userID + favoTerm;
+			else sql += " and UserID in (" + userID + ", 1)" + favoTerm;
 		} else {
 			//レシピ件数検索SQL(食材名検索)の組み立て
 			int dataNum = 1; //入力された食材の個数を格納する(重複するものを除く)
-			sql = "select count(RyouriID) from RyouriTB where UserID in (" + userID + ", 1) and RyouriID in (select RyouriID from BunryouTB where RyouriID in (select RyouriID from BunryouTB where SyokuzaiID in (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana in (?";
+			if (onlyMy) sql = "select count(RyouriID) from RyouriTB where UserID = " + userID + " and RyouriID in (select RyouriID from BunryouTB where RyouriID in (select RyouriID from BunryouTB where SyokuzaiID in (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana in (?";
+			else sql = "select count(RyouriID) from RyouriTB where UserID in (" + userID + ", 1) and RyouriID in (select RyouriID from BunryouTB where RyouriID in (select RyouriID from BunryouTB where SyokuzaiID in (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana in (?";
 			for (int i = 1; i < inputData.length; i++) {
 				//すでに追加されたデータではないものを追加する
 				boolean dataExists = false;
@@ -118,17 +140,15 @@ public class SearchResultServlet extends HttpServlet {
 					sql += ", ?";
 				}
 			}
-			sql += ")) group by RyouriID having count(RyouriID) = " + dataNum + ") and SyokuzaiID = (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana = ?) order by Bunryou desc);";
+			sql += ")) group by RyouriID having count(RyouriID) = " + dataNum + ") and SyokuzaiID = (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana = ?) " + favoTerm + " order by Bunryou desc);";
 		}
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			if (searchMode.equals("ryouri")) {
-				for (int i = 0 ; i < inputData.length; i++) {
-					prestmt.setString(i + 1, inputData[i]);
-				}
+				prestmt.setString(1, inputData[0]);
 			} else {
 				int dataNum = 1; //入力された食材の個数を格納する(重複するものを除く)
 				prestmt.setString(1, inputData[0]);
@@ -155,6 +175,10 @@ public class SearchResultServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("レシピ件数検索SQL完了");
 		System.out.println("レシピ件数:" + recipeNum);
@@ -166,6 +190,8 @@ public class SearchResultServlet extends HttpServlet {
 			request.setAttribute("pageNum", pageNum);
 			request.setAttribute("searchMode", searchMode);
 			request.setAttribute("inputData", inputData);
+			request.setAttribute("onlyFavo", onlyFavo);
+			request.setAttribute("onlyMy", onlyMy);
 			request.setAttribute("recipeID", recipeID);
 			request.setAttribute("recipeNum", recipeNum);
 			request.setAttribute("recipeTitle", recipeTitle);
@@ -182,15 +208,14 @@ public class SearchResultServlet extends HttpServlet {
 
 		if (searchMode.equals("ryouri")) {
 			//表示レシピ検索SQL(料理名検索)の組み立て
-			sql = "select RyouriID from RyouriTB where RyouriKana in (?";
-			for (int i = 1; i < inputData.length; i++) {
-				sql += ", ?";
-			}
-			sql += ") and UserID in (" + userID + ", 1) limit " + DATA_PER_PAGE + " offset " + DATA_PER_PAGE * (pageNum - 1);
+			sql = "select RyouriID from RyouriTB where RyouriKana regexp ?";
+			if (onlyMy) sql += " and UserID = " + userID + favoTerm + " order by UpdateTime desc limit " + DATA_PER_PAGE + " offset " + DATA_PER_PAGE * (pageNum - 1);
+			else sql += " and UserID in (" + userID + ", 1)" + favoTerm + " order by UpdateTime desc limit " + DATA_PER_PAGE + " offset " + DATA_PER_PAGE * (pageNum - 1);
 		} else {
 			//表示レシピ検索SQL(食材名検索)の組み立て
 			int dataNum = 1; //入力された食材の個数を格納する(重複するものを除く)
-			sql = "select RyouriID from BunryouTB where UserID in (" + userID + ", 1) and RyouriID in (select RyouriID from BunryouTB where SyokuzaiID in (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana in (?";
+			if (onlyMy) sql = "select RyouriID from BunryouTB where UserID = " + userID + " and RyouriID in (select RyouriID from BunryouTB where SyokuzaiID in (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana in (?";
+			else sql = "select RyouriID from BunryouTB where UserID in (" + userID + ", 1) and RyouriID in (select RyouriID from BunryouTB where SyokuzaiID in (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana in (?";
 			for (int i = 1; i < inputData.length; i++) {
 				//すでに追加されたデータではないものを追加する
 				boolean dataExists = false;
@@ -204,19 +229,17 @@ public class SearchResultServlet extends HttpServlet {
 					sql += ", ?";
 				}
 			}
-			sql += ")) group by RyouriID having count(RyouriID) = " + dataNum + ") and SyokuzaiID = (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana = ?";
-			sql += ") order by Bunryou desc limit " + DATA_PER_PAGE + " offset " + DATA_PER_PAGE * (pageNum - 1);
+			sql += ")) group by RyouriID having count(RyouriID) = " + dataNum + ") and SyokuzaiID = (select SyokuzaiID from SyokuzaiTB where SyokuzaiKana = ?)";
+			sql += favoTerm + " order by Bunryou desc limit " + DATA_PER_PAGE + " offset " + DATA_PER_PAGE * (pageNum - 1);
 		}
 
 		//表示レシピ検索SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			if (searchMode.equals("ryouri")) {
-				for (int i = 0 ; i < inputData.length; i++) {
-					prestmt.setString(i + 1, inputData[i]);
-				}
+				prestmt.setString(1, inputData[0]);
 			} else {
 				int dataNum = 1; //入力された食材の個数を格納する(重複するものを除く)
 				prestmt.setString(1, inputData[0]);
@@ -244,6 +267,10 @@ public class SearchResultServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("表示レシピ検索SQL完了");
 		System.out.println("レシピID:" + Arrays.toString(recipeID.toArray()));
@@ -262,7 +289,7 @@ public class SearchResultServlet extends HttpServlet {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)) {
 			while (rs.next()) {
@@ -274,6 +301,10 @@ public class SearchResultServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("レシピ概要検索SQL(料理名、紹介文)完了");
 		System.out.println("レシピ名:" + Arrays.toString(recipeTitle.toArray()));
@@ -298,7 +329,7 @@ public class SearchResultServlet extends HttpServlet {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)) {
 			//レシピごとに必要な分量のデータが入ったArrayList<String[]> tempListを作成する
@@ -322,6 +353,10 @@ public class SearchResultServlet extends HttpServlet {
 			recipeBunryouList.add(tempList); //最後のレコードをrecipeBunryouListに追加する
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("レシピ概要検索SQL(分量)完了");
 		for (int i = 0; i < recipeBunryouList.size(); i++) {
@@ -343,6 +378,8 @@ public class SearchResultServlet extends HttpServlet {
 		request.setAttribute("pageNum", pageNum);
 		request.setAttribute("searchMode", searchMode);
 		request.setAttribute("inputData", inputData);
+		request.setAttribute("onlyFavo", onlyFavo);
+		request.setAttribute("onlyMy", onlyMy);
 		request.setAttribute("recipeID", recipeID);
 		request.setAttribute("recipeNum", recipeNum);
 		request.setAttribute("recipeTitle", recipeTitle);

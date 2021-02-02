@@ -148,7 +148,7 @@ for (int i = 0; i < DATA_PER_PAGE; i++) {
 	if (favoList.get(i)) heart = "pink_heart.png";
 	else heart = "clear_heart.png";
 %>
-    <li><a class="recipetitlelink" href="RecipeServlet?recipeID=<%= recipeID.get(i) %>">
+    <li><a class="recipetitlelink" href="javascript:send('RecipeServlet?recipeID=<%= recipeID.get(i) %>')">
         <img src= "images/RyouriPIC/<%= imageName.get(i) %>" alt="<%= ryourimei.get(i) %>" width="200" height="200"><br>
         <span class="titletitle"><%= ryourimei.get(i) %></span></a><br>
         <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="images/<%= face %>"
@@ -167,7 +167,7 @@ for (int i = 0; i < DATA_PER_PAGE; i++) {
   <div class="huki">
   <h2><span class="h1bold">
     他のレシピも見たいときは<br>
-    <button onclick="location.href='RecipeSuggestServlet'" class="btnn">もう一度提案する</button>を<br>
+    <button onclick="javascript:send('RecipeSuggestServlet')" class="btnn">もう一度提案する</button>を<br>
     押してください。<br></span></h2>
   </div>
    <img src="images/date18test.PNG" alt="コンシェルジュ"><br><br>
@@ -178,6 +178,16 @@ for (int i = 0; i < DATA_PER_PAGE; i++) {
 </main>
 </div>
 </div>
+
+<script>
+var sendflag = false;
+function send(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
+</script>
 
 <jsp:include page="footer.jsp" /><!-- フッター部分 -->
 

@@ -55,11 +55,15 @@ public class MypageServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 			prestmt.setInt(1, userID);
 			System.out.println("Favoレシピ検索SQL(マイページ): " + prestmt.toString());
@@ -70,6 +74,10 @@ public class MypageServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("Favoレシピ検索SQL(マイページ)完了");
 		System.out.println("料理ID: " + Arrays.toString(ryouriIDFavo.toArray()));
@@ -83,7 +91,7 @@ public class MypageServlet extends HttpServlet {
 
 			try (
 					Connection conn = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+						"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 					PreparedStatement prestmt = conn.prepareStatement(sql2)) {
 				for (int i = 0; i < ryouriIDFavo.size(); i++) {
 					prestmt.setInt(i + 1, ryouriIDFavo.get(i));
@@ -99,6 +107,10 @@ public class MypageServlet extends HttpServlet {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				request.setAttribute("errorMessage", e);
+				RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+				rd_result.forward(request, response);
+				return;
 			}
 			System.out.println("Favoレシピ検索SQL(マイページ)完了");
 			System.out.println("料理名: " + Arrays.toString(ryourimeiFavo.toArray()) + "画像名: " + Arrays.toString(imageNameFavo.toArray()));
@@ -106,7 +118,7 @@ public class MypageServlet extends HttpServlet {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql3)) {
 			prestmt.setInt(1, userID);
 			System.out.println("Tabetaレシピ検索SQL(マイページ): " + prestmt.toString());
@@ -118,6 +130,10 @@ public class MypageServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("Tabetaレシピ検索SQL(マイページ)完了");
 		System.out.println("料理ID: " + Arrays.toString(ryouriIDTabeta.toArray()) + " TabetaTime: " + Arrays.toString(tabetaTimeList.toArray()));
@@ -131,7 +147,7 @@ public class MypageServlet extends HttpServlet {
 
 			try (
 					Connection conn = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+						"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 					PreparedStatement prestmt = conn.prepareStatement(sql4)) {
 				for (int i = 0; i < tabetaTimeList.size(); i++) {
 					prestmt.setString(i + 1, tabetaTimeList.get(i));
@@ -147,6 +163,10 @@ public class MypageServlet extends HttpServlet {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				request.setAttribute("errorMessage", e);
+				RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+				rd_result.forward(request, response);
+				return;
 			}
 			System.out.println("Tabetaレシピ検索SQL(マイページ)完了");
 			System.out.println("料理名: " + Arrays.toString(ryourimeiTabeta.toArray()) + "画像名: " + Arrays.toString(imageNameTabeta.toArray()));

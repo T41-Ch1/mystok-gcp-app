@@ -87,11 +87,15 @@ public class TabetaDayPageServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			prestmt.setInt(1, userID);
 			System.out.println("日別食べた履歴検索SQL: " + prestmt.toString());
@@ -106,6 +110,10 @@ public class TabetaDayPageServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("日別食べた履歴検索SQL完了");
 		System.out.println(year + "年" + month + "月" + day + "に食べた料理名: " + Arrays.toString(ryourimei.toArray()) +
@@ -129,6 +137,7 @@ public class TabetaDayPageServlet extends HttpServlet {
 		rd_result.forward(request, response);
 	}
 
+	@Override
 	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		this.doGet(request, response);
 	}

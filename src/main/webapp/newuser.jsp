@@ -22,7 +22,7 @@
   <h1>新規登録</h1>
  <div class="border"></div>
 
-  <form action="UserRegisterServlet" method="post">
+  <form action="UserRegisterServlet" name="registerform" method="post" onSubmit="func()">
 
     <div class="form-item">
       <input type="text" id="nameNew" name="name" required maxlength=15
@@ -30,7 +30,7 @@
     </div>
 
   <div class="checkb">
-   <input type="button" value="重複確認" onclick="dupCheck();"/>
+   <input type="button" value="重複確認" id="dupchkbtn" onclick="dupCheck(this);"/>
   </div>
 
   <div id="kekkaicon" class="kekka">
@@ -46,7 +46,7 @@
     </div>
 
     <div class="button-panel">
-      <input type="submit" class="button" title="Sign In" value="新規登録をする">
+      <input type="submit" name="submitbtn" class="button" title="Sign In" value="新規登録をする">
     </div>
 
   </form>
@@ -56,18 +56,20 @@
 </div>
 
 <script>
-//アカウント名重複チェック ユーザ名が変更されているか、1文字以上であるかもチェックする
-function dupCheck() {
+//アカウント名重複チェック 1文字以上であるかもチェックする
+function dupCheck(btn) {
 	if (document.getElementById('nameNew').value.length == 0) {
 		alert('名前が入力されていません');
 		return false;
 	}
+	btn.disabled = true;
 	document.getElementById('userNameForDup').value = document.getElementById('nameNew').value;
 	document.usernameDupCheckForm.submit();
 }
-//重複確認アイコンをデフォルトに戻す
+//アカウント名のテキストボックスが変更されたら重複確認アイコンをデフォルトに戻す 重複チェックボタンを押せるようにする
 function clearIcon() {
 	document.getElementById('kekkaicon').innerHTML = '<img src="images/unchecked.png" alt="UNCHECKED" width="24" height="24">';
+	document.getElementById('dupchkbtn').disabled = false;
 }
 </script>
 
@@ -75,6 +77,18 @@ function clearIcon() {
 <form name="usernameDupCheckForm" action="UsernameDupCheckServlet" method="post" target="vessel">
 <input type="hidden" name="userName" id="userNameForDup">
 </form>
+
+<script>
+//二度押し防止機能
+var sendflag = false;
+function func() {
+  if (!sendflag) {
+	  sendflag = true;
+	  document.form.submitbtn.disabled = true;
+	  document.registerform.submit();
+  }
+}
+</script>
 
 <jsp:include page="footer.jsp" /><!-- フッター部分 -->
 

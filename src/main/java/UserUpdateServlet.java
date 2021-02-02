@@ -32,9 +32,9 @@ public class UserUpdateServlet extends HttpServlet {
 		String nameOld = request.getRemoteUser();
 		String nameNew = nameOld;
 		if (request.getParameter("mode").equals("namechange")) nameNew = Util.sanitizing(request.getParameter("nameNew"));
-		String passwordOld = Util.sanitizing(request.getParameter("passwordOld"));
-		String passwordNew = passwordOld;
-		if (request.getParameter("mode").equals("passchange")) passwordNew = Util.sanitizing(request.getParameter("passwordNew"));
+		String mySqlStokOld = Util.sanitizing(request.getParameter("mySqlStokOld"));
+		String mySqlStokNew = mySqlStokOld;
+		if (request.getParameter("mode").equals("passchange")) mySqlStokNew = Util.sanitizing(request.getParameter("mySqlStokNew"));
 		String saltOld = "";
 		String saltNew = "";
 		String passOldHashed = "";
@@ -53,12 +53,16 @@ public class UserUpdateServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//ソルト取得SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 			prestmt.setString(1, nameOld);
 			System.out.println("ソルト取得SQL:" + prestmt.toString());
@@ -69,6 +73,10 @@ public class UserUpdateServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("ソルト取得SQL完了");
 
@@ -83,20 +91,24 @@ public class UserUpdateServlet extends HttpServlet {
 		}
 
 		//passOldHashedの生成
-		passwordOld += saltOld;
+		mySqlStokOld += saltOld;
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(passwordOld.getBytes("utf8"));
+		    digest.update(mySqlStokOld.getBytes("utf8"));
 		    passOldHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//パスワード確認SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql2)) {
 			prestmt.setString(1, nameOld);
 			System.out.println("パスワード確認SQL:" + prestmt.toString());
@@ -114,6 +126,10 @@ public class UserUpdateServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("パスワード確認SQL完了");
 
@@ -121,22 +137,26 @@ public class UserUpdateServlet extends HttpServlet {
 		for (int j = 0; j < 16; j++) {
 			saltNew += String.format("%x", (int)(Math.random() * 16));
 		}
-		passwordNew += saltNew;
+		mySqlStokNew += saltNew;
 
 		//パスワードをSHA-256でハッシュ化
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(passwordNew.getBytes("utf8"));
+		    digest.update(mySqlStokNew.getBytes("utf8"));
 		    passNewHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//会員情報更新SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql3)) {
 			prestmt.setString(1, nameNew);
 			prestmt.setString(4, nameOld);
@@ -147,6 +167,10 @@ public class UserUpdateServlet extends HttpServlet {
 			prestmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("会員情報更新SQL完了");
 

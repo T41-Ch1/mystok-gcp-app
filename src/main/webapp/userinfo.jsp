@@ -38,7 +38,7 @@ if (!Util.checkAuth(request, response)) return;
   </div>
 
  <div class="checkb">
-   <input type="button" value="重複確認" onclick="dupCheck();"/>
+   <input type="button" value="重複確認" id="dupchkbtn" onclick="dupCheck(this);"/>
   </div>
 
  <div id="kekkaicon" class="kekka">
@@ -88,12 +88,16 @@ if (!Util.checkAuth(request, response)) return;
 </div>
 
 <script>
+var sendflag = false;
 //名前の変化確認 変更前と一致しなかったらsubmitする
 function nameCheck() {
 	if (document.getElementById('nameNew').value == '<%= request.getRemoteUser() %>') {
 		alert('名前が変更されていません、入力し直してください');
 		return false;
-	} else document.userUpdateForm1.submit();
+	} else if (!sendflag) {
+		sendflag = true;
+		document.userUpdateForm1.submit();
+	}
 }
 //パスワードの変化/一致確認 新しいパスワードが一致して、古いパスワードと一致しなかったらsubmitする
 function passCheck() {
@@ -101,14 +105,14 @@ function passCheck() {
 		if (document.getElementById('passNew1').value == document.getElementById('passOld').value) {
 			alert('パスワードが変更されていません、入力し直してください');
 			return false;
-		} else document.userUpdateForm2.submit();
+		} else if (!sendflag) document.userUpdateForm2.submit();
 	} else {
 		alert('新しいパスワードが一致していません、入力し直してください');
 		return false;
 	}
 }
 //アカウント名重複チェック ユーザ名が変更されているか、1文字以上であるかもチェックする
-function dupCheck() {
+function dupCheck(btn) {
 	if (document.getElementById('nameNew').value.length == 0) {
 		alert('名前が入力されていません');
 		return false;
@@ -116,16 +120,18 @@ function dupCheck() {
 		alert('名前が変更されていません、入力し直してください');
 		return false;
 	}
+	btn.disabled = true;
 	document.getElementById('userNameForDup').value = document.getElementById('nameNew').value;
 	document.usernameDupCheckForm.submit();
 }
-//重複確認アイコンをデフォルトに戻す
+//アカウント名のテキストボックスが変更されたら重複確認アイコンをデフォルトに戻す 重複チェックボタンを押せるようにする
 function clearIcon() {
 	document.getElementById('kekkaicon').innerHTML = '<img src="images/unchecked.png" alt="UNCHECKED" width="24" height="24">';
+	document.getElementById('dupchkbtn').disabled = false;
 }
 //退会時、2回確認をする
 function userExit() {
-	if (window.confirm('退会処理をします。よろしいですか？')) {
+	if (!sendflag && window.confirm('退会処理をします。よろしいですか？')) {
 		if (window.confirm('退会処理をすると登録したレシピやお気に入りの情報などがすべて削除されます。本当によろしいですか？')) {
 			document.userExitForm.submit();
 		} else {

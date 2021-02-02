@@ -437,5 +437,62 @@ input[type=radio]:checked ~ label{
   color: #f3a68c;/*ラベルの色*/
 }
 
+
+
+/*サイドバー側チェックボックス*/
+.chkbox {
+  font-size: 20px;
+  font-family: serif;
+  color: gray;
+  font-weight: bold;
+  display: block;
+  position: relative;
+  margin: 1em 0;
+  padding-left: 44px;
+  cursor: pointer;
+  user-select: none; /* テキストの選択を防ぐ */
+  text-align: center;
+}
+
+/* inputは非表示にする */
+.chkbox input {
+  display: none;
+}
+
+/* □ */
+.checkmark {
+  position: absolute;
+  top: 5px; /* 上からの位置 */
+  left: 22px;
+  height: 22px; /* 大きさ */
+  width: 22px; /* 大きさ */
+  border: solid 2px #d4dae2; /* 線 */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+/* ✓ */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  left: 5px; /* チェックの位置 */
+  top: 1px; /* チェックの位置 */
+  width: 6px; /* チェックの大きさ */
+  height: 10px; /* チェックの大きさ */
+  border: solid #FFF;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0; /* 透明にしておく */
+}
+
+/* チェックが入ったときの□ */
+.chkbox input:checked + .checkmark {
+  background: #f3a68c; /* チェック時の色 */
+  border-color: #f3a68c; /* チェック時の色 */
+}
+
+/* チェックが入ったときの✓ */
+.chkbox input:checked + .checkmark:after {
+  opacity: 1; /* 透明を解除 */
+}
 /*サイドバーのCSS終了*/
 /*--------------------------------------------------------------------------*/

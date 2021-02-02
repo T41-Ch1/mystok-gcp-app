@@ -88,7 +88,6 @@ if (!Util.checkAuth(request, response)) return;
   <h1><span><%= year %>年<%= month %>月<%= day %>日</span>の食べた履歴<span id="iconnotes">(<img src="images/aceat.png" alt="お気に入りボタン" width="35" height="35">は"今日"食べたレシピです)</span></h1>
 <!--レシピ情報-->
 
-<!--recipeboxがもう一つコピペされてます-->
 <%
 if (recipeID.size() > 0) {
 	for (int i = 0; i < recipeID.size(); i++) {
@@ -106,7 +105,7 @@ if (recipeID.size() > 0) {
  </div>
   <div class ="recipe-text">
    <h2 class="recipetitle">
-    <a class="recipetitlelink" href="RecipeServlet?recipeID=<%= recipeID.get(i) %>"><%= ryourimei.get(i) %></a><br>
+    <a class="recipetitlelink" href="javascript:send('RecipeServlet?recipeID=<%= recipeID.get(i) %>')"><%= ryourimei.get(i) %></a><br>
    </h2>
 
    <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="images/<%= face %>"
@@ -116,8 +115,7 @@ if (recipeID.size() > 0) {
   <div class ="hennsaku">
    <button onclick="javascript:delbutton(<%= recipeID.get(i) %>);" class="dbox">
      <font size="4">食べた履歴の削除</font>
-       <img src="images/dustbox.png"
-          alt="食べた履歴削除ボタン" width="30" height="30">
+     <img src="images/dustbox.png" alt="食べた履歴削除ボタン" width="30" height="30">
    </button>
 <%
 		if (isMyRecipe.get(i)) {
@@ -290,8 +288,16 @@ function favobutton(i, j) {
 </form>
 
 <script>
+//二度押し防止機能
+var sendflag = false;
+function send(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
 function delbutton(i) {
-	if (window.confirm('このレシピを食べた履歴を削除しますか？')) {
+	if (!sendflag && window.confirm('このレシピを食べた履歴を削除しますか？')) {
 		document.getElementById('recipeIDform5').value = i;
 		tabetaDayDeleteForm.submit(); //食べた履歴削除
 	} else {

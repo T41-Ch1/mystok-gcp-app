@@ -12,18 +12,21 @@ int pageNum = (int)(request.getAttribute("pageNum")); //10件ごとに表示し�
 String searchMode = (String)(request.getAttribute("searchMode")); //検索モード 料理名検索ならryouri 食材名検索ならsyokuzaiが格納される
 String[] inputData = (String[])(request.getAttribute("inputData")); //検索窓に入力された文字列をスペースで分割したもの
 String input = "";
-if (inputData.length > 0) input = inputData[0]; //inputDataに格納された文字列をスペースで連結したもの
+if (inputData.length > 0) input = inputData[0].replaceAll("\\|", "　"); //inputDataに格納された文字列をスペースで連結したもの
 for (int i = 1; i < inputData.length; i++){
 	input += "　" + inputData[i];
 }
+boolean onlyFavo = (boolean)request.getAttribute("onlyFavo"); //検索モード お気に入り登録したかどうか
+boolean onlyMy = (boolean)request.getAttribute("onlyMy"); //検索モード マイレシピかどうか
 ArrayList<Integer> recipeID = (ArrayList)(request.getAttribute("recipeID")); //表示するレシピのID(最大10件)
 ArrayList<String> recipeTitle = (ArrayList)(request.getAttribute("recipeTitle")); //表示するレシピ名(最大10件)
 ArrayList<String> recipeIntro = (ArrayList)(request.getAttribute("recipeIntro")); //表示するレシピの紹介文(最大10件)
 ArrayList<String> imageName = (ArrayList)(request.getAttribute("imageName")); //表示する画像名(最大10件)
 ArrayList<ArrayList<String[]>> list = new ArrayList<>(); //表示するレシピの分量(最大10件)
 list = (ArrayList<ArrayList<String[]>>)request.getAttribute("recipeBunryouList");
-ArrayList<Boolean> tabetaList = (ArrayList)(request.getAttribute("tabetaList"));
-ArrayList<Boolean> favoList = (ArrayList)(request.getAttribute("favoList"));
+ArrayList<Boolean> favoList = (ArrayList)(request.getAttribute("favoList")); //表示するレシピのお気に入り情報(最大10件)
+ArrayList<Boolean> tabetaList = (ArrayList)(request.getAttribute("tabetaList")); //表示するレシピのTabeta情報(最大10件)
+ArrayList<Boolean> isMyRecipe = (ArrayList)(request.getAttribute("isMyRecipe")); //表示するレシピがマイレシピかどうか(最大10件)
 %>
 <!DOCTYPE html>
 <html>
@@ -46,16 +49,23 @@ ArrayList<Boolean> favoList = (ArrayList)(request.getAttribute("favoList"));
 
 <div id="wrap" class="clearfix">
   <div class="content">
-<%
-//食材名検索で複数の食材が指定された場合のみ特に消費したい食材を選択し直せる枠を表示
-if (searchMode.equals("syokuzai") && inputData.length > 1) {
-%>
   <!--aside開始-->
     <aside><!--サイドバー部分開始-->
-      <h3>１番消費したい食材</h3>
+      <form action="SearchResultServlet" name="sideform" method="get" onSubmit="return func2();"><!--サイドバー側のラジオボタン-->
+        <h3>絞り込み検索</h3>
+          <label class="chkbox">
+            <input type="checkbox" id="chkbox1" name="onlyfavo" value="1" <% if (onlyFavo) out.print("checked"); %>><span class="checkmark"></span>お気に入りのみ
+          </label>
+          <label class="chkbox">
+            <input type="checkbox" id="chkbox2" name="onlymy" value="1" <% if (onlyMy) out.print("checked"); %>><span class="checkmark"></span>マイレシピのみ
+          </label>
+<%
+//食材名検索で複数の食材が指定された場合のみ特に消費したい食材を選択し直せるフォームを表示
+if (searchMode.equals("syokuzai") && inputData.length > 1) {
+%>
+        <h3>１番消費したい食材</h3>
 
-        <form action="SearchResultServlet" method="get"><!--サイドバー側のラジオボタン-->
-          <div class = "sradio-font">
+          <div class="sradio-font">
             <ul>
             <%
             for (int i = 0; i < inputData.length; i++) {
@@ -78,12 +88,53 @@ if (searchMode.equals("syokuzai") && inputData.length > 1) {
             }
             %>
              <li>
-              <input id="narabikae" type="submit" value="並び替え">
+              <input id="narabikae" type="submit" value="再検索">
              </li>
             </ul>
           </div>
-        </form><!--サイドバー側のラジオボタン終了-->
+<%
+} else {
+%>
+          <input type="hidden" name="input" value="<%= input %>">
+          <input type="hidden" name="searchMode" value="<%= searchMode %>">
+          <div class = "sradio-font">
+            <ul>
+             <li>
+              <input id="narabikae" type="submit" value="再検索">
+             </li>
+            </ul>
+          </div>
+<%
+}
+%>
+      </form><!--サイドバー側のラジオボタン終了-->
     </aside><!--サイドバー部分終了-->
+<script>
+//二度押し防止機能
+function func2() {
+	if (!sendflag) {
+		sendflag = true;
+		document.getElementById('narabikae').disabled = true;
+		document.sideform.submit();
+	}
+}
+</script>
+
+<%
+if (request.getRemoteUser() == null) {
+%>
+<script>
+var chkbox1 = document.getElementById('chkbox1');
+chkbox1.addEventListener('click', function() {
+	alert('ログインしてから押してください');
+	document.getElementById('chkbox1').checked = false;
+}, false);
+var chkbox2 = document.getElementById('chkbox2');
+chkbox2.addEventListener('click', function() {
+	alert('ログインしてから押してください');
+	document.getElementById('chkbox2').checked = false;
+}, false);
+</script>
 <%
 }
 %>
@@ -93,18 +144,18 @@ if (searchMode.equals("syokuzai") && inputData.length > 1) {
        <article>
          <h1>検索結果 <%= recipeNum %> 件</h1>
          <div class="formparts">
-           <form action="SearchResultServlet" method="get">
+           <form action="SearchResultServlet" method="get" onSubmit="return func1();">
              <div class = "radio-font"><!--ラジオボタンのdiv４-->
                <ul class ="radiolist"><!--ラジオボタンリストのul-->
                  <li>
-                   <input type="radio" id = "f-option" name="searchMode" value="syokuzai" <% if (searchMode.equals("syokuzai")) out.print("checked"); %>>
+                   <input type="radio" id="f-option" name="searchMode" value="syokuzai" <% if (searchMode.equals("syokuzai")) out.print("checked"); %>>
                    <label for="f-option">食材名検索</label>
-                   <div class ="check"></div><!--ラジオボタンチェックする円のdiv５-->
+                   <div class="check"></div><!--ラジオボタンチェックする円のdiv５-->
                  </li>
                  <li>
-                   <input type="radio" id ="s-option" name="searchMode" value="ryouri" <% if (!searchMode.equals("syokuzai")) out.print("checked"); %>>
+                   <input type="radio" id="s-option" name="searchMode" value="ryouri" <% if (!searchMode.equals("syokuzai")) out.print("checked"); %>>
                    <label for="s-option">料理名検索</label>
-                   <div class ="check"></div><!--ラジオボタンチェックする円のdiv６-->
+                   <div class="check"></div><!--ラジオボタンチェックする円のdiv６-->
                  </li>
                </ul>
              </div>
@@ -112,14 +163,21 @@ if (searchMode.equals("syokuzai") && inputData.length > 1) {
       <!--検索窓開始-->
 
      <div class="kennsaku">
-                <!-- \u3041-\u3096は平仮名、\u3000は全角スペース、\u30fcは長音 これらの文字の組み合わせのみ許可する 正規表現で書いたのがpatternの所 -->
-                <input id="mado" type="text" name="input" size=50 pattern="[\u3041-\u3096|\u3000|\u30fc]*" maxlength=50 value="<%=input%>" title="ひらがなで入力して下さい" required>
-                <input id="mbutton" type="submit" value="レシピ検索" onclick="func1()">
+                <input id="mado" type="text" name="input" size=50 maxlength=50 value="<%= input %>" title="ひらがなで入力して下さい" required>
+                <input id="mbutton" type="submit" value="レシピ検索">
                 <script>
                  //二度押し防止機能
                  function func1() {
-                  document.mkensaku.submit();
-                  document.getElementById('mbutton').disabled = true;
+                     if (!sendflag) {
+	                     var patternKana = /^[ぁ-んー　]*$/;
+	                     if (!patternKana.test(document.getElementById('mado').value)) {
+		                     alert('ひらがなと全角スペースのみで入力してください');
+		                     return false;
+	                     }
+	                     document.getElementById('mbutton').disabled = true;
+	                     sendflag = true;
+	                     document.searchform.submit();
+	                 }
                  }
                 </script>
                </div>
@@ -245,7 +303,7 @@ function favobutton(i, j) {
            </div>
            <div class ="recipe-text">
             <h2 class="recipetitle">
-              <a class="recipetitlelink" href="RecipeServlet?recipeID=<%= recipeID.get(i) %>&input=<%= URLEncoder.encode(input, "UTF-8") %>&searchMode=<%= searchMode %>"><%= recipeTitle.get(i) %></a>
+              <a class="recipetitlelink" href="javascript:sendA('RecipeServlet?recipeID=<%= recipeID.get(i) %>&input=<%= URLEncoder.encode(input, "UTF-8") %>&searchMode=<%= searchMode %>')"><%= recipeTitle.get(i) %></a>
               <br>
               <%
               String face = "";
@@ -261,7 +319,14 @@ function favobutton(i, j) {
               %>
               <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="images/<%= heart %>"
                  alt="お気に入りボタン" width="35" height="35"></a>
-
+              <%
+              if (isMyRecipe.get(i)) {
+              %>
+              <a href="javascript:editbutton(<%= recipeID.get(i) %>)"><img src="images/pen.png"
+                 alt="レシピ編集ボタン" width="35" height="35"></a>
+              <%
+              }
+              %>
            </h2>
            <div class ="material">
 <%
@@ -304,10 +369,29 @@ if (searchMode.equals("syokuzai")) {
            <div class="clear"></div>
            </div>
         </div>
-
-
 <%
 	}
+%>
+<form method="post" name="updateForm" action="RecipeRegisterPageServlet">
+<input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
+<input type="hidden" name="recipeID" id="recipeIDUpdateForm">
+</form>
+<script>
+var sendflag = false;
+function sendA(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
+function editbutton(i) {
+	if (!sendflag) {
+		document.getElementById('recipeIDUpdateForm').value = i;
+		updateForm.submit(); //レシピ編集画面遷移
+	}
+}
+</script>
+<%
 }
 %>
 
@@ -323,30 +407,30 @@ if (recipeNum > DATA_PER_PAGE) {
       <!-- ｢<<｣の表示 -->
       <li><%
       if (pageNum == 1) out.print("<<");
-      else out.print("<a href=\"SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=1\" class=\"page-link\"><<</a>");
+      else out.print("<a href=javascript:sendA('SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=1') class=\"page-link\"><<</a>");
       %></li>
       <!-- ｢< 前へ｣の表示 -->
       <li><%
       if (pageNum == 1) out.print("< 前へ");
-      else out.print("<a href=\"SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + (pageNum - 1) + "\" class=\"page-link\">< 前へ</a>");
+      else out.print("<a href=javascript:sendA('SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + (pageNum - 1) + "') class=\"page-link\">< 前へ</a>");
       %></li>
       <!-- ｢... 4 5 6 7 8 9 10 11 12 ...｣の表示 pageNumの前後4件まで -->
       <%
       for (int i = Math.max(1, pageNum - 5); i <= Math.min(pageNum + 5, pageTotal); i++) {
     	  if (i == pageNum - 5 || i == pageNum + 5) out.println("<li>...</li>");
     	  else if (i == pageNum) out.println("<li>" + i + "</li>");
-    	  else out.println("<li><a href=\"SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + i + "\" class=\"page-link\">" + i + "</a></li>");
+    	  else out.println("<li><a href=javascript:sendA('SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + i + "') class=\"page-link\">" + i + "</a></li>");
       }
       %>
       <!-- ｢次へ >｣の表示 -->
       <li><%
       if (pageNum == pageTotal) out.print("次へ >");
-      else out.print("<a href=\"SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + (pageNum + 1) + "\" class=\"page-link\">次へ ></a>");
+      else out.print("<a href=javascript:sendA('SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + (pageNum + 1) + "') class=\"page-link\">次へ ></a>");
       %></li>
       <!-- ｢>>｣の表示 -->
       <li><%
       if (pageNum == pageTotal) out.print(">>");
-      else out.print("<a href=\"SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + pageTotal +"\" class=\"page-link\">>></a>");
+      else out.print("<a href=javascript:sendA('SearchResultServlet?searchMode=" + searchMode +"&input=" + inputDataStr + "&pageNum=" + pageTotal +"') class=\"page-link\">>></a>");
       %></li>
     </ul>
     </div>
@@ -364,5 +448,6 @@ if (recipeNum > DATA_PER_PAGE) {
 
   <!-- wrap終了 -->
 
+</div>
 </body>
 </html>

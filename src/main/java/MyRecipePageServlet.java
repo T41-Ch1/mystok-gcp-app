@@ -58,12 +58,16 @@ public class MyRecipePageServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//マイレシピ件数検索SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 
 			prestmt.setInt(1,userID);
@@ -76,6 +80,10 @@ public class MyRecipePageServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("マイレシピ件数検索SQL完了");
 		System.out.println("マイレシピ件数:" + recipeNum);
@@ -105,7 +113,7 @@ public class MyRecipePageServlet extends HttpServlet {
 		//マイレシピ検索SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql2)) {
 
 			prestmt.setInt(1,userID);
@@ -122,6 +130,10 @@ public class MyRecipePageServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("マイレシピ検索SQL完了");
 		System.out.println("マイレシピID:" + Arrays.toString(ryouriID.toArray()));
@@ -141,7 +153,7 @@ public class MyRecipePageServlet extends HttpServlet {
 		//マイレシピ分量検索SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql3)) {
 
 			System.out.println("マイレシピ分量検索SQL:" + prestmt.toString());
@@ -168,6 +180,10 @@ public class MyRecipePageServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("マイレシピ分量検索SQL完了");
 		for (int i = 0; i < recipeBunryouList.size(); i++) {

@@ -206,15 +206,15 @@ textarea {
   font-size: 32px;
 }
 #syoukai {
-  outline:0;
-  height:120px;
-  padding:0 10px; /*検索窓の入力開始地点*/
-  left:0;
-  top:0;
-  font-size: 24px;
-  max-width:900px;
-  border-radius:1%;
-  background:#f5f5f5;
+  outline: 0;
+  height: 30px;
+  padding: 0 10px; /*検索窓の入力開始地点*/
+  left: 0;
+  top: 0;
+  font-size: 18px;
+  width: 900px;
+  border-radius: 1%;
+  background: #f5f5f5;
   box-shadow: 0 0 3px 0 #a9a9a9;
 }
 

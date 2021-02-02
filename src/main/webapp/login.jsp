@@ -21,7 +21,7 @@
 <div class="form-wrapper">
  <h1>LOGIN</h1>
 
-<form action="LoginServlet" method="post">
+<form action="LoginServlet" name="loginform" method="post">
   <input type="hidden" name="targetURI" value="<%= (String)session.getAttribute("targetURI") %>">
 
   <div class="form-item">
@@ -33,14 +33,30 @@
   </div>
 
   <div class="button-panel">
-   <input type="submit" class="button" title="Sign In" value="ログイン">
+   <input type="submit" class="button" title="Sign In" value="ログイン" onClick="func(this)">
   </div>
 
 </form>
 
 <div class="form-footer">
- <p><a href="newuser.jsp">新規会員登録</a></p>
+ <p><a href="javascript:send('newuser.jsp')">新規会員登録</a></p>
 </div>
+
+<script>
+//二度押し防止機能
+var sendflag = false;
+function func(btn) {
+  btn.disabled = true;
+  sendflag = true;
+  document.loginform.submit();
+}
+function send(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
+</script>
 
 </div>
 <!--form-wrapper fin-->

@@ -37,7 +37,7 @@ String input = (String)request.getAttribute("input"); //検索窓に表示する
   <div class="content">
     <main class="main">
   <!--ラジオボタン開始-->
-    <form action="SearchResultServlet" method="get">
+    <form action="SearchResultServlet" method="get" name="searchform" onSubmit="return func1();">
     <div class ="radio-font"><!--ラジオボタンのdiv４-->
       <ul class ="radiolist"><!--ラジオボタンリストのul-->
         <li>
@@ -55,13 +55,22 @@ String input = (String)request.getAttribute("input"); //検索窓に表示する
   <!--ラジオボタン終了-->
 
   <!--検索窓開始-->
-  <!-- \u3041-\u3096は平仮名、\u3000は全角スペース、\u30fcは長音 これらの文字の組み合わせのみ許可する 正規表現で書いたのがpatternの所 -->
-      <input id="mado" type="text" name="input" value="<%= input %>" size=50 pattern="[\u3041-\u3096|\u3000|\u30fc]*" maxlength=50 placeholder=" 例）じゃがいも　かれー等　【ひらがな入力のみ】" required>
-      <input id="mbutton" type="submit" value="レシピ検索" onclick="func1()">
+      <input id="mado" type="text" name="input" value="<%= input %>" size=50 maxlength=50 placeholder=" 例）じゃがいも　かれー等　【ひらがな入力のみ】" required>
+      <input id="mbutton" type="submit" value="レシピ検索">
       <script>
        //二度押し防止機能
+       var sendflag = false;
        function func1() {
+        if (!sendflag) {
+    		var patternKana = /^[ぁ-んー　]*$/;
+    		if (!patternKana.test(document.getElementById('mado').value)) {
+    			alert('ひらがなと全角スペースのみで入力してください');
+    			return false;
+    		}
         document.getElementById('mbutton').disabled = true;
+		sendflag = true;
+		document.searchform.submit();
+        }
        }
       </script>
     </form>
@@ -77,22 +86,29 @@ else face = "bceat.png";
 %>
   <a href="javascript:tabetabutton()" class="face<%= recipeID %>"><img src="images/<%= face %>"
    alt="今日食べたボタン" width="35" height="35"></a>
+  <span style="padding-left: 8px;"></span>
 <%
 String heart = "";
 if (favo) heart = "pink_heart.png";
 else heart = "clear_heart.png";
 %>
   <a href="javascript:favobutton()" class="heart<%= recipeID %>"><img src="images/<%= heart %>"
-   alt="お気に入りボタン" width="35" height="35" style="padding-left: 8px;"></a>
+   alt="お気に入りボタン" width="35" height="35"></a>
 <%
 if (isMyRecipe) {
 %>
-   <a href="javascript:updateForm.submit();"><img src="images/pen.png"
+   <a href="javascript:func2(this);"><img src="images/pen.png"
     alt="レシピ編集ボタン" width="35" height="35" style="padding-left: 8px;"></a>
 <form method="post" name="updateForm" action="RecipeRegisterPageServlet">
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
 <input type="hidden" name="recipeID" value="<%= recipeID %>">
 </form>
+<script>
+function func2(btn) {
+  btn.disabled = true;
+  document.updateForm.submit();
+}
+</script>
 <%
 }
 %>

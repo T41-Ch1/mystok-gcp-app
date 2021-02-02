@@ -105,12 +105,16 @@ public class RecipeUpdateServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		boolean accessable = false;
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 			prestmt.setString(1, ryourikana);
 			prestmt.setString(2, ryourimei);
@@ -124,6 +128,10 @@ public class RecipeUpdateServlet extends HttpServlet {
 			if (ret > 0) accessable = true; //修正に成功
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("料理修正SQL(RyouriTB)完了");
 
@@ -132,23 +140,28 @@ public class RecipeUpdateServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "レシピ編集に失敗しました。やり直してください。");
 			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
 			rd_result.forward(request, response);
+			return;
 		}
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql2)) {
 			prestmt.setInt(1, ryouriID);
 			System.out.println("分量削除SQL:" + prestmt.toString());
 			prestmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("分量削除SQL完了");
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql3)) {
 			for (int i = 0; i < recipeBunryouList.size(); i++) {
 				prestmt.setInt(1 + 4 * i, ryouriID);
@@ -160,6 +173,10 @@ public class RecipeUpdateServlet extends HttpServlet {
 			prestmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("料理登録SQL(分量)完了");
 

@@ -46,7 +46,7 @@ ArrayList<Boolean> favoListTabeta = (ArrayList)(request.getAttribute("favoListTa
   <div class="title">
   <h1><span class="h1bold"><%= request.getRemoteUser() %>さんのマイページ</span></h1>
   <div class="gia">
-   <a href="userinfo.jsp"><img src="images/config.png"
+   <a href="javascript:sendA('userinfo.jsp')"><img src="images/config.png"
     alt="会員情報変更" width="50" height="50" class="kaiinngia">
     <span class="hukidashi">会員情報の変更</span></a>
   </div>
@@ -55,13 +55,13 @@ ArrayList<Boolean> favoListTabeta = (ArrayList)(request.getAttribute("favoListTa
   <div class="abox">
 
     <div class="touroku">
-     <a href="MyRecipePageServlet"><img src="images/cutlery.png"
+     <a href="javascript:sendA('MyRecipePageServlet')"><img src="images/cutlery.png"
         alt="MYレシピ管理" class="tourokupic"><br>
      <span>MYレシピ管理</span></a>
     </div>
 
     <div class="teiann">
-     <a href="RecipeSuggestServlet"><img src="images/sebastian.png"
+     <a href="javascript:sendA('RecipeSuggestServlet')"><img src="images/sebastian.png"
         alt="レシピを提案" class="teiannpic"><br>
      <span>レシピ提案</span></a>
     </div>
@@ -70,7 +70,10 @@ ArrayList<Boolean> favoListTabeta = (ArrayList)(request.getAttribute("favoListTa
 
   <div class="bbox">
   <section id="okiniiri">
-   <h2 class="icon"><a href="FavoPageServlet">お気に入り >></a>&emsp;<img src="images/pink_heart.png" alt="お気に入りボタン" width="35" height="35">でお気に入りレシピ登録できます</h2>
+  <div class="edgebox">
+    <h2 class="icon"><a href="javascript:sendA('FavoPageServlet')">お気に入り >></a></h2>
+    <h3><img src="images/pink_heart.png" alt="お気に入りボタン" width="25" height="25">でお気に入り登録</h3>
+  </div>
    <div class="border"></div>
 
 <%
@@ -80,7 +83,7 @@ if (recipeIDFavo.size() > 0) {
 <%
 	for (int i = 0; i < recipeIDFavo.size(); i++) {
 %>
-    <li><a class="recipetitlelink" href="RecipeServlet?recipeID=<%= recipeIDFavo.get(i) %>">
+    <li><a class="recipetitlelink" href="javascript:sendA('RecipeServlet?recipeID=<%= recipeIDFavo.get(i) %>')">
       <img src="images/RyouriPIC/<%= imageNameFavo.get(i) %>" alt="<%= ryourimeiFavo.get(i) %>" width="200" height="200"><br>
       <span class="titletitle"><%= ryourimeiFavo.get(i) %></span></a><br>
 <%
@@ -100,7 +103,7 @@ if (recipeIDFavo.size() > 0) {
 	}
 %>
     <span class="more">
-    <a href="FavoPageServlet">>>MORE</a>
+    <a href="javascript:sendA('FavoPageServlet')">>>MORE</a>
     </span>
 
    </ul>
@@ -115,7 +118,10 @@ if (recipeIDFavo.size() > 0) {
 
 
   <section id="rireki">
-   <h2 class="icon"><a href="TabetaPageServlet">食べた履歴 >></a>&emsp;<img src="images/aceat.png" alt="お気に入りボタン" width="35" height="35">は"今日"食べたレシピです</h2>
+  <div class="edgebox">
+    <h2 class="icon"><a href="javascript:sendA('TabetaPageServlet')">食べた履歴 >></a></h2>
+    <h3><img src="images/aceat.png" alt="お気に入りボタン" width="25" height="25">は"今日"食べたレシピ</h3>
+  </div>
    <div class="border"></div>
 <%
 if (recipeIDFavo.size() > 0) {
@@ -125,7 +131,7 @@ if (recipeIDFavo.size() > 0) {
 	for (int i = 0; i < recipeIDTabeta.size(); i++) {
 		tabetaTimeList.set(i, tabetaTimeList.get(i).substring(0, 10)); //"2021/01/20"の部分を切り出す
 %>
-     <li><a class="recipetitlelink" href="RecipeServlet?recipeID=<%= recipeIDTabeta.get(i) %>">
+     <li><a class="recipetitlelink" href="javascript:sendA('RecipeServlet?recipeID=<%= recipeIDTabeta.get(i) %>')">
        <img src= "images/RyouriPIC/<%= imageNameTabeta.get(i) %>" alt="<%= ryourimeiTabeta.get(i) %>" width="200" height="200"><br>
        <span class="titletitle"><%= ryourimeiTabeta.get(i) %></span></a><br>
 <%
@@ -146,7 +152,7 @@ if (recipeIDFavo.size() > 0) {
 	}
 %>
      <span class="more">
-      <a href="TabetaPageServlet">>>MORE</a>
+      <a href="javascript:sendA('TabetaPageServlet')">>>MORE</a>
      </span>
    </ul>
 <%
@@ -161,6 +167,16 @@ if (recipeIDFavo.size() > 0) {
   </main>
 </div><!--content fin-->
 </div>
+
+<script>
+var sendflag = false;
+function sendA(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
+</script>
 
 <iframe id="cFrame" width=0 height=0 name="vessel" style="width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
 <form name="tabetaDeleteForm" action="TabetaDeleteServlet" method="post" target="vessel">

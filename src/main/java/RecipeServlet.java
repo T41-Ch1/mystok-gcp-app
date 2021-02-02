@@ -75,12 +75,16 @@ public class RecipeServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//レシピ名、作り方、画像名を検索
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST", "root", "password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST", "mystok", "mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 			prestmt.setInt(1, recipeID);
 			prestmt.setInt(2, userID);
@@ -96,6 +100,10 @@ public class RecipeServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("レシピ詳細検索SQL(レシピ名、作り方、画像名)完了");
 		System.out.println("レシピ名:" + recipe_name + ", 作り方:" + tukurikata + ", 画像名" + imageName);
@@ -109,7 +117,7 @@ public class RecipeServlet extends HttpServlet {
 		//食材名、分量、単位を検索
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST", "root", "password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST", "mystok", "mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql2)) {
 			prestmt.setInt(1, recipeID);
 			System.out.println("レシピ詳細検索SQL(食材名、分量、単位):" + prestmt.toString());
@@ -126,6 +134,10 @@ public class RecipeServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("レシピ詳細検索SQL(食材名、分量、単位)完了");
 		for (int i = 0; i < recipe_bunryou.size(); i++) {

@@ -43,8 +43,8 @@ public class RecipeSuggestServlet extends HttpServlet {
 		Calendar cl = Calendar.getInstance();
 		cl.add(Calendar.DAY_OF_MONTH, -7); //1週間前の日付をセットする
 
-		String sql1 = "select RyouriTB.RyouriID from RyouriTB left outer join (select UserID, RyouriID, TabetaTime from TabetaTB where UserID = ?) A on RyouriTB.RyouriID = A.RyouriID"
-				+ " where TabetaTime < ? or A.UserID is null"
+		String sql1 = "select RyouriID from RyouriTB where RyouriID not in"
+				+ " (select distinct RyouriID from TabetaTB where UserID = ? and TabetaTime > ?)"
 				+ " order by rand() limit " + DATA_PER_PAGE;
 		String sql2 = "select RyouriID from RyouriTB order by rand() limit " + DATA_PER_PAGE * 2;
 		String sql3 = "select Ryourimei, ImageName from RyouriTB where RyouriID in (?";
@@ -58,11 +58,15 @@ public class RecipeSuggestServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 			prestmt.setInt(1, userID);
 			prestmt.setString(2, f.format(cl.getTime()));
@@ -74,13 +78,17 @@ public class RecipeSuggestServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("レシピ提案SQL(料理ID)完了 " + ryouriID.size() + "件");
 
 		if (ryouriID.size() < 4) {
 			try (
 					Connection conn = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+						"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 					PreparedStatement prestmt = conn.prepareStatement(sql2)) {
 				System.out.println("レシピ提案SQL(料理ID補充): " + prestmt.toString());
 				try (ResultSet rs = prestmt.executeQuery()) {
@@ -91,13 +99,17 @@ public class RecipeSuggestServlet extends HttpServlet {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				request.setAttribute("errorMessage", e);
+				RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+				rd_result.forward(request, response);
+				return;
 			}
 			System.out.println("レシピ提案SQL(料理ID補充)完了 " + ryouriID.size() + "件");
 		}
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql3)) {
 			for (int i = 0; i < ryouriID.size(); i++) prestmt.setInt(i + 1, ryouriID.get(i));
 			System.out.println("レシピ提案SQL(料理名、画像名):" + prestmt.toString());
@@ -110,6 +122,10 @@ public class RecipeSuggestServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("レシピ提案SQL(料理名、画像名)完了 " + ryourimei.size() + "件");
 

@@ -57,7 +57,7 @@ if (recipeID > 0) servletName = "RecipeUpdateServlet";
 
 <div class="edgebox">
 <h1>レシピ登録画面</h1>
-<input type="button" onclick="location.href='MypageServlet';" class="btnn" value="マイページへ戻る">
+<input type="button" onclick="javascript:send('MypageServlet')" class="btnn" value="マイページへ戻る">
 </div>
 <div class="border"></div>
 
@@ -146,7 +146,7 @@ type="text" list="syokuzaikanalist" placeholder="プルダウンメニュー" au
 
 <h2 class="rtitle3">レシピ紹介文：(最大100文字)</h2>
 <div class="titlebox2">
-<textarea id="syoukai" name="syoukai" cols=100 rows=4 maxlength=100 required><%= syoukai %></textarea>
+<input type="text" id="syoukai" name="syoukai" maxlength=100 required value="<%= syoukai %>">
 <br><br>
 </div>
 
@@ -181,11 +181,16 @@ if (recipeID > 0) {
   <input type="button" value="レシピを追加する" onClick="TukurikataField.add();" />
   <input type="button" value="レシピを削除する" onClick="TukurikataField.remove();" />
   </div>
+  </div>
   </section>
 
 <!--下側のレシピ文章終了 -->
 
-<input type="button" class="tbtnn" value="レシピ登録決定" onClick="completeCheck();">
+<%
+String btnTxt = "レシピ登録決定";
+if (recipeID > 0) btnTxt = "レシピ編集決定";
+%>
+<input type="button" class="tbtnn" value="<%= btnTxt %>" onClick="completeCheck();">
 <!-- 送信ボタンをクリックしたらsubmitではなく判定を行う -->
 <input type="hidden" name="syokuzaikanalist" value="<%= syokuzaikanalist %>">
 <input type="hidden" name="tukurikataTotal" id="tukurikataTotal">
@@ -203,8 +208,16 @@ if (recipeID > 0) {
 <input type="hidden" name="recipeID" id="recipeIDDeleteForm">
 </form>
 <script>
+var sendflag = false;
+function send(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
 function deletebutton(i) {
-	if (confirm('レシピを削除します。よろしいですか？')) {
+	if (!sendflag && confirm('レシピを削除します。よろしいですか？')) {
+		sendflag = true;
 		document.getElementById('recipeIDDeleteForm').value = i;
 		deleteForm.submit(); //レシピ削除
 	}
@@ -309,6 +322,7 @@ const handleFileSelect = () => {
 fileInput.addEventListener('change', handleFileSelect);
 //必須項目の入力チェック すべて正常ならexistCheck()を実行する
 function completeCheck() {
+	if (sendflag) return;
 	var isComp = true;
 	if (document.getElementById('ryourimei').value == '') isComp = false;
 	if (document.getElementById('ryourikana').value == '') isComp = false;
@@ -351,7 +365,7 @@ function existCheck() {
 	}
 	dupCheck();
 }
-//入力された食材の重複チェック 重複がなければtukurikataCheck()を実行する
+//入力された食材の重複チェック 重複がなければctrlCheck()を実行する
 function dupCheck() {
 	var isDup = false;
 	var inputList = [];
@@ -368,9 +382,10 @@ function dupCheck() {
 		return;
 	} else tukurikataCheck();
 }
-//作り方が8000文字を超えていないかチェックする 超えてなければsubmitする
+//作り方が8000文字を超えていないかチェックする 超えてなければtukurikataCheck()を実行する
+var tukurikataTotal = '';
 function tukurikataCheck() {
-	var tukurikataTotal = '';
+	tukurikataTotal = '';
 	for (var i = 1; i <= TukurikataField.currentNumber; i++) {
 		if (i == 1) {
 			tukurikataTotal += document.getElementById('tukurikata' + i).value;
@@ -384,6 +399,17 @@ function tukurikataCheck() {
 		return;
 	} else {
 		document.getElementById('tukurikataTotal').value = tukurikataTotal;
+		ctrlCheck();
+	}
+}
+//制御文字を含むかのチェック OKならsubmitする
+function ctrlCheck() {
+	var regexp = /&|<|>|\"|\'/;
+	if (regexp.test(tukurikataTotal) || regexp.test(document.getElementById('syoukai').value) || regexp.test(document.getElementById('ryourimei').value) || regexp.test(document.getElementById('ryourikana').value)) {
+		alert('&、<、>、\"、\'は使用できません');
+		return;
+	} else {
+		sendflag = true;
 		document.recipeRegisterForm.submit();
 	}
 }

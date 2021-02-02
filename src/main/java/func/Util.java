@@ -44,7 +44,7 @@ public class Util {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST", "root", "password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST", "mystok", "mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			prestmt.setInt(1, userID);
 			prestmt.setInt(2, recipeID);
@@ -87,7 +87,7 @@ public class Util {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			prestmt.setInt(1, userID);
 			prestmt.setString(2 + recipeID.size(), date);
@@ -131,7 +131,7 @@ public class Util {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			prestmt.setInt(1,userID);
 			prestmt.setInt(2,recipeID);
@@ -171,7 +171,7 @@ public class Util {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			prestmt.setInt(1, userID);
 			for (int i = 0; i < recipeID.size(); i++) {
@@ -210,7 +210,7 @@ public class Util {
 
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql)) {
 			prestmt.setString(1, userName);
 			System.out.println("アカウント名重複チェックSQL: " + prestmt.toString());

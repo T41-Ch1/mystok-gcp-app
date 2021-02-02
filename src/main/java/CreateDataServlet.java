@@ -25,20 +25,20 @@ public class CreateDataServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 
 		//UserTBのデータ
-		String password = "password";
+		//String mySqlStok = "mySqlStok";
 		String salt;
 		String passHashed = "";
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256("PW_For_Admin_Of_Mystok_0202", salt);
 		out.println("insert into UserTB (UserName, Password, Salt) values ('admin','" + passHashed + "','" + salt + "');");
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256("my_stok_8576", salt);
 		out.println("insert into UserTB (UserName, Password, Salt) values ('aaa','" + passHashed + "','" + salt + "');");
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256("my_stok_4385", salt);
 		out.println("insert into UserTB (UserName, Password, Salt) values ('bbb','" + passHashed + "','" + salt + "');");
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256("my_stok_9214", salt);
 		out.println("insert into UserTB (UserName, Password, Salt) values ('ccc','" + passHashed + "','" + salt + "');");
 
 		//UserRoleTBのデータ
@@ -54,11 +54,11 @@ public class CreateDataServlet extends HttpServlet {
 		out.println("insert into SyokuzaiTB values (4,'たまねぎ','玉ねぎ','個');");
 
 		//RyouriTBのデータ
-		out.println("insert into RyouriTB values (1,'かれー','カレー','test1-1/test1-2/test1-3','おいしいカレー','ryouri000001.jpg',1,'2000-01-01 00:00:00');");
-		out.println("insert into RyouriTB values (2,'にくじゃが','肉じゃが','test2-1/test2-2/test2-3','おいしい肉じゃが','ryouri000002.jpg',1,'2000-01-01 00:00:00');");
-		out.println("insert into RyouriTB values (3,'ぎゅうどん','牛丼','test3-1/test3-2/test3-3','おいしい牛丼','ryouri000003.jpg',1,'2000-01-01 00:00:00');");
+		out.println("insert into RyouriTB values (1,'かれー','カレー','test1-1/test1-2/test1-3','おいしいカレー','ryouri000001.jpg',1,'2000-01-01 00:00:01');");
+		out.println("insert into RyouriTB values (2,'にくじゃが','肉じゃが','test2-1/test2-2/test2-3','おいしい肉じゃが','ryouri000002.jpg',1,'2000-01-01 00:00:02');");
+		out.println("insert into RyouriTB values (3,'ぎゅうどん','牛丼','test3-1/test3-2/test3-3','おいしい牛丼','ryouri000003.jpg',1,'2000-01-01 00:00:03');");
 		for (int i = 4; i <= 36; i++) {
-			out.println("insert into RyouriTB values ("+ i +",'かれー','カレー" + i +"','test"+ i +"-1/test"+ i +"-2/test"+ i +"-3','おいしいカレー" + i + "','ryouri" + String.format("%06d", i) +".jpg',1,'2000-01-01 00:00:00');");
+			out.println("insert into RyouriTB values ("+ i +",'かれー','カレー" + i +"','test"+ i +"-1/test"+ i +"-2/test"+ i +"-3','おいしいカレー" + i + "','ryouri" + String.format("%06d", i) +".jpg',1,'2000-01-01 00:00:" + String.format("%02d", i) + "');");
 		}
 		for (int i = 37; i < 60; i++) {
 			out.println("insert into RyouriTB values ("+ i +",'かれー','aaaのカレー"+ i +"','test"+ i +"-1/test"+ i +"-2/test"+ i +"-3','aaaのおいしいカレー"+ i +"',null,2,'2021-01-01 00:00:"+ i +"');");
@@ -107,11 +107,13 @@ public class CreateDataServlet extends HttpServlet {
 		for (int i = 1; i <= 31; i++) {
 			int dataNum = (int)(Math.random() * 6);
 			ArrayList<Integer> ryouriID = new ArrayList<>();
+			int j = 0;
 			while (ryouriID.size() < dataNum) {
 				int id = (int)(Math.random() * 50) + 1;
 				if (ryouriID.indexOf(id) == -1) {
 					ryouriID.add(id);
-					out.println("insert into TabetaTB (UserID, RyouriID, TabetaTime) values (2," + id + ",'2021-01-" + String.format("%02d", i) + " 01:23:" + String.format("%02d", i) + "');");
+					j++;
+					out.println("insert into TabetaTB (UserID, RyouriID, TabetaTime) values (2," + id + ",'2021-01-" + String.format("%02d", i) + " 0" + j + ":23:" + String.format("%02d", i) + "');");
 				}
 			}
 		}
@@ -126,23 +128,23 @@ public class CreateDataServlet extends HttpServlet {
 		out.println("<body>");
 
 		//UserTBのデータ
-		String password = "password";
+		String mySqlStok = "mySqlStok";
 		String salt;
 		String passHashed = "";
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256(mySqlStok, salt);
 		out.println("insert into UserTB values ('admin','" + passHashed + "','" + salt + "');");
 		out.println("<br>");
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256(mySqlStok, salt);
 		out.println("insert into UserTB values ('aaa','" + passHashed + "','" + salt + "');");
 		out.println("<br>");
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256(mySqlStok, salt);
 		out.println("insert into UserTB values ('bbb','" + passHashed + "','" + salt + "');");
 		out.println("<br>");
 		salt = getSalt();
-		passHashed = getSHA256(password, salt);
+		passHashed = getSHA256(mySqlStok, salt);
 		out.println("insert into UserTB values ('ccc','" + passHashed + "','" + salt + "');");
 		out.println("<br>");
 
@@ -241,13 +243,13 @@ public class CreateDataServlet extends HttpServlet {
 		return salt;
 	}
 
-	protected String getSHA256(String password, String salt) {
-		password += salt;
+	protected String getSHA256(String mySqlStok, String salt) {
+		mySqlStok += salt;
 		String passHashed = "";
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(password.getBytes("utf8"));
+		    digest.update(mySqlStok.getBytes("utf8"));
 		    passHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();

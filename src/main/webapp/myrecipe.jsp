@@ -65,7 +65,7 @@ if (ryouriID.size() > 0) {
    </div>
   <div class ="recipe-text">
    <h2 class="recipetitle" style="margin-block-end: 0.83em;">
-    <a class="recipetitlelink" href="RecipeServlet?recipeID=<%= ryouriID.get(i) %>"><%= ryourimei.get(i) %></a><br>
+    <a class="recipetitlelink" href="javascript:sendA('RecipeServlet?recipeID=<%= ryouriID.get(i) %>')"><%= ryourimei.get(i) %></a><br>
     <%
       String face = "";
       if (tabetaList.get(i)) face = "aceat.png";
@@ -108,12 +108,21 @@ if (ryouriID.size() > 0) {
 %>
 
 <script>
+var sendflag = false;
+function sendA(uri) {
+	if (!sendflag) {
+		sendflag = true;
+		location.href = uri;
+	}
+}
 function editbutton(i) {
-	document.getElementById('recipeIDUpdateForm').value = i;
-	updateForm.submit(); //レシピ編集画面遷移
+	if (!sendflag) {
+		document.getElementById('recipeIDUpdateForm').value = i;
+		updateForm.submit(); //レシピ編集画面遷移
+	}
 }
 function deletebutton(i) {
-	if (confirm('レシピを削除します。よろしいですか？')) {
+	if (!sendflag && confirm('レシピを削除します。よろしいですか？')) {
 		document.getElementById('recipeIDDeleteForm').value = i;
 		deleteForm.submit(); //レシピ削除
 	}
@@ -175,8 +184,11 @@ if (recipeNum > DATA_PER_PAGE) {
   <script>
    //ページ送りしたとき
    function myrecipe(i) {
-     document.getElementById('pageNumForm').value = i;
-     Myrecipeform.submit();
+     if (!sendflag) {
+         sendflag = true;
+         document.getElementById('pageNumForm').value = i;
+         Myrecipeform.submit();
+     }
    }
   </script>
   <iframe id="cFrame" width=0 height=0 name="vessel" style="width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>

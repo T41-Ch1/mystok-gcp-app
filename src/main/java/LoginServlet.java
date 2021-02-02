@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
 		//変数
 		String userName; //フォームから入力されたユーザ名
-		String password; //フォームから入力されたPW
+		String mySqlStok; //フォームから入力されたPW
 		String target; //フォームから受け取った元々のアクセス先URI
 		String salt = ""; //userNameに対応するソルト
 		String passHashed = ""; //ハッシュ化されたPW
@@ -51,13 +51,17 @@ public class LoginServlet extends HttpServlet {
 
 	    //入力されたデータを格納、URI以外はサニタイジングも同時に行う
 		userName = Util.sanitizing(request.getParameter("username"));
-		password = Util.sanitizing(request.getParameter("password"));
+		mySqlStok = Util.sanitizing(request.getParameter("mySqlStok"));
 		target = (String)request.getParameter("targetURI");
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//ソルト取得SQLの組み立て
@@ -66,7 +70,7 @@ public class LoginServlet extends HttpServlet {
 		//ソルト取得SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 			prestmt.setString(1, userName);
 			System.out.println("ソルト取得SQL:" + prestmt.toString());
@@ -77,6 +81,10 @@ public class LoginServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("ソルト取得SQL完了");
 
@@ -90,14 +98,18 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		//passHashedの生成
-		password += salt;
+		mySqlStok += salt;
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(password.getBytes("utf8"));
+		    digest.update(mySqlStok.getBytes("utf8"));
 		    passHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 
 		//ログイン判定SQLの組み立て
@@ -107,7 +119,7 @@ public class LoginServlet extends HttpServlet {
 		//ログイン判定SQLの実行
 		try (
 				Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","root","password");
+					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql2)) {
 			prestmt.setString(1, userName);
 			System.out.println("ログイン判定SQL:" + prestmt.toString());
@@ -120,6 +132,10 @@ public class LoginServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", e);
+			RequestDispatcher rd_result = request.getRequestDispatcher("error.jsp");
+			rd_result.forward(request, response);
+			return;
 		}
 		System.out.println("ログイン判定SQL完了");
 
@@ -138,6 +154,7 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "ユーザ名またはパスワードに誤りがあります。");
 			RequestDispatcher rd = request.getRequestDispatcher(JSP_PATH);
 			rd.forward(request, response);
+			return;
 		}
 	}
 
