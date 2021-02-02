@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
 		//変数
 		String userName; //フォームから入力されたユーザ名
-		String mySqlStok; //フォームから入力されたPW
+		String password; //フォームから入力されたPW
 		String target; //フォームから受け取った元々のアクセス先URI
 		String salt = ""; //userNameに対応するソルト
 		String passHashed = ""; //ハッシュ化されたPW
@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 
 	    //入力されたデータを格納、URI以外はサニタイジングも同時に行う
 		userName = Util.sanitizing(request.getParameter("username"));
-		mySqlStok = Util.sanitizing(request.getParameter("mySqlStok"));
+		password = Util.sanitizing(request.getParameter("password"));
 		target = (String)request.getParameter("targetURI");
 
 		try {
@@ -98,11 +98,11 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		//passHashedの生成
-		mySqlStok += salt;
+		password += salt;
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(mySqlStok.getBytes("utf8"));
+		    digest.update(password.getBytes("utf8"));
 		    passHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();

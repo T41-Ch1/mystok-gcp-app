@@ -71,21 +71,13 @@ for (int i = 0; i < syokuzaikanalist.size(); i++) out.println("<option value=\""
 %>
 </datalist>
 
-<div class="edgebox">
-<div>
 <h2 class="rtitle">レシピ名：(最大30文字)</h2>
 <div class="titlebox">
   <input type="text" id="ryourimei" name="ryourimei"
   size="600" maxlength=30 required value="<%= recipe_name %>"
   placeholder="【ここにレシピ名を入力】例)肉じゃが">
 </div>
-</div>
 
-<button onclick="javascript:deletebutton(<%= recipeID %>);" class="dbox">
-     <font size="4">マイレシピの削除</font>
-     <img src="images/dustbox.png" alt="マイレシピ削除ボタン" width="30" height="30">
-</button>
-</div>
 
 <h2 class="rtitle2">料理名のふりがな：(最大50文字)</h2>
 <div class="titlebox2">
@@ -198,6 +190,11 @@ if (recipeID > 0) btnTxt = "レシピ編集決定";
 
 </form>
 
+<button onclick="javascript:deletebutton(<%= recipeID %>);" class="dbox">
+     <font size="4">マイレシピの削除</font>
+     <img src="images/dustbox.png" alt="マイレシピ削除ボタン" width="30" height="30">
+</button>
+
 </main>
 </div>
 </div>
@@ -207,6 +204,7 @@ if (recipeID > 0) btnTxt = "レシピ編集決定";
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
 <input type="hidden" name="recipeID" id="recipeIDDeleteForm">
 </form>
+
 <script>
 var sendflag = false;
 function send(uri) {

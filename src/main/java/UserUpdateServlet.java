@@ -32,9 +32,9 @@ public class UserUpdateServlet extends HttpServlet {
 		String nameOld = request.getRemoteUser();
 		String nameNew = nameOld;
 		if (request.getParameter("mode").equals("namechange")) nameNew = Util.sanitizing(request.getParameter("nameNew"));
-		String mySqlStokOld = Util.sanitizing(request.getParameter("mySqlStokOld"));
-		String mySqlStokNew = mySqlStokOld;
-		if (request.getParameter("mode").equals("passchange")) mySqlStokNew = Util.sanitizing(request.getParameter("mySqlStokNew"));
+		String passwordOld = Util.sanitizing(request.getParameter("passwordOld"));
+		String passwordNew = passwordOld;
+		if (request.getParameter("mode").equals("passchange")) passwordNew = Util.sanitizing(request.getParameter("passwordNew"));
 		String saltOld = "";
 		String saltNew = "";
 		String passOldHashed = "";
@@ -91,11 +91,11 @@ public class UserUpdateServlet extends HttpServlet {
 		}
 
 		//passOldHashedの生成
-		mySqlStokOld += saltOld;
+		passwordOld += saltOld;
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(mySqlStokOld.getBytes("utf8"));
+		    digest.update(passwordOld.getBytes("utf8"));
 		    passOldHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -137,13 +137,13 @@ public class UserUpdateServlet extends HttpServlet {
 		for (int j = 0; j < 16; j++) {
 			saltNew += String.format("%x", (int)(Math.random() * 16));
 		}
-		mySqlStokNew += saltNew;
+		passwordNew += saltNew;
 
 		//パスワードをSHA-256でハッシュ化
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(mySqlStokNew.getBytes("utf8"));
+		    digest.update(passwordNew.getBytes("utf8"));
 		    passNewHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();

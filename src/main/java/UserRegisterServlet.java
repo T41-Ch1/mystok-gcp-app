@@ -25,7 +25,7 @@ public class UserRegisterServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = Util.sanitizing(request.getParameter("name"));
-		String mySqlStok = Util.sanitizing(request.getParameter("mySqlStok"));
+		String password = Util.sanitizing(request.getParameter("password"));
 		int userID = 0;
 		String sql1 = "insert into UserTB (UserName, Password, Salt) values (?, ?, ?)";
 		String sql2 = "select UserID from UserTB where UserName = ?";
@@ -52,14 +52,14 @@ public class UserRegisterServlet extends HttpServlet {
 		for (int j = 0; j < 16; j++) {
 			salt += String.format("%x", (int)(Math.random() * 16));
 		}
-		mySqlStok += salt;
+		password += salt;
 
 		//パスワードをSHA-256でハッシュ化
 		String passHashed = "";
 		try {
 		    MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		    digest.reset();
-		    digest.update(mySqlStok.getBytes("utf8"));
+		    digest.update(password.getBytes("utf8"));
 		    passHashed = String.format("%064x", new BigInteger(1, digest.digest()));
 		} catch (Exception e) {
 		    e.printStackTrace();
