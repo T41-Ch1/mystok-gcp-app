@@ -4727,7 +4727,7 @@
         <location>/error404.jsp</location>
     </error-page>
     <error-page>
-        <error-code>50x</error-code>
+        <error-code>500</error-code>
         <location>/error50x.jsp</location>
     </error-page>
 
