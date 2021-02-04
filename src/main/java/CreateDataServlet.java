@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +22,22 @@ public class CreateDataServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		PrintWriter out = response.getWriter();
+
+		for (int i = 47; i < 60; i++) {
+			out.println("insert into RyouriTB values ("+ i +",'かれー','aaaのカレー"+ i +"','test"+ i +"-1/test"+ i +"-2/test"+ i +"-3','aaaのおいしいカレー"+ i +"',null,2,'2021-01-01 00:00:"+ i +"');");
+		}
+		for (int i = 60; i < 90; i++) {
+			out.println("insert into RyouriTB values ("+ i +",'かれー','aaaのカレー"+ i +"','test"+ i +"-1/test"+ i +"-2/test"+ i +"-3','aaaのおいしいカレー"+ i +"',null,2,'2021-01-01 00:01:"+ (i - 50) +"');");
+		}
+		for (int i = 47; i < 90; i++) {
+			out.println("insert into BunryouTB values ("+ i +",10,0." + (int)(Math.random() * 6 + 1) + ",2);");
+			out.println("insert into BunryouTB values ("+ i +",72,0." + (int)(Math.random() * 6 + 1) + ",2);");
+			out.println("insert into BunryouTB values ("+ i +",171," + (int)(Math.random() * 10 + 1) * 10 + ",2);");
+		}
+
+
+
+		/*
 
 		//UserTBのデータ
 		//String mySqlStok = "mySqlStok";
@@ -63,6 +78,8 @@ public class CreateDataServlet extends HttpServlet {
 		for (int i = 37; i < 60; i++) {
 			out.println("insert into RyouriTB values ("+ i +",'かれー','aaaのカレー"+ i +"','test"+ i +"-1/test"+ i +"-2/test"+ i +"-3','aaaのおいしいカレー"+ i +"',null,2,'2021-01-01 00:00:"+ i +"');");
 		}
+
+
 		//BunryouTBのデータ
 		out.println("insert into BunryouTB values (1,1,3,1);");
 		out.println("insert into BunryouTB values (1,2,4,1);");
@@ -117,6 +134,7 @@ public class CreateDataServlet extends HttpServlet {
 				}
 			}
 		}
+		*/
 
 		/*
 		out.println("<!DOCTYPE html>");

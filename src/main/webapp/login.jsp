@@ -21,7 +21,7 @@
 <div class="form-wrapper">
  <h1>LOGIN</h1>
 
-<form action="LoginServlet" name="loginform" method="post">
+<form action="LoginServlet" name="loginform" method="post" onSubmit="return false;">
   <input type="hidden" name="targetURI" value="<%= (String)session.getAttribute("targetURI") %>">
 
   <div class="form-item">
@@ -33,7 +33,7 @@
   </div>
 
   <div class="button-panel">
-   <input type="submit" class="button" title="Sign In" value="ログイン" onClick="func(this)">
+   <input type="button" class="button" title="Sign In" value="ログイン" onClick="func(this)">
   </div>
 
 </form>

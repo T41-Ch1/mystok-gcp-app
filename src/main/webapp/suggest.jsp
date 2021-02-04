@@ -47,7 +47,7 @@ ArrayList<Boolean> favoList = (ArrayList)(request.getAttribute("favoList"));
 <input type="hidden" name="recipeID" id="recipeIDform3">
 <input type="hidden" name="buttonType" value="favo">
 <input type="hidden" name="buttonState" value="on">
-<input type="hidden" name="buttonSize" value=350>
+<input type="hidden" name="buttonSize" value=35>
 </form>
 <form name="favoInsertForm" action="FavoInsertServlet" method="post" target="vessel">
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">

@@ -43,11 +43,13 @@ public class RecipeSuggestServlet extends HttpServlet {
 		Calendar cl = Calendar.getInstance();
 		cl.add(Calendar.DAY_OF_MONTH, -7); //1週間前の日付をセットする
 
-		String sql1 = "select RyouriID from RyouriTB where RyouriID not in"
+		String sql1 = "select RyouriID from RyouriTB where UserID in (?, 1) and RyouriID not in"
 				+ " (select distinct RyouriID from TabetaTB where UserID = ? and TabetaTime > ?)"
 				+ " order by rand() limit " + DATA_PER_PAGE;
 		String sql2 = "select RyouriID from RyouriTB order by rand() limit " + DATA_PER_PAGE * 2;
 		String sql3 = "select Ryourimei, ImageName from RyouriTB where RyouriID in (?";
+		for (int i = 1; i < DATA_PER_PAGE; i++) sql3 += ", ?";
+		sql3 += ") order by field (RyouriID, ?";
 		for (int i = 1; i < DATA_PER_PAGE; i++) sql3 += ", ?";
 		sql3 += ")";
 
@@ -69,7 +71,8 @@ public class RecipeSuggestServlet extends HttpServlet {
 					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql1)) {
 			prestmt.setInt(1, userID);
-			prestmt.setString(2, f.format(cl.getTime()));
+			prestmt.setInt(2, userID);
+			prestmt.setString(3, f.format(cl.getTime()));
 			System.out.println("レシピ提案SQL(料理ID): " + prestmt.toString());
 			try (ResultSet rs = prestmt.executeQuery()) {
 				while (rs.next()) {
@@ -111,7 +114,10 @@ public class RecipeSuggestServlet extends HttpServlet {
 				Connection conn = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 				PreparedStatement prestmt = conn.prepareStatement(sql3)) {
-			for (int i = 0; i < ryouriID.size(); i++) prestmt.setInt(i + 1, ryouriID.get(i));
+			for (int i = 0; i < ryouriID.size(); i++) {
+				prestmt.setInt(i + 1, ryouriID.get(i));
+				prestmt.setInt(i + 1 + ryouriID.size(), ryouriID.get(i));
+			}
 			System.out.println("レシピ提案SQL(料理名、画像名):" + prestmt.toString());
 			try (ResultSet rs = prestmt.executeQuery()) {
 				while (rs.next()) {

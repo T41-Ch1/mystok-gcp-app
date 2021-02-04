@@ -56,13 +56,23 @@ if (recipeID > 0) servletName = "RecipeUpdateServlet";
 <main class="main">
 
 <div class="edgebox">
+<%
+if (recipeID > 0) {
+%>
+<h1>レシピ編集画面</h1>
+<%
+} else {
+%>
 <h1>レシピ登録画面</h1>
+<%
+}
+%>
 <input type="button" onclick="javascript:send('MypageServlet')" class="btnn" value="マイページへ戻る">
 </div>
 <div class="border"></div>
 
 <form name="recipeRegisterForm" action="<%= servletName %>" method="post"
-enctype="multipart/form-data" onsubmit="return false;" id="recipeRegisterForm">
+enctype="multipart/form-data" onSubmit="return false;" id="recipeRegisterForm">
 <!-- 誤Enterに反応しないようにする -->
 <datalist id="syokuzaikanalist">
 <%
@@ -95,7 +105,7 @@ for (int i = 0; i < syokuzaikanalist.size(); i++) out.println("<option value=\""
 </div>
 <!--写真右側の必要材料入力開始-->
 <div id="syokuzaiborder">
-<h2 style="text-align: center;">必要な材料</h2>
+<h2 style="text-align: center;">材料(1人前)</h2>
 
 <div id="syokuzaicontainer">
 <%
@@ -190,11 +200,6 @@ if (recipeID > 0) btnTxt = "レシピ編集決定";
 
 </form>
 
-<button onclick="javascript:deletebutton(<%= recipeID %>);" class="dbox">
-     <font size="4">マイレシピの削除</font>
-     <img src="images/dustbox.png" alt="マイレシピ削除ボタン" width="30" height="30">
-</button>
-
 </main>
 </div>
 </div>
@@ -204,6 +209,12 @@ if (recipeID > 0) btnTxt = "レシピ編集決定";
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
 <input type="hidden" name="recipeID" id="recipeIDDeleteForm">
 </form>
+
+<br>
+<br>
+<button onclick="javascript:deletebutton(<%= recipeID %>);" class="dbox">
+ ×マイレシピ削除
+</button>
 
 <script>
 var sendflag = false;

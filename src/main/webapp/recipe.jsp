@@ -123,7 +123,7 @@ function func2(btn) {
 
 <!--写真右側の必要材料入力開始-->
 <div style=" padding:10px; border-radius: 10px; border: 3px dotted #ffb6c1;width:300px;margin-left:auto;margin-right:100px;">
-	<h2 style="text-align:center">必要な材料</h2><!-- 必要な材料を書く場所 -->
+	<h2 style="text-align:center">材料(1人前)</h2><!-- 必要な材料を書く場所 -->
 <%
 for (int i = 0; i < bunryouList.size(); i++) {
 	if (bunryouList.get(i)[1].equals("0.00")) {

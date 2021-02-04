@@ -93,22 +93,18 @@ span {
   margin-bottom: 35px;
 }
 
-.dbox {
-  height: 36px;
-  margin-top: 70px;
-  margin-right: 35px;
-}
 
-.tbtnn {
+.bt22 {
   text-align: center;
   font-family: 'Roboto Slab', serif;
-  display: block;
   font-size: 24px;
   font-weight: bold;
 }
 
+
+
 .border {
-  border-bottom: 3px solid #a9a9a9;
+  border-bottom: 2px solid #a9a9a9;
 }
 
 .rtitle {
@@ -243,7 +239,7 @@ textarea {
 .btnn {
   margin-top: 5px;
   width: 180px;
-  height: 32px;
+  height: 38px;
   font-size: 18px;
   text-align: center;
   background: #ffedab;
@@ -263,25 +259,54 @@ textarea {
   transition: 0.4s;
 }
 
+.bt22 input[type="button"] {
+ text-align: center;
+}
+
 .tbtnn {
   width: 320px;
   height: 60px;
-  margin-top: 30px;
+  margin-top: 50px;
   font-size: 32px;
   text-align: center;
-  background: #ffedab;
+  background: #c8fac8;
   color: #333;
   cursor: pointer;
   font-family: serif;
   font-weight: bold;;
   position: relative;
-  border-radius: 27px;
+  border-radius: 100px;
   box-shadow: 0 2px 6px rgba(51,48,0,0.2);
 }
 
 .tbtnn:hover {
   color: #333;
-  background-color: #fcc800;
+  background-color: #98fb98;
+  box-shadow: 0 2px 6px rgba(55,55,55,0.3);
+  transition: 0.4s;
+}
+
+
+
+.dbox {
+  margin-top: 5px;
+  width: 240px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  background: #ffb499;
+  color: #333;
+  cursor: pointer;
+  font-family: serif;
+  font-weight: bold;;
+  position: relative;
+  border-radius: 100px;
+  box-shadow: 0 2px 6px rgba(51,48,0,0.2);
+}
+
+.dbox:hover {
+  color: #333;
+  background-color: #ff5c57;
   box-shadow: 0 2px 6px rgba(55,55,55,0.3);
   transition: 0.4s;
 }

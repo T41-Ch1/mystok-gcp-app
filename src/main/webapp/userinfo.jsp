@@ -31,7 +31,7 @@ if (!Util.checkAuth(request, response)) return;
   <h1 class="h1ti">アカウント名変更</h1>
  <div class="border"></div>
 
-<form action="UserUpdateServlet" method="post" name="userUpdateForm1" onSubmit="return nameCheck();">
+<form action="UserUpdateServlet" method="post" name="userUpdateForm1" onSubmit="return false;">
   <input type="hidden" name="mode" value="namechange">
   <div class="form-item">
    <input type="text" id="nameNew" name="nameNew" maxlength=15 required placeholder=" 希望のアカウント名を入力" value="<%= request.getRemoteUser() %>" onChange="clearIcon()">
@@ -46,11 +46,11 @@ if (!Util.checkAuth(request, response)) return;
  </div>
 
  <div class="form-item">
-   <input type="password" name="passwordOld" minlength=6 placeholder="　現パスワードを入力">
+   <input type="password" name="passwordOld" placeholder="　現パスワードを入力">
  </div>
 
  <div class="button-panel">
-  <input type="submit" class="button" title="アカウント名変更" value="アカウント名を変更する">
+  <input type="button" class="button" title="アカウント名変更" value="アカウント名を変更する" onClick="return nameCheck();">
  </div>
 </form>
 <div class="form-footer"></div>
@@ -60,22 +60,22 @@ if (!Util.checkAuth(request, response)) return;
 <div class="form-wrapper">
   <h1 class="h1ti">パスワード変更</h1>
  <div class="border"></div>
-<form action="UserUpdateServlet" method="post" name="userUpdateForm2" onSubmit="return passCheck();">
+<form action="UserUpdateServlet" method="post" name="userUpdateForm2" onSubmit="return false;">
  <input type="hidden" name="mode" value="passchange">
  <div class="form-item">
-  <input type="password" id="passOld" name="passwordOld" minlength=6 placeholder="　現パスワードを入力">
+  <input type="password" id="passOld" name="passwordOld" placeholder="　現パスワードを入力">
  </div>
 
  <div class="form-item">
-  <input type="password" id="passNew1" name="passwordNew" minlength=6 placeholder="　新パスワードを入力">
+  <input type="password" id="passNew1" name="passwordNew" placeholder="　新パスワードを入力">
  </div>
 
  <div class="form-item">
-  <input type="password" id="passNew2" name="passwordNew2" minlength=6 placeholder="　新パスワードを入力(確認)">
+  <input type="password" id="passNew2" name="passwordNew2" placeholder="　新パスワードを入力(確認)">
  </div>
 
  <div class="button-panel">
-  <input type="submit" class="button" title="パスワード変更" value="パスワードを変更する">
+  <input type="button" class="button" title="パスワード変更" value="パスワードを変更する" onClick="return passCheck();">
  </div>
 </form>
  <div class="form-footer"></div>
@@ -104,6 +104,9 @@ function passCheck() {
 	if (document.getElementById('passNew1').value == document.getElementById('passNew2').value) {
 		if (document.getElementById('passNew1').value == document.getElementById('passOld').value) {
 			alert('パスワードが変更されていません、入力し直してください');
+			return false;
+		} else if (document.getElementById('passNew1').value.length < 5) {
+			alert('パスワードは6文字以上にしてください');
 			return false;
 		} else if (!sendflag) document.userUpdateForm2.submit();
 	} else {

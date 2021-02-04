@@ -22,7 +22,7 @@
   <h1>新規登録</h1>
  <div class="border"></div>
 
-  <form action="UserRegisterServlet" name="registerform" method="post" onSubmit="func()">
+  <form action="UserRegisterServlet" name="registerform" method="post" onSubmit="return false;">
 
     <div class="form-item">
       <input type="text" id="nameNew" name="name" required maxlength=15
@@ -38,15 +38,15 @@
   </div>
 
     <div class="form-item">
-     <input type="password" name="password" minlength=6 placeholder="　希望のパスワード">
+     <input type="password" name="password" placeholder="　希望のパスワード">
     </div>
 
     <div class="form-item">
-     <input type="password" name="password" minlength=6 placeholder="　希望のパスワード(確認用)">
+     <input type="password" name="password" placeholder="　希望のパスワード(確認用)">
     </div>
 
     <div class="button-panel">
-      <input type="submit" name="submitbtn" class="button" title="Sign In" value="新規登録をする">
+      <input type="button" class="button" title="Sign In" value="新規登録をする" onClick="func(this);">
     </div>
 
   </form>
@@ -56,10 +56,15 @@
 </div>
 
 <script>
-//アカウント名重複チェック 1文字以上であるかもチェックする
+//アカウント名重複チェック 1文字以上であるか、使用できない文字を含んでいないかもチェックする
+var regexp = /&|<|>|\"|\'/;
 function dupCheck(btn) {
 	if (document.getElementById('nameNew').value.length == 0) {
 		alert('名前が入力されていません');
+		return false;
+	}
+	if (regexp.test(document.getElementById('nameNew').value)) {
+		alert('&、<、>、\"、\'は使用できません');
 		return false;
 	}
 	btn.disabled = true;
@@ -79,14 +84,22 @@ function clearIcon() {
 </form>
 
 <script>
-//二度押し防止機能
+//二度押し防止機能 使用できない文字を含んでいないかもチェックする
 var sendflag = false;
-function func() {
-  if (!sendflag) {
-	  sendflag = true;
-	  document.form.submitbtn.disabled = true;
-	  document.registerform.submit();
-  }
+function func(btn) {
+	if (regexp.test(document.getElementById('nameNew').value)) {
+		alert('&、<、>、\"、\'は使用できません');
+		return false;
+	}
+	if (document.getElementById('nameNew').value.length < 6) {
+		alert('パスワードは6文字以上にしてください');
+		return false;
+	}
+	if (!sendflag) {
+		sendflag = true;
+		btn.disabled = true;
+		document.registerform.submit();
+	}
 }
 </script>
 
