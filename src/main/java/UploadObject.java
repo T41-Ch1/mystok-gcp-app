@@ -27,9 +27,10 @@ public class UploadObject {
     //String projectId, String bucketName, String objectName, String filePath
     // The ID of your GCP project(環境変数から入手)
     String projectId = System.getenv("PROJECT_ID");
-
+    System.out.println("値を環境変数PROJECT_IDから入手完了");
     // The ID of your GCS bucket(環境変数から入手)
     String bucketName = System.getenv("BUCKET_NAME");
+    System.out.println("値を環境変数BUCKET_NAMEDら入手完了");
 
     // The ID of your GCS object
     //String objectName = objectName;

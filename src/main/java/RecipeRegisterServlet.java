@@ -200,6 +200,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                         String imagePath = imageFolderPath + "/" +name;
 
                         if(!(name.endsWith(".jpg"))) {
+				System.out.println("画像変換処理の要不要判定True");
 
                                 String imageOutputPath = imageFolderPath + "/" + imageName + ".jpg";
                                 ImageConverter ic = new ImageConverter();
@@ -215,17 +216,23 @@ public class RecipeRegisterServlet extends HttpServlet {
 
                         //ImageをCloudStorageへUploadする
                         //第一引数は"アップロード後の名前",第二引数は"アップロード対象ファイルへの絶対パス"
+			System.out.println("画像うｐ開始");
                         UploadObject uo = new UploadObject();
                         uo.uploadObject(imageName + ".jpg",imagePath);
+			System.out.println("画像うｐ完了");
 
                         //jpg形式の画像ファイルをCloudStorageにアップロード後、コンテナから削除
+			System.out.println("うｐ画像をlocalから削除開始");
                         File JpgImage = new File(imagePath);
                         JpgImage.delete();
+			System.out.println("うｐ画像をlocalから削除完了");
 
                         //DBにCloudStorageへアップロードした画像のImageNameをInsertする
+                        System.out.println("画像名をDBに挿入開始");
+
 			try (
                                 Connection conn = DriverManager.getConnection(
-                                        "jdbc:mysql://127.0.0.1:3306/mystok?serverTimezone=JST","root","password");
+                                        "jdbc:mysql://127.0.0.1:3306/mystok?serverTimezone=JST","mystok","mySqlStok");
                                 PreparedStatement prestmt = conn.prepareStatement(sql4)) {
                                 prestmt.setString(1, imageName);
                                 System.out.println("料理登録SQL(料理画像名):" + prestmt.toString());
@@ -235,9 +242,11 @@ public class RecipeRegisterServlet extends HttpServlet {
                         }
                         System.out.println("料理登録SQL(料理画像名)完了");
                 } else {
+			System.out.println("画像うｐ判定False");
                         //DBにNoImage用のImageNameをInsertする
                         imageName = "noimage.jpg";
 
+			System.out.println("画像名をDBに挿入開始");
                         try (
                                 Connection conn = DriverManager.getConnection(
                                         "jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
