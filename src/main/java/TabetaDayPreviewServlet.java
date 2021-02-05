@@ -85,7 +85,8 @@ public class TabetaDayPreviewServlet extends HttpServlet {
 			try (ResultSet rs = prestmt.executeQuery()) {
 				if (rs.next()) {
 					ryourimei = rs.getString("Ryourimei");
-					imageName = rs.getString("imageName");
+					if (rs.getString("ImageName") == null) imageName = "noimage.jpg"; //条件を満たす画像名を格納
+					else imageName = rs.getString("ImageName"); //条件を満たす画像名を格納
 					System.out.println("レシピプレビューSQL完了");
 					System.out.println("レシピ名:" + ryourimei + ", 画像名: " + imageName);
 					request.setAttribute("ryourimei", ryourimei);

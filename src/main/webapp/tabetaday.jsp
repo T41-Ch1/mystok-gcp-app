@@ -311,7 +311,7 @@ function pushpreview(e) {
 }
 function previewbutton(btn) {
 	if (<%= recipeID.size() %> == 5) {
-		alert('この日の食べた押下数の上限です。');
+		alert('この日の食べた登録数の上限です。');
 	} else if (<%= Integer.parseInt(year + month + day) %> > <%= Integer.parseInt(now) %>) {
 		alert('予め食べたを登録しておくことは出来ません。');
 	} else if (document.getElementById('previewRecipeID').value.length == 0) {

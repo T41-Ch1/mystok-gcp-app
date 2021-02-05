@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,7 +29,8 @@ public class TabetaDeleteServlet extends HttpServlet {
 		if (userName == null) userID = 0;
 		else userID = (int)session.getAttribute("auth.userid");
 		int recipeID = Integer.parseInt(request.getParameter("recipeID"));
-		String sql = "delete from TabetaTB where UserID = ? and RyouriID = ?";
+		SimpleDateFormat fDay = new SimpleDateFormat("yyyyMMdd");
+		String sql = "delete from TabetaTB where UserID = ? and RyouriID = ? and date_format(TabetaTB.TabetaTime, '%Y%m%d') = '" + fDay.format(new Date()) + "'";
 
 		request.setAttribute("recipeID", recipeID);
 		request.setAttribute("buttonType", request.getParameter("buttonType"));

@@ -76,9 +76,10 @@ String input = (String)request.getAttribute("input"); //検索窓に表示する
     </form>
   <!--検索窓終了-->
 
-<div class ="titlebox">
-  <div class ="title"><%= recipe_name %></div>
-<div class ="iconbutton">
+<div class="titlebox">
+  <div class="title"><%= recipe_name %></div>
+  <div class="recipeid">(ID:<%= recipeID %>)</div>
+<div class="iconbutton">
 <%
 String face = "";
 if (tabeta) face = "aceat.png";

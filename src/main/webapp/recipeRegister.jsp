@@ -2,19 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="pac1.func.Util" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=11">
-<title>レシピコンシェル｜レシピ登録</title>
-<link href="CSS/KondateKanri.css" rel="stylesheet">
-<link rel="icon" href="images/fav32.ico">
-</head>
-<!--body開始-->
-<body>
-<div id="wrapper">
-<jsp:include page="header.jsp" /><!-- ヘッダー部分 -->
+
 <%
 //認証チェック
 if (!Util.checkAuth(request, response)) return;
@@ -50,6 +38,29 @@ if (recipeID > 0) {
 String servletName = "RecipeRegisterServlet";
 if (recipeID > 0) servletName = "RecipeUpdateServlet";
 %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=11">
+<%
+if (recipeID > 0) {
+%>
+<title>レシピコンシェル｜レシピ編集</title>
+<%
+} else {
+%>
+<title>レシピコンシェル｜レシピ登録</title>
+<%
+}
+%>
+<link href="CSS/KondateKanri.css" rel="stylesheet">
+<link rel="icon" href="images/fav32.ico">
+</head>
+<!--body開始-->
+<body>
+<div id="wrapper">
+<jsp:include page="header.jsp" /><!-- ヘッダー部分 -->
 
 <div id="wrap" class="clearfix">
 <div class="content">
@@ -87,7 +98,6 @@ for (int i = 0; i < syokuzaikanalist.size(); i++) out.println("<option value=\""
   size="600" maxlength=30 required value="<%= recipe_name %>"
   placeholder="【ここにレシピ名を入力】例)肉じゃが">
 </div>
-
 
 <h2 class="rtitle2">料理名のふりがな：(最大50文字)</h2>
 <div class="titlebox2">
@@ -188,6 +198,7 @@ if (recipeID > 0) {
 
 <!--下側のレシピ文章終了 -->
 
+<div class="bt22">
 <%
 String btnTxt = "レシピ登録決定";
 if (recipeID > 0) btnTxt = "レシピ編集決定";
@@ -198,7 +209,20 @@ if (recipeID > 0) btnTxt = "レシピ編集決定";
 <input type="hidden" name="tukurikataTotal" id="tukurikataTotal">
 <input type="submit" value="不可視ボタン" style="display:none;" name=submitBtn><!-- formのエラーチェック用 -->
 
+<%
+if (recipeID > 0) {
+%>
+<br>
+<br>
+<button onclick="javascript:deletebutton(<%= recipeID %>);" class="dbox">
+ ×マイレシピ削除
+</button>
+<%
+}
+%>
+</div>
 </form>
+
 
 </main>
 </div>
@@ -209,12 +233,6 @@ if (recipeID > 0) btnTxt = "レシピ編集決定";
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
 <input type="hidden" name="recipeID" id="recipeIDDeleteForm">
 </form>
-
-<br>
-<br>
-<button onclick="javascript:deletebutton(<%= recipeID %>);" class="dbox">
- ×マイレシピ削除
-</button>
 
 <script>
 var sendflag = false;
