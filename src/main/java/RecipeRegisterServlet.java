@@ -66,6 +66,7 @@ public class RecipeRegisterServlet extends HttpServlet {
 
 		Part part = request.getPart("pic");
 		if (part.getSize() > 0) {
+		//Image-CloudStorage(1)
 			name = this.getFileName(part);
 	        //C:\Users\197029\Documents\pleiades\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\mystok\WEB-INFにuploadedフォルダを手動で作ること
 	        part.write(getServletContext().getRealPath("/WEB-INF/uploaded") + "/" + name);
@@ -185,6 +186,7 @@ public class RecipeRegisterServlet extends HttpServlet {
 		}
 		System.out.println("料理登録SQL(分量)完了");
 
+		//Image-CloudStorage(?)
 		//画像がアップロードされたか判定
                 if (part.getSize() > 0) {
 
