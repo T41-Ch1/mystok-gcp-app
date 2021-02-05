@@ -1,4 +1,4 @@
-package mystok;
+package pac1;
 
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;

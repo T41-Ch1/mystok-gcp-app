@@ -3,6 +3,8 @@ package pac1;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+//Image-CloudStorage(1)
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -64,7 +66,7 @@ public class RecipeRegisterServlet extends HttpServlet {
 
 		Part part = request.getPart("pic");
 		if (part.getSize() > 0) {
-			String name = this.getFileName(part);
+			name = this.getFileName(part);
 	        //C:\Users\197029\Documents\pleiades\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\mystok\WEB-INFにuploadedフォルダを手動で作ること
 	        part.write(getServletContext().getRealPath("/WEB-INF/uploaded") + "/" + name);
 		}
