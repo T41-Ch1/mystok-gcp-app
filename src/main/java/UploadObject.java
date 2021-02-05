@@ -7,7 +7,7 @@ import com.google.cloud.storage.StorageOptions;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import java.lang.System;
 
 //UploadObjectの使い方
 //
@@ -25,11 +25,11 @@ import java.nio.file.Paths;
 public class UploadObject {
   public static void uploadObject(String objectName, String filePath) throws IOException {
     //String projectId, String bucketName, String objectName, String filePath
-    // The ID of your GCP project
-    String projectId = "my-kubernetes-test-20200822";
+    // The ID of your GCP project(環境変数から入手)
+    String projectId = System.getenv("PROJECT_ID");
 
-    // The ID of your GCS bucket
-    String bucketName = "mystok-bucket";
+    // The ID of your GCS bucket(環境変数から入手)
+    String bucketName = System.getenv("BUCKET_NAME");
 
     // The ID of your GCS object
     //String objectName = objectName;
