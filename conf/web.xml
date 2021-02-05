@@ -4712,6 +4712,7 @@
   <!-- here, so be sure to include any of the default values that you wish  -->
   <!-- to use within your application.                                       -->
 
+  <!--
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>
@@ -4783,6 +4784,6 @@
         <error-code>511</error-code>
         <location>/error50x.jsp</location>
     </error-page>
-
+  -->
 
 </web-app>
