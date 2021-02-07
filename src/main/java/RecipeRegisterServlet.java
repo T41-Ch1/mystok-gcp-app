@@ -185,7 +185,7 @@ public class RecipeRegisterServlet extends HttpServlet {
 		System.out.println("料理登録SQL(分量)完了");
 
 		//Image-CloudStorage(?)
-		String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + ryouriID;
+		String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + String.valueOf(ryouriID);
 		//画像がアップロードされたか判定
                 if (part.getSize() > 0) {
 
