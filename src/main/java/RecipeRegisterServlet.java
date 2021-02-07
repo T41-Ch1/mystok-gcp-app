@@ -48,12 +48,10 @@ public class RecipeRegisterServlet extends HttpServlet {
 		List<String> syokuzaikanalist = new ArrayList<>();
 		String[] recipeBunryouRecord = new String[2];
 		ArrayList<String[]> recipeBunryouList = new ArrayList<>();
-		int ryouriID = 0;
+		int ryouriID;
 		String sql1 = "";
 		String sql2 = "";
 		String sql3 = "";
-		//Image-CloudStorage(1)
-		String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + ryouriID;
 		final String SERVLET_PATH = "RecipeServlet";
 
 		//認証チェック
@@ -252,6 +250,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                         try (
                                 Connection conn = DriverManager.getConnection(
                                         "jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
+                		String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + ryouriID;
                                 PreparedStatement prestmt = conn.prepareStatement(sql4)) {
                                 prestmt.setString(1, imageName);
                                 System.out.println("料理登録SQL(料理画像名):" + prestmt.toString());
