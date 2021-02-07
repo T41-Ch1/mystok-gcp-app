@@ -7,7 +7,7 @@ if(request.isUserInRole("user")) {
 %>
 <header>
  <div class="logo">
-  <a href="javascript:sendHeader('top.jsp')"><img src="images/logo.png" alt="Logo"></a>
+  <a href="javascript:sendHeader('top.jsp')"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/logo.png" alt="Logo"></a>
  </div>
   <nav>
    <ul class="global-nav">
@@ -21,7 +21,7 @@ if(request.isUserInRole("user")) {
 %>
 <header>
  <div class="logo">
-  <a href="javascript:sendHeader('top.jsp')"><img src="images/logo.png" alt="Logo"></a>
+  <a href="javascript:sendHeader('top.jsp')"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/logo.png" alt="Logo"></a>
  </div>
   <nav>
    <ul class="global-nav">
