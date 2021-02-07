@@ -185,6 +185,7 @@ public class RecipeRegisterServlet extends HttpServlet {
 		System.out.println("料理登録SQL(分量)完了");
 
 		//Image-CloudStorage(?)
+		String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + ryouriID;
 		//画像がアップロードされたか判定
                 if (part.getSize() > 0) {
 
@@ -230,7 +231,6 @@ public class RecipeRegisterServlet extends HttpServlet {
                         //DBにCloudStorageへアップロードした画像のImageNameをInsertする
                         System.out.println("画像名をDBに挿入開始");
 
-			String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + ryouriID;
 
 			try (
                                 Connection conn = DriverManager.getConnection(
