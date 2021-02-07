@@ -299,7 +299,8 @@ function favobutton(i, j) {
 %>
          <div class="recipebox">
            <div class="recipeimage">
-            <img alt="<%= recipeTitle.get(i) %>" width="200" height="200" src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/<%= imageName.get(i) %>" class="recipetori">
+	    <!-- Image-CloudStorage(1) -->
+            <img alt="<%= recipeTitle.get(i) %>" width="200" height="200" src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageName.get(i) %>" class="recipetori">
            </div>
            <div class ="recipe-text">
             <h2 class="recipetitle">

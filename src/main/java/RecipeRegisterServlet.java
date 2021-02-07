@@ -220,7 +220,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                         //第一引数は"アップロード後の名前",第二引数は"アップロード対象ファイルへの絶対パス"
 			System.out.println("画像うｐ開始");
                         UploadObject uo = new UploadObject();
-                        uo.uploadObject(imageName + ".jpg",imagePath);
+                        uo.uploadObject(imageName + ".jpg","images/RyouriPIC/"+imagePath);
 			System.out.println("画像うｐ完了");
 
                         //jpg形式の画像ファイルをCloudStorageにアップロード後、コンテナから削除
