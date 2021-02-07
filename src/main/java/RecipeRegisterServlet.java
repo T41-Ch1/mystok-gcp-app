@@ -48,7 +48,7 @@ public class RecipeRegisterServlet extends HttpServlet {
 		List<String> syokuzaikanalist = new ArrayList<>();
 		String[] recipeBunryouRecord = new String[2];
 		ArrayList<String[]> recipeBunryouList = new ArrayList<>();
-		int ryouriID;
+		int ryouriID = 0;
 		String sql1 = "";
 		String sql2 = "";
 		String sql3 = "";
