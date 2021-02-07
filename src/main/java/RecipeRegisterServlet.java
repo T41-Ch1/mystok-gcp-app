@@ -230,6 +230,8 @@ public class RecipeRegisterServlet extends HttpServlet {
                         //DBにCloudStorageへアップロードした画像のImageNameをInsertする
                         System.out.println("画像名をDBに挿入開始");
 
+			String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + ryouriID;
+
 			try (
                                 Connection conn = DriverManager.getConnection(
                                         "jdbc:mysql://127.0.0.1:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
@@ -250,7 +252,6 @@ public class RecipeRegisterServlet extends HttpServlet {
                         try (
                                 Connection conn = DriverManager.getConnection(
                                         "jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
-                		String sql4 = "insert into RyouriTB (ImageName) values (?) where ryouriID = " + ryouriID;
                                 PreparedStatement prestmt = conn.prepareStatement(sql4)) {
                                 prestmt.setString(1, imageName);
                                 System.out.println("料理登録SQL(料理画像名):" + prestmt.toString());
