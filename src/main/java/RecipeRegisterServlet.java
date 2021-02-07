@@ -236,7 +236,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                                 Connection conn = DriverManager.getConnection(
                                         "jdbc:mysql://127.0.0.1:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
                                 PreparedStatement prestmt = conn.prepareStatement(sql4)) {
-                                prestmt.setString(1, imageName);
+                                prestmt.setString(1, imageName + ".jpg");
                                 System.out.println("料理登録SQL(料理画像名):" + prestmt.toString());
                                 prestmt.executeUpdate();
                         } catch (Exception e) {
@@ -253,7 +253,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                                 Connection conn = DriverManager.getConnection(
                                         "jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
                                 PreparedStatement prestmt = conn.prepareStatement(sql4)) {
-                                prestmt.setString(1, imageName);
+                                prestmt.setString(1, imageName + ".jpg");
                                 System.out.println("料理登録SQL(料理画像名):" + prestmt.toString());
                                 prestmt.executeUpdate();
                         } catch (Exception e) {
