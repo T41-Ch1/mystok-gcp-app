@@ -61,7 +61,7 @@ if (ryouriID.size() > 0) {
   <div class ="recipebox">
    <div class ="recipeimage">
     <img alt="<%= ryourimei.get(i) %>" width="200" height="200"
-     src="images/RyouriPIC/<%= imageName.get(i) %>" class="recipetori">
+     src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageName.get(i) %>" class="recipetori">
    </div>
   <div class ="recipe-text">
    <h2 class="recipetitle" style="margin-block-end: 0.83em;">
@@ -71,13 +71,13 @@ if (ryouriID.size() > 0) {
       if (tabetaList.get(i)) face = "aceat.png";
       else face = "bceat.png";
       %>
-      <a href="javascript:tabetabutton(<%= i %>, <%= ryouriID.get(i) %>)" class="face<%= ryouriID.get(i) %>"><img src="images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
+      <a href="javascript:tabetabutton(<%= i %>, <%= ryouriID.get(i) %>)" class="face<%= ryouriID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
       <%
       String heart = "";
       if (favoList.get(i)) heart = "pink_heart.png";
       else heart = "clear_heart.png";
       %>
-      <a href="javascript:favobutton(<%= i %>, <%= ryouriID.get(i) %>)" class="heart<%= ryouriID.get(i) %>"><img src="images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a>
+      <a href="javascript:favobutton(<%= i %>, <%= ryouriID.get(i) %>)" class="heart<%= ryouriID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a>
    </h2>
   <div class ="material">
     <div><%= syoukai.get(i) %></div>
@@ -94,9 +94,9 @@ if (ryouriID.size() > 0) {
 		%>
   </div>
   <div class ="hennsaku">
-   <a href="javascript:editbutton(<%= ryouriID.get(i) %>)">レシピ編集<img src="images/pen.png"
+   <a href="javascript:editbutton(<%= ryouriID.get(i) %>)">レシピ編集<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/pen.png"
        alt="レシピ編集ボタン" width="30" height="30"></a>
-   <a href="javascript:deletebutton(<%= ryouriID.get(i) %>)">レシピ削除<img src="images/dustbox.png"
+   <a href="javascript:deletebutton(<%= ryouriID.get(i) %>)">レシピ削除<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/dustbox.png"
        alt="レシピ削除ボタン" width="30" height="30"></a>
   </div>
 

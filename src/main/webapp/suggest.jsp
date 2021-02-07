@@ -149,11 +149,11 @@ for (int i = 0; i < DATA_PER_PAGE; i++) {
 	else heart = "clear_heart.png";
 %>
     <li><a class="recipetitlelink" href="javascript:send('RecipeServlet?recipeID=<%= recipeID.get(i) %>')">
-        <img src= "images/RyouriPIC/<%= imageName.get(i) %>" alt="<%= ryourimei.get(i) %>" width="200" height="200"><br>
+        <img src= "https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageName.get(i) %>" alt="<%= ryourimei.get(i) %>" width="200" height="200"><br>
         <span class="titletitle"><%= ryourimei.get(i) %></span></a><br>
-        <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="images/<%= face %>"
+        <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>"
            alt="今日食べたボタン" width="35" height="35"></a>
-        <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="images/<%= heart %>"
+        <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>"
            alt="お気に入りボタン" width="35" height="35"></a>
     </li>
 <%
@@ -170,7 +170,7 @@ for (int i = 0; i < DATA_PER_PAGE; i++) {
     <button onclick="javascript:send('RecipeSuggestServlet')" class="btnn">もう一度提案する</button>を<br>
     押してください。<br></span></h2>
   </div>
-   <img src="images/date18test.PNG" alt="コンシェルジュ"><br><br>
+   <img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/date18test.PNG" alt="コンシェルジュ"><br><br>
   <p>※1週間以上食べてない料理の中から<br>　　ランダムに4件選んでいます</p>
  </div>
 

@@ -85,7 +85,7 @@ if (!Util.checkAuth(request, response)) return;
  <div class="content">
   <main class="main">
 
-  <h1><span><%= year %>年<%= month %>月<%= day %>日</span>の食べた履歴<span id="iconnotes">(<img src="images/aceat.png" alt="お気に入りボタン" width="35" height="35">は"今日"食べたレシピです)</span></h1>
+  <h1><span><%= year %>年<%= month %>月<%= day %>日</span>の食べた履歴<span id="iconnotes">(<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/aceat.png" alt="お気に入りボタン" width="35" height="35">は"今日"食べたレシピです)</span></h1>
 <!--レシピ情報-->
 
 <%
@@ -101,27 +101,27 @@ if (recipeID.size() > 0) {
 <div class="recipebox">
  <div class="recipeimage">
   <img alt="料理画像" width="200" height="200"
-     src="images/RyouriPIC/<%= imageName.get(i) %>" class="recipetori">
+     src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageName.get(i) %>" class="recipetori">
  </div>
   <div class ="recipe-text">
    <h2 class="recipetitle">
     <a class="recipetitlelink" href="javascript:send('RecipeServlet?recipeID=<%= recipeID.get(i) %>')"><%= ryourimei.get(i) %></a><br>
    </h2>
 
-   <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="images/<%= face %>"
+   <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>"
       alt="今日食べたボタン" width="35" height="35"></a>
-   <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="images/<%= heart %>"
+   <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>"
       alt="お気に入りボタン" width="35" height="35"></a>
   <div class ="hennsaku">
    <button onclick="javascript:delbutton(<%= recipeID.get(i) %>);" class="dbox">
      <font size="4">食べた履歴の削除</font>
-     <img src="images/dustbox.png" alt="食べた履歴削除ボタン" width="30" height="30">
+     <img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/dustbox.png" alt="食べた履歴削除ボタン" width="30" height="30">
    </button>
 <%
 		if (isMyRecipe.get(i)) {
 %>
    <div class ="hennsaku">
-   <a href="javascript:editbutton(<%= recipeID.get(i) %>)">レシピ編集<img src="images/pen.png"
+   <a href="javascript:editbutton(<%= recipeID.get(i) %>)">レシピ編集<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/pen.png"
        alt="レシピ編集ボタン" width="30" height="30"></a>
   </div>
 <%

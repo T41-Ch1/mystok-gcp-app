@@ -9,7 +9,7 @@
 </head>
 <body>
 <script>
-if (<%= request.getAttribute("result") %>) window.parent.document.getElementById('kekkaicon').innerHTML = '<img src="images/out.png" alt="OUT" width="24" height="24">';
+if (<%= request.getAttribute("result") %>) window.parent.document.getElementById('kekkaicon').innerHTML = '<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/out.png" alt="OUT" width="24" height="24">';
 else window.parent.document.getElementById('kekkaicon').innerHTML = '<img src="images/ok.png" alt="OK" width="24" height="24">';
 </script>
 </body>

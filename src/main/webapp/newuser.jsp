@@ -34,7 +34,7 @@
   </div>
 
   <div id="kekkaicon" class="kekka">
-   <img src="images/unchecked.png" alt="UNCHECKED" width="24" height="24">
+   <img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/unchecked.png" alt="UNCHECKED" width="24" height="24">
   </div>
 
     <div class="form-item">
@@ -73,7 +73,7 @@ function dupCheck(btn) {
 }
 //アカウント名のテキストボックスが変更されたら重複確認アイコンをデフォルトに戻す 重複チェックボタンを押せるようにする
 function clearIcon() {
-	document.getElementById('kekkaicon').innerHTML = '<img src="images/unchecked.png" alt="UNCHECKED" width="24" height="24">';
+	document.getElementById('kekkaicon').innerHTML = '<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/unchecked.png" alt="UNCHECKED" width="24" height="24">';
 	document.getElementById('dupchkbtn').disabled = false;
 }
 </script>

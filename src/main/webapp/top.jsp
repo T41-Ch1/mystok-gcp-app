@@ -87,7 +87,7 @@
 
     <div class="bleftbox">
       <p class="bsetumeil"><span class="underline">消費したい食材で検索</span><br></p>
-      <div class="bleftboximg"><img src="images/left.png" alt="サイト説明"></div>
+      <div class="bleftboximg"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/left.png" alt="サイト説明"></div>
     </div>
 
 
@@ -97,7 +97,7 @@
 
     <div class="bcenterbox">
      <p class="bsetumei"><span class="underline">特に消費したい食材を<br>指定可能</span><br></p>
-     <img src="images/center.png" alt="サイト説明">
+     <img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/center.png" alt="サイト説明">
     </div>
 
     <div class="sand">
@@ -106,7 +106,7 @@
 
     <div class="brightbox">
       <p class="bsetumei"><span class="underline">選んだ食材の消費量が<br>多いレシピを優先表示</span><br></p>
-      <img src="images/right.png" alt="サイト説明">
+      <img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/right.png" alt="サイト説明">
     </div>
 
   </div>
@@ -127,7 +127,7 @@
     </p>
    </div>
    <div class ="cboximage"><br>
-    <img src="images/date18test.PNG" alt="コンシェルジュ">
+    <img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/date18test.PNG" alt="コンシェルジュ">
    </div>
   </div>
     <!--cboxが終了-->

@@ -85,7 +85,7 @@ String face = "";
 if (tabeta) face = "aceat.png";
 else face = "bceat.png";
 %>
-  <a href="javascript:tabetabutton()" class="face<%= recipeID %>"><img src="images/<%= face %>"
+  <a href="javascript:tabetabutton()" class="face<%= recipeID %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>"
    alt="今日食べたボタン" width="35" height="35"></a>
   <span style="padding-left: 8px;"></span>
 <%
@@ -93,12 +93,12 @@ String heart = "";
 if (favo) heart = "pink_heart.png";
 else heart = "clear_heart.png";
 %>
-  <a href="javascript:favobutton()" class="heart<%= recipeID %>"><img src="images/<%= heart %>"
+  <a href="javascript:favobutton()" class="heart<%= recipeID %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>"
    alt="お気に入りボタン" width="35" height="35"></a>
 <%
 if (isMyRecipe) {
 %>
-   <a href="javascript:func2(this);"><img src="images/pen.png"
+   <a href="javascript:func2(this);"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/pen.png"
     alt="レシピ編集ボタン" width="35" height="35" style="padding-left: 8px;"></a>
 <form method="post" name="updateForm" action="RecipeRegisterPageServlet">
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
@@ -118,7 +118,7 @@ function func2(btn) {
 
 
 <!-- 料理の写真 -->
-<img src="images/RyouriPIC/<%= imageName %>" alt="写真" width="45%" height="450" border="1" align="left" class="recipetori">
+<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageName %>" alt="写真" width="45%" height="450" border="1" align="left" class="recipetori">
 
 
 

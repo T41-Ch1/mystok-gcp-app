@@ -152,9 +152,9 @@ for (int i = 0; i < recipeID.size(); i++) {
 	if (favoList.get(i)) heart = "pink_heart.png";
 	else heart = "clear_heart.png";
 %>
-<div class="pic_frame"><li><a href="javascript:send('RecipeServlet?recipeID=<%= recipeID.get(i) %>')"><img src="images/RyouriPIC/<%= imageName.get(i) %>" alt="レシピページ遷移"><p><%= ryourimei.get(i) %></p></a></li>
-<a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="images/<%= face %>" alt="今日食べたボタン" width="20" height="20"></a>
-<a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="images/<%= heart %>" alt="お気に入りボタン" width="20" height="20"></a>
+<div class="pic_frame"><li><a href="javascript:send('RecipeServlet?recipeID=<%= recipeID.get(i) %>')"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageName.get(i) %>" alt="レシピページ遷移"><p><%= ryourimei.get(i) %></p></a></li>
+<a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>" alt="今日食べたボタン" width="20" height="20"></a>
+<a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>" alt="お気に入りボタン" width="20" height="20"></a>
 </div>
 <%
 }

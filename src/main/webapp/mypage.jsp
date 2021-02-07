@@ -46,7 +46,7 @@ ArrayList<Boolean> favoListTabeta = (ArrayList)(request.getAttribute("favoListTa
   <div class="title">
   <h1><span class="h1bold"><%= request.getRemoteUser() %>さんのマイページ</span></h1>
   <div class="gia">
-   <a href="javascript:sendA('userinfo.jsp')"><img src="images/config.png"
+   <a href="javascript:sendA('userinfo.jsp')"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/config.png"
     alt="会員情報変更" width="50" height="50" class="kaiinngia">
     <span class="hukidashi">会員情報の変更</span></a>
   </div>
@@ -55,13 +55,13 @@ ArrayList<Boolean> favoListTabeta = (ArrayList)(request.getAttribute("favoListTa
   <div class="abox">
 
     <div class="touroku">
-     <a href="javascript:sendA('MyRecipePageServlet')"><img src="images/cutlery.png"
+     <a href="javascript:sendA('MyRecipePageServlet')"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/cutlery.png"
         alt="MYレシピ管理" class="tourokupic"><br>
      <span>MYレシピ管理</span></a>
     </div>
 
     <div class="teiann">
-     <a href="javascript:sendA('RecipeSuggestServlet')"><img src="images/sebastian.png"
+     <a href="javascript:sendA('RecipeSuggestServlet')"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/sebastian.png"
         alt="レシピを提案" class="teiannpic"><br>
      <span>レシピ提案</span></a>
     </div>
@@ -72,7 +72,7 @@ ArrayList<Boolean> favoListTabeta = (ArrayList)(request.getAttribute("favoListTa
   <section id="okiniiri">
   <div class="edgebox">
     <h2 class="icon"><a href="javascript:sendA('FavoPageServlet')">お気に入り >></a></h2>
-    <h3><img src="images/pink_heart.png" alt="お気に入りボタン" width="25" height="25">でお気に入り登録</h3>
+    <h3><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/pink_heart.png" alt="お気に入りボタン" width="25" height="25">でお気に入り登録</h3>
   </div>
    <div class="border"></div>
 
@@ -84,20 +84,20 @@ if (recipeIDFavo.size() > 0) {
 	for (int i = 0; i < recipeIDFavo.size(); i++) {
 %>
     <li><a class="recipetitlelink" href="javascript:sendA('RecipeServlet?recipeID=<%= recipeIDFavo.get(i) %>')">
-      <img src="images/RyouriPIC/<%= imageNameFavo.get(i) %>" alt="<%= ryourimeiFavo.get(i) %>" width="200" height="200"><br>
+      <img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageNameFavo.get(i) %>" alt="<%= ryourimeiFavo.get(i) %>" width="200" height="200"><br>
       <span class="titletitle"><%= ryourimeiFavo.get(i) %></span></a><br>
 <%
 		String face = "";
 		if (tabetaListFavo.get(i)) face = "aceat.png";
 		else face = "bceat.png";
 %>
-      <a href="javascript:tabetabutton(<%= i %>, <%= recipeIDFavo.get(i) %>)" class="face<%= recipeIDFavo.get(i) %>"><img src="images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
+      <a href="javascript:tabetabutton(<%= i %>, <%= recipeIDFavo.get(i) %>)" class="face<%= recipeIDFavo.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
 <%
 		String heart = "";
 		if (favoListFavo.get(i)) heart = "pink_heart.png";
 		else heart = "clear_heart.png";
 %>
-      <a href="javascript:favobutton(<%= i %>, <%= recipeIDFavo.get(i) %>)" class="heart<%= recipeIDFavo.get(i) %>"><img src="images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a>
+      <a href="javascript:favobutton(<%= i %>, <%= recipeIDFavo.get(i) %>)" class="heart<%= recipeIDFavo.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a>
     </li>
 <%
 	}
@@ -120,7 +120,7 @@ if (recipeIDFavo.size() > 0) {
   <section id="rireki">
   <div class="edgebox">
     <h2 class="icon"><a href="javascript:sendA('TabetaPageServlet')">食べた履歴 >></a></h2>
-    <h3><img src="images/aceat.png" alt="お気に入りボタン" width="25" height="25">は"今日"食べたレシピ</h3>
+    <h3><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/aceat.png" alt="お気に入りボタン" width="25" height="25">は"今日"食べたレシピ</h3>
   </div>
    <div class="border"></div>
 <%
@@ -132,20 +132,20 @@ if (recipeIDFavo.size() > 0) {
 		tabetaTimeList.set(i, tabetaTimeList.get(i).substring(0, 10)); //"2021/01/20"の部分を切り出す
 %>
      <li><a class="recipetitlelink" href="javascript:sendA('RecipeServlet?recipeID=<%= recipeIDTabeta.get(i) %>')">
-       <img src= "images/RyouriPIC/<%= imageNameTabeta.get(i) %>" alt="<%= ryourimeiTabeta.get(i) %>" width="200" height="200"><br>
+       <img src= "https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageNameTabeta.get(i) %>" alt="<%= ryourimeiTabeta.get(i) %>" width="200" height="200"><br>
        <span class="titletitle"><%= ryourimeiTabeta.get(i) %></span></a><br>
 <%
 		String face = "";
 		if (tabetaListTabeta.get(i)) face = "aceat.png";
 		else face = "bceat.png";
 %>
-       <a href="javascript:tabetabutton(<%= recipeIDFavo.size() + i %>, <%= recipeIDTabeta.get(i) %>)" class="face<%= recipeIDTabeta.get(i) %>"><img src="images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
+       <a href="javascript:tabetabutton(<%= recipeIDFavo.size() + i %>, <%= recipeIDTabeta.get(i) %>)" class="face<%= recipeIDTabeta.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>" alt="今日食べたボタン" width="35" height="35"></a>
 <%
 		String heart = "";
 		if (favoListTabeta.get(i)) heart = "pink_heart.png";
 		else heart = "clear_heart.png";
 %>
-       <a href="javascript:favobutton(<%= recipeIDFavo.size() + i %>, <%= recipeIDTabeta.get(i) %>)" class="heart<%= recipeIDTabeta.get(i) %>"><img src="images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a><br>
+       <a href="javascript:favobutton(<%= recipeIDFavo.size() + i %>, <%= recipeIDTabeta.get(i) %>)" class="heart<%= recipeIDTabeta.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>" alt="お気に入りボタン" width="35" height="35"></a><br>
        <a href="TabetaPageServlet?year=<%= tabetaTimeList.get(i).substring(0, 4) %>&month=<%= tabetaTimeList.get(i).substring(5, 7) %>"><%= tabetaTimeList.get(i) %></a>
      </li>
 <%

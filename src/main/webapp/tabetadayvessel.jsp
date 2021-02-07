@@ -22,7 +22,7 @@ var previewHtml = '<div class="edgebox" style="display: flex; justify-content: s
 	+ '<input type="submit" name="updatebtn" value="OK" style="font-family: serif; font-size: 16px; width: 44px; height: 35px;">'
 	+ '</font>'
 	+ '</form>'
-	+ '<img src="images/RyouriPIC/<%= request.getAttribute("imageName") %>" alt="<%= request.getAttribute("ryourimei") %>" width="125" height="125">'
+	+ '<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= request.getAttribute("imageName") %>" alt="<%= request.getAttribute("ryourimei") %>" width="125" height="125">'
 	+ '</div>';
 var notfoundHtml = '<font size="5" face="serif">指定されたレシピが見つかりませんでした。</font>';
 if ('<%= request.getAttribute("logMessage") %>' == '' ) {

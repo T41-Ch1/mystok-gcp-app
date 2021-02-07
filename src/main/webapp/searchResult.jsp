@@ -311,19 +311,19 @@ function favobutton(i, j) {
               if (tabetaList.get(i)) face = "aceat.png";
               else face = "bceat.png";
               %>
-              <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="images/<%= face %>"
+              <a href="javascript:tabetabutton(<%= i %>, <%= recipeID.get(i) %>)" class="face<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= face %>"
                  alt="今日食べたボタン" width="35" height="35"></a>
               <%
               String heart = "";
               if (favoList.get(i)) heart = "pink_heart.png";
               else heart = "clear_heart.png";
               %>
-              <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="images/<%= heart %>"
+              <a href="javascript:favobutton(<%= i %>, <%= recipeID.get(i) %>)" class="heart<%= recipeID.get(i) %>"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/<%= heart %>"
                  alt="お気に入りボタン" width="35" height="35"></a>
               <%
               if (isMyRecipe.get(i)) {
               %>
-              <a href="javascript:editbutton(<%= recipeID.get(i) %>)"><img src="images/pen.png"
+              <a href="javascript:editbutton(<%= recipeID.get(i) %>)"><img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/pen.png"
                  alt="レシピ編集ボタン" width="35" height="35"></a>
               <%
               }
