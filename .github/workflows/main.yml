@@ -25,6 +25,9 @@ jobs:
           format: YYYYMMDD-HHmm
           utcOffset: "+09:00"
 
+      - name: Modify db_url and package_name
+        run: ./.github/scripts/cloud_storage_url.sh
+
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
