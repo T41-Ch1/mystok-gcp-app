@@ -291,9 +291,7 @@ function favobutton(i, j) {
 	}
 }
 </script>
-<%
-}
-%>
+
   </main>
  </div>
 </div>
