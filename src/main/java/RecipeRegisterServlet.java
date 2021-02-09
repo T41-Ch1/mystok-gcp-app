@@ -200,7 +200,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                         String imageFolderPath = "/usr/local/tomcat/webapps/mystok/WEB-INF/uploaded";
                         String imagePath = imageFolderPath + "/" +name;
 
-                        if(!(name.endsWith(".jpg"))) {
+                        if(!name.endsWith(".jpg")) {
 				System.out.println("The value of name is " + name);
 				System.out.println("画像変換処理の要不要判定True");
 
@@ -247,7 +247,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                 } else {
 			System.out.println("画像うｐ判定False");
                         //DBにNoImage用のImageNameをInsertする
-                        imageName = "noimage.jpg";
+                        imageName = "noimage";
 
 			System.out.println("画像名をDBに挿入開始");
                         try (
