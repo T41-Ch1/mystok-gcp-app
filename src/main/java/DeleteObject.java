@@ -18,10 +18,10 @@ import com.google.cloud.storage.StorageOptions;
 public class DeleteObject {
   public static void deleteObject(String objectName) {
     // The ID of your GCP project
-    String projectId = "my-kubernetes-test-20200822";
+    String projectId = "";
 
     // The ID of your GCS bucket
-    String bucketName = "mystok-bucket";
+    String bucketName = "";
 
     // The ID of your GCS object
     // String objectName = "your-object-name";
