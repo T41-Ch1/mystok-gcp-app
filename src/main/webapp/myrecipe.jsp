@@ -191,6 +191,9 @@ if (recipeNum > DATA_PER_PAGE) {
      }
    }
   </script>
+<%
+}
+%>
   <iframe id="cFrame" width=0 height=0 name="vessel" style="width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
 <form name="tabetaDeleteForm" action="TabetaDeleteServlet" method="post" target="vessel">
 <input type="hidden" name="userName" value="<%= request.getRemoteUser() %>">
