@@ -201,6 +201,7 @@ public class RecipeRegisterServlet extends HttpServlet {
                         String imagePath = imageFolderPath + "/" +name;
 
                         if(!(name.endsWith(".jpg"))) {
+				System.out.println("The value of name is " + name);
 				System.out.println("画像変換処理の要不要判定True");
 
                                 String imageOutputPath = imageFolderPath + "/" + imageName + ".jpg";
