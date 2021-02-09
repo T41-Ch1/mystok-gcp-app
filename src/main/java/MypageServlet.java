@@ -35,6 +35,7 @@ public class MypageServlet extends HttpServlet {
 		ArrayList<Boolean> tabetaListFavo = new ArrayList<>();
 		ArrayList<Integer> ryouriIDTabeta = new ArrayList<>();
 		ArrayList<String> tabetaTimeList = new ArrayList<>();
+		ArrayList<Integer> tabetaIDList = new ArrayList<>(); // 20210209 これを追加する修正
 		ArrayList<String> ryourimeiTabeta = new ArrayList<>();
 		ArrayList<String> imageNameTabeta = new ArrayList<>();
 		ArrayList<Boolean> tabetaListTabeta = new ArrayList<>();
@@ -46,8 +47,7 @@ public class MypageServlet extends HttpServlet {
 		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		String sql1 = "select RyouriID from FavoTB where UserID = ? order by FavoTime desc limit " + DATA_PER_PAGE;
-		String sql3 = "select RyouriID, TabetaTime from TabetaTB where UserID = ? order by TabetaTime desc limit " + DATA_PER_PAGE;
-
+		String sql3 = "select RyouriID, TabetaTime, TabetaID from TabetaTB where UserID = ? order by TabetaTime desc limit " + DATA_PER_PAGE; // 20210209 TabetaIDを追加する修正
 		//認証チェック
 		if (!Util.checkAuth(request, response)) return;
 
@@ -126,6 +126,7 @@ public class MypageServlet extends HttpServlet {
 				while (rs.next()) {
 					ryouriIDTabeta.add(rs.getInt("RyouriID"));
 					tabetaTimeList.add(f.format(rs.getTimestamp("TabetaTime")));
+					tabetaIDList.add(rs.getInt("TabetaID")); // 20210209 これを追加する修正
 				}
 			}
 		} catch (Exception e) {
@@ -139,20 +140,20 @@ public class MypageServlet extends HttpServlet {
 		System.out.println("料理ID: " + Arrays.toString(ryouriIDTabeta.toArray()) + " TabetaTime: " + Arrays.toString(tabetaTimeList.toArray()));
 
 		if (ryouriIDTabeta.size() > 0) {
-			String sql4 = "select Ryourimei, ImageName from RyouriTB inner join TabetaTB on RyouriTB.RyouriID = TabetaTB.RyouriID where TabetaTime in (?";
-			for (int i = 1; i < tabetaTimeList.size(); i++) sql4 += ", ?";
-			sql4 += ") order by field(TabetaTime, ?";
-			for (int i = 1; i < tabetaTimeList.size(); i++) sql4 += ", ?";
-			sql4 += "), TabetaID desc";
-
+			String sql4 = "select Ryourimei, ImageName from RyouriTB inner join TabetaTB on RyouriTB.RyouriID = TabetaTB.RyouriID where TabetaID in (?";  // 20210209 TabetaTime→TabetaIDに修正
+                        for (int i = 1; i < tabetaIDList.size(); i++) sql4 += ", ?"; // 20210209 TabetaTime→TabetaIDに修正
+                        sql4 += ") order by field(TabetaID, ?";  // 20210209 TabetaTime→TabetaIDに修正
+                        for (int i = 1; i < tabetaIDList.size(); i++) sql4 += ", ?"; // 20210209 TabetaTime→TabetaIDに修正
+                        sql4 += ")";  // 20210209 TabetaID descを削除
+			
 			try (
 					Connection conn = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
 					PreparedStatement prestmt = conn.prepareStatement(sql4)) {
-				for (int i = 0; i < tabetaTimeList.size(); i++) {
-					prestmt.setString(i + 1, tabetaTimeList.get(i));
-					prestmt.setString(i + 1 + tabetaTimeList.size(), tabetaTimeList.get(i));
-				}
+				for (int i = 0; i < tabetaIDList.size(); i++) { // 20210209 TabetaTime→TabetaIDに修正
+                                        prestmt.setInt(i + 1, tabetaIDList.get(i)); // 20210209 TabetaTime→TabetaIDに修正
+                                        prestmt.setInt(i + 1 + tabetaIDList.size(), tabetaIDList.get(i)); // 20210209 TabetaTime→TabetaIDに修正
+                                }
 				System.out.println("Tabetaレシピ名検索SQL(マイページ): " + prestmt.toString());
 				try (ResultSet rs = prestmt.executeQuery()) {
 					while (rs.next()) {
