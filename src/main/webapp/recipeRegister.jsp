@@ -22,6 +22,7 @@ if (recipeID > 0) {
 	recipe_name = (String)request.getAttribute("recipe_name"); //表示するレシピ名
 	tukurikata = ((String)request.getAttribute("tukurikata")).split("/"); //表示するレシピの作り方
 	syoukai = (String)request.getAttribute("syoukai"); //表示するレシピの紹介文
+	imageName = (String)request.getAttribute("imageName");
 	bunryouList = (ArrayList<String[]>)request.getAttribute("recipe_bunryou"); //表示するレシピの分量
 	for (int i = 0; i < bunryouList.size(); i++) {
 		//右端のゼロと小数点を削る処理
