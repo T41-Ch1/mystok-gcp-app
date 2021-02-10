@@ -33,6 +33,7 @@ public class RecipeRegisterPageServlet extends HttpServlet {
 		String recipe_name = ""; //料理名
 		String tukurikata = ""; //作り方
 		String syoukai = ""; //紹介文
+		String imageName = ""; //画像名 20210210追加
 		String[] str = new String[3]; //順に食材名、分量、単位が格納される
 		ArrayList<String[]> recipe_bunryou = new ArrayList<>(); //strの情報を順に格納する
 		int recipeID = 0;//マイレシピ一覧画面からパラメータrecipeIDをgetして変数recipeIDに代入する
@@ -98,7 +99,7 @@ public class RecipeRegisterPageServlet extends HttpServlet {
 		}
 
 		recipeID = Integer.parseInt(request.getParameter("recipeID"));//マイレシピ一覧画面からパラメータrecipeIDをgetして変数recipeIDに代入する
-		String sql1 = "select RyouriKana, Ryourimei, Tukurikata, Syoukai from RyouriTB where RyouriID = " + recipeID;
+		String sql1 = "select RyouriKana, Ryourimei, Tukurikata, Syoukai, ImageName from RyouriTB where RyouriID = " + recipeID; // 20210210 ", ImageName"追加
 		String sql2 = "select SyokuzaiTB.SyokuzaiKana, BunryouTB.Bunryou, SyokuzaiTB.Tanni from BunryouTB inner join SyokuzaiTB on BunryouTB.SyokuzaiID = SyokuzaiTB.SyokuzaiID where BunryouTB.RyouriID = " + recipeID;
 
 		boolean accessable = false;
@@ -142,6 +143,8 @@ public class RecipeRegisterPageServlet extends HttpServlet {
 				recipe_name = rs.getString("Ryourimei");
 				tukurikata = rs.getString("Tukurikata");
 				syoukai = rs.getString("Syoukai");
+				if (rs.getString("ImageName") == null) imageName = "noimage.jpg"; // 20210210追加
+                                else imageName = rs.getString("ImageName"); // 20210210追加
 			}
 			System.out.println("レシピ詳細検索SQL(レシピ名、作り方):" + sql1);
 		} catch (Exception e) {
@@ -193,6 +196,7 @@ public class RecipeRegisterPageServlet extends HttpServlet {
 		request.setAttribute("recipe_name", recipe_name);
 		request.setAttribute("tukurikata", tukurikata);
 		request.setAttribute("syoukai", syoukai);
+		request.setAttribute("imageName", imageName); // 20210210追加
 		request.setAttribute("recipeID", recipeID);
 		request.setAttribute("recipe_bunryou", recipe_bunryou);
 		RequestDispatcher rd = request.getRequestDispatcher(JSP_PATH);
