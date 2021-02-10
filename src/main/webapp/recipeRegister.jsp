@@ -110,7 +110,7 @@ for (int i = 0; i < syokuzaikanalist.size(); i++) out.println("<option value=\""
 <!-- 料理の写真 -->
 <h2 class="rtitle1">画像ファイル(1MBまで)：<br></h2>
 <input type="file" id="ryouripic" name="pic" accept="image/*">
-<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/uppict.png" alt="写真"
+<img src="https://storage.googleapis.com/mystok-gcp-dev-image-bucket/images/RyouriPIC/<%= imageName %>" alt="写真"
  width="350" height="350" border="1" align="left" class="recipetori">
 </div>
 <!--写真右側の必要材料入力開始-->
