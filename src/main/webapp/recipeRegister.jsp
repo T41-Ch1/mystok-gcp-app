@@ -15,6 +15,7 @@ int recipeID = (int)(request.getAttribute("recipeID")); //表示するレシピ�
 String recipe_kana = "";
 String recipe_name = "";
 String[] tukurikata;
+String imageName = "";
 String syoukai = "";
 ArrayList<String[]> bunryouList = new ArrayList<>();
 if (recipeID > 0) {
