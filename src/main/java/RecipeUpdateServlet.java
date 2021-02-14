@@ -3,6 +3,8 @@ package pac1;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+//Image-CloudStorage(1)
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +39,10 @@ public class RecipeUpdateServlet extends HttpServlet {
 		String ryourikana = "";
 		String tukurikata = "";
 		String syoukai = "";
+		//Image-CloudStorage(3)
+		String imageName = "";
+		String currentTime = "";
+		String name = "";
 		String userName = request.getRemoteUser();
 		List<String> syokuzaikanalist = new ArrayList<>();
 		String[] recipeBunryouRecord = new String[2];
@@ -57,7 +63,8 @@ public class RecipeUpdateServlet extends HttpServlet {
 
 		Part part = request.getPart("pic");
 		if (part.getSize() > 0) {
-			String name = this.getFileName(part);
+			//Image-CloudStorage(1)
+			name = this.getFileName(part);
 	        //C:\Users\197029\Documents\pleiades\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\mystok\WEB-INFにuploadedフォルダを手動で作ること
 	        part.write(getServletContext().getRealPath("/WEB-INF/uploaded") + "/" + name);
 		}
@@ -178,6 +185,67 @@ public class RecipeUpdateServlet extends HttpServlet {
 			rd_result.forward(request, response);
 			return;
 		}
+		//Image-CloudStorage(?)
+                String sql4 = "update RyouriTB set ImageName = ?  where RyouriID = " + ryouriID;
+                //画像がアップロードされたか判定
+                if (part.getSize() > 0) {
+
+                        System.out.println("画像うｐ判定True");
+
+                        //TimeStamp用に、CurrentTimeを取得(表示形式はmilli second)
+                        currentTime = String.valueOf(System.currentTimeMillis());
+                        //imageNameをryouriID、現在時刻から生成(拡張子は含まない)
+                        imageName = ryouriID + "-" + currentTime;
+
+                        //Image変換処理が必要かどうか判定=>変換処理
+                        String imageFolderPath = "/usr/local/tomcat/webapps/mystok/WEB-INF/uploaded";
+                        String imagePath = imageFolderPath + "/" +name;
+
+                        if(!name.endsWith(".jpg")) {
+                                System.out.println("The value of name is " + name);
+                                System.out.println("画像変換処理の要不要判定True");
+
+                                String imageOutputPath = imageFolderPath + "/" + imageName + ".jpg";
+                                ImageConverter ic = new ImageConverter();
+                                ic.imageConverter(imagePath,imageOutputPath);
+
+                                //変換前の画像を削除
+                                File UploadedImage = new File(imagePath);
+                                UploadedImage.delete();
+
+                                imagePath = imageOutputPath;
+                        }
+
+
+                        //ImageをCloudStorageへUploadする
+                        //第一引数は"アップロード後の名前",第二引数は"アップロード対象ファイルへの絶対パス"
+                        System.out.println("画像うｐ開始");
+                        UploadObject uo = new UploadObject();
+                        uo.uploadObject("images/RyouriPIC/" + imageName + ".jpg",imagePath);
+                        System.out.println("画像うｐ完了");
+
+                        //jpg形式の画像ファイルをCloudStorageにアップロード後、コンテナから削除
+                        System.out.println("うｐ画像をlocalから削除開始");
+                        File JpgImage = new File(imagePath);
+                        JpgImage.delete();
+                        System.out.println("うｐ画像をlocalから削除完了");
+
+                        //DBにCloudStorageへアップロードした画像のImageNameをInsertする
+                        System.out.println("画像名をDBに挿入開始");
+
+
+                        try (
+                                Connection conn = DriverManager.getConnection(
+                                        "jdbc:mysql://127.0.0.1:3306/j2a1b?serverTimezone=JST","mystok","mySqlStok");
+                                PreparedStatement prestmt = conn.prepareStatement(sql4)) {
+                                prestmt.setString(1, imageName + ".jpg");
+                                System.out.println("料理登録SQL(料理画像名):" + prestmt.toString());
+                                prestmt.executeUpdate();
+                        } catch (Exception e) {
+                                e.printStackTrace();
+                        }
+                        System.out.println("料理登録SQL(料理画像名)完了");
+                }
 		System.out.println("料理登録SQL(分量)完了");
 
 		response.sendRedirect(SERVLET_PATH + "?recipeID=" + ryouriID);
