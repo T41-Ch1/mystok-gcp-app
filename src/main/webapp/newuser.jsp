@@ -38,11 +38,11 @@
   </div>
 
     <div class="form-item">
-     <input type="password" name="password" placeholder="　希望のパスワード">
+     <input type="password" id="passNew1" name="password" placeholder="　希望のパスワード">
     </div>
 
     <div class="form-item">
-     <input type="password" name="password" placeholder="　希望のパスワード(確認用)">
+     <input type="password" id="passNew2" name="password" placeholder="　希望のパスワード(確認用)">
     </div>
 
     <div class="button-panel">
@@ -91,7 +91,12 @@ function func(btn) {
 		alert('&、<、>、\"、\'は使用できません');
 		return false;
 	}
-	if (document.getElementById('nameNew').value.length < 6) {
+	if (document.getElementById('passNew1').value != document.getElementById('passNew2').value) {
+		alert('パスワードが一致しません');
+		return false;
+	}
+	if (document.getElementById('passNew1').value.length < 6) {
+
 		alert('パスワードは6文字以上にしてください');
 		return false;
 	}
