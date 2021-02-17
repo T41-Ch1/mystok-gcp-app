@@ -122,7 +122,7 @@
       <span class="underline">"特に消費したい食材"</span>を<br>
       指定して検索ができます<br>
       ご自身で<span class="underline"> マイレシピを登録 </span>したり<br>
-      最近食べていない<span class="underline"> レシピのを提案 </span>
+      最近食べていない<span class="underline"> レシピを提案 </span>
       する機能もございます
     </p>
    </div>
