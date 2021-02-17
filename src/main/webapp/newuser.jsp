@@ -64,7 +64,7 @@ function dupCheck(btn) {
 		return false;
 	}
 	if (regexp.test(document.getElementById('nameNew').value)) {
-		alert('&、<、>、\"、\'は使用できません');
+		alert('名前に&、<、>、\"、\'は使用できません');
 		return false;
 	}
 	btn.disabled = true;
@@ -87,8 +87,12 @@ function clearIcon() {
 //二度押し防止機能 使用できない文字を含んでいないかもチェックする
 var sendflag = false;
 function func(btn) {
+	if (document.getElementById('nameNew').value.length == 0) {
+		alert('名前が入力されていません');
+		return false;
+	}
 	if (regexp.test(document.getElementById('nameNew').value)) {
-		alert('&、<、>、\"、\'は使用できません');
+		alert('名前に&、<、>、\"、\'は使用できません');
 		return false;
 	}
 	if (document.getElementById('passNew1').value != document.getElementById('passNew2').value) {

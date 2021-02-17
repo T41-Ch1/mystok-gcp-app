@@ -36,11 +36,22 @@ public class RecipeServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		int recipeID = 0; //表示するレシピのID
+	        String searchMode = ""; //検索窓のラジオボタンに最初からチェックを入れる方
+	        String input = ""; //検索窓に最初から表示させる文字列
+	        String recipe_name = ""; //料理名
+	        String tukurikata = ""; //作り方
+	        String imageName = ""; //画像名
+	        String[] str = new String[3]; //順に食材名、分量、単位が格納される
+	        final String JSP_PATH0 = "top.jsp"; //遷移先のJSP
+	        final String JSP_PATH1 = "recipe.jsp"; //遷移先のJSP
+
 		ArrayList<String[]> recipe_bunryou = new ArrayList<>(); //strの情報を順に格納する
 
 		//recipeID, searchMode, inputの準備
 		if (Objects.equals(request.getParameter("recipeID"), null)) {
-			RequestDispatcher rd_result = request.getRequestDispatcher("JSP_PATH0");
+			RequestDispatcher rd_result = request.getRequestDispatcher(JSP_PATH0);
 			rd_result.forward(request, response);
 			return;
 		}
@@ -109,7 +120,7 @@ public class RecipeServlet extends HttpServlet {
 		System.out.println("レシピ名:" + recipe_name + ", 作り方:" + tukurikata + ", 画像名" + imageName);
 
 		if (recipe_name.equals("")) {
-			RequestDispatcher rd_result = request.getRequestDispatcher("JSP_PATH0");
+			RequestDispatcher rd_result = request.getRequestDispatcher(JSP_PATH0);
 			rd_result.forward(request, response);
 			return;
 		}
